@@ -1341,12 +1341,16 @@ class ConsultDoctor extends StatefulWidget {
   final String bookingId;
   final String? staffId;
   final String? name;
+  final String? title;
+  final String?serviceType;
 
   const ConsultDoctor({
     super.key,
     required this.bookingId,
     this.staffId,
     this.name,
+    this.title,
+    this.serviceType
   });
 
   @override
@@ -1367,7 +1371,6 @@ class _ConsultDoctorState extends State<ConsultDoctor> {
   }
 
   Future<void> _fetchBookingDetails() async {
-    print("lllllllllllllllllllllllllllllllllllllllllllllllllllll${widget.bookingId}");
     try {
       setState(() {
         _isLoading = true;
@@ -1536,7 +1539,7 @@ class _ConsultDoctorState extends State<ConsultDoctor> {
           onPressed: () => Navigator.pop(context),
         ),
         title: Text(
-          widget.name ?? 'Consult Doctor',
+          widget.title ?? 'Consult Doctor',
           style: const TextStyle(
             color: Colors.black,
             fontSize: 20,
@@ -1652,6 +1655,12 @@ class _ConsultDoctorState extends State<ConsultDoctor> {
                             ],
                           ),
                           const SizedBox(height: 20),
+                       
+                         
+                          
+                          
+
+
                           _buildDetailRow('Service Type', booking.serviceType, ''),
                           const Divider(),
                           const SizedBox(height: 20),
@@ -1662,7 +1671,8 @@ class _ConsultDoctorState extends State<ConsultDoctor> {
                               _formatDateTime(booking.date, booking.timeSlot), ''),
                           const Divider(),
                           const SizedBox(height: 20),
-                          _buildDetailRow('Family Member', booking.familyMemberId, ''),
+                         _buildDetailRow('Family Member', booking.familyMember?.fullName ?? 'N/A', ''),
+
                           const Divider(),
                           const SizedBox(height: 20),
                           _buildDetailRow('Doctor name', booking.doctorName, ''),

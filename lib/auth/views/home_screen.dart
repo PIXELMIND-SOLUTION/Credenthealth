@@ -1409,37 +1409,37 @@ class _HomeScreenState extends State<HomeScreen> {
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              const Icon(
-                                Icons.error_outline,
-                                color: Colors.red,
-                                size: 32,
-                              ),
+                              // const Icon(
+                              //   Icons.error_outline,
+                              //   color: Colors.red,
+                              //   size: 32,
+                              // ),
                               const SizedBox(height: 8),
-                              Text(
-                                trackerProvider.errorMessage,
-                                textAlign: TextAlign.center,
-                                style: const TextStyle(
-                                  color: Colors.red,
-                                  fontSize: 12,
-                                ),
-                              ),
+                              // Text(
+                              //   trackerProvider.errorMessage,
+                              //   textAlign: TextAlign.center,
+                              //   style: const TextStyle(
+                              //     color: Colors.red,
+                              //     fontSize: 12,
+                              //   ),
+                              // ),
                               const SizedBox(height: 8),
-                              ElevatedButton(
-                                onPressed: () {
-                                  trackerProvider.refreshData();
-                                },
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: Colors.blue,
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 16,
-                                    vertical: 8,
-                                  ),
-                                ),
-                                child: const Text(
-                                  'Retry',
-                                  style: TextStyle(color: Colors.white),
-                                ),
-                              ),
+                              // ElevatedButton(
+                              //   onPressed: () {
+                              //     trackerProvider.refreshData();
+                              //   },
+                              //   style: ElevatedButton.styleFrom(
+                              //     backgroundColor: Colors.blue,
+                              //     padding: const EdgeInsets.symmetric(
+                              //       horizontal: 16,
+                              //       vertical: 8,
+                              //     ),
+                              //   ),
+                              //   child: const Text(
+                              //     'Retry',
+                              //     style: TextStyle(color: Colors.white),
+                              //   ),
+                              // ),
                             ],
                           ),
                         ),
@@ -2122,26 +2122,27 @@ class _HomeScreenState extends State<HomeScreen> {
                       borderRadius: BorderRadius.circular(12),
                     ),
                     elevation: 2,
-                    child: Padding(
-                      padding: const EdgeInsets.all(16.0),
+                    child:const Padding(
+                      padding:  EdgeInsets.all(16.0),
                       child: Column(
                         children: [
-                          const Icon(Icons.error_outline,
+                           Icon(Icons.error_outline,
                               color: Colors.red, size: 48),
+                           SizedBox(height: 8),
+                          Text('No data found'),
+                          // Text(
+                          //   provider.errorMessage.isNotEmpty
+                          //       ? provider.errorMessage
+                          //       : 'Error loading package',
+                          //   style: const TextStyle(
+                          //       color: Colors.red, fontSize: 16),
+                          //   textAlign: TextAlign.center,
+                          // ),
                           const SizedBox(height: 8),
-                          Text(
-                            provider.errorMessage.isNotEmpty
-                                ? provider.errorMessage
-                                : 'Error loading package',
-                            style: const TextStyle(
-                                color: Colors.red, fontSize: 16),
-                            textAlign: TextAlign.center,
-                          ),
-                          const SizedBox(height: 8),
-                          ElevatedButton(
-                            onPressed: () => provider.fetchRecentPackage(),
-                            child: const Text('Retry'),
-                          ),
+                          // ElevatedButton(
+                          //   onPressed: () => provider.fetchRecentPackage(),
+                          //   child: const Text('Retry'),
+                          // ),
                         ],
                       ),
                     ),

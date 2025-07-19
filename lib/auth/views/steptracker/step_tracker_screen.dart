@@ -2599,54 +2599,54 @@ class _StepTrackerScreenState extends State<StepTrackerScreen>
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     // Status Banner
-                    Container(
-                      width: double.infinity,
-                      padding: const EdgeInsets.all(12),
-                      margin: const EdgeInsets.only(bottom: 16),
-                      decoration: BoxDecoration(
-                        color: trackerProvider.isTrackingMotion
-                            ? Colors.green[50]
-                            : Colors.orange[50],
-                        borderRadius: BorderRadius.circular(8),
-                        border: Border.all(
-                            color: trackerProvider.isTrackingMotion
-                                ? Colors.green[200]!
-                                : Colors.orange[200]!),
-                      ),
-                      child: Row(
-                        children: [
-                          Icon(
-                            trackerProvider.isTrackingMotion
-                                ? Icons.directions_walk
-                                : Icons.warning_outlined,
-                            color: trackerProvider.isTrackingMotion
-                                ? Colors.green[600]
-                                : Colors.orange[600],
-                          ),
-                          const SizedBox(width: 8),
-                          Expanded(
-                            child: Text(
-                              trackerProvider.isTrackingMotion
-                                  ? 'Tracking your activity'
-                                  : 'Activity tracking paused',
-                              style: TextStyle(
-                                color: trackerProvider.isTrackingMotion
-                                    ? Colors.green[700]
-                                    : Colors.orange[700],
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ),
-                          ),
-                          if (!trackerProvider.isTrackingMotion)
-                            TextButton(
-                              onPressed: () {
-                                trackerProvider.startMotionTracking();
-                              },
-                              child: const Text('Start'),
-                            ),
-                        ],
-                      ),
-                    ),
+                    // Container(
+                    //   width: double.infinity,
+                    //   padding: const EdgeInsets.all(12),
+                    //   margin: const EdgeInsets.only(bottom: 16),
+                    //   decoration: BoxDecoration(
+                    //     color: trackerProvider.isTrackingMotion
+                    //         ? Colors.green[50]
+                    //         : Colors.orange[50],
+                    //     borderRadius: BorderRadius.circular(8),
+                    //     border: Border.all(
+                    //         color: trackerProvider.isTrackingMotion
+                    //             ? Colors.green[200]!
+                    //             : Colors.orange[200]!),
+                    //   ),
+                    //   child: Row(
+                    //     children: [
+                    //       // Icon(
+                    //       //   trackerProvider.isTrackingMotion
+                    //       //       ? Icons.directions_walk
+                    //       //       : Icons.warning_outlined,
+                    //       //   color: trackerProvider.isTrackingMotion
+                    //       //       ? Colors.green[600]
+                    //       //       : Colors.orange[600],
+                    //       // ),
+                    //       const SizedBox(width: 8),
+                    //       Expanded(
+                    //         child: Text(
+                    //           trackerProvider.isTrackingMotion
+                    //               ? 'Tracking your activity'
+                    //               : 'Activity tracking paused',
+                    //           style: TextStyle(
+                    //             color: trackerProvider.isTrackingMotion
+                    //                 ? Colors.green[700]
+                    //                 : Colors.orange[700],
+                    //             fontWeight: FontWeight.w500,
+                    //           ),
+                    //         ),
+                    //       ),
+                    //       if (!trackerProvider.isTrackingMotion)
+                    //         TextButton(
+                    //           onPressed: () {
+                    //             trackerProvider.startMotionTracking();
+                    //           },
+                    //           child: const Text('Start'),
+                    //         ),
+                    //     ],
+                    //   ),
+                    // ),
 
                     // Main Activity Card
                     Container(

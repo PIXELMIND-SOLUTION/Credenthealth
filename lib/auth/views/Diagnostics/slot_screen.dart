@@ -1979,6 +1979,7 @@ class _SlotScreenState extends State<SlotScreen> {
 
       // Set default service type
       bookingProvider.setSelectedServiceType('Home Collection');
+      bookingProvider.setSelectedServiceType('Center Visit');
 
       // Clear any previous messages
       bookingProvider.clearMessages();

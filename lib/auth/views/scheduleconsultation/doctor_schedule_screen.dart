@@ -1870,9 +1870,9 @@ class _DoctorScheduleScreenState extends State<DoctorScheduleScreen> {
     final experience = doctor['experience']?.toString() ?? '';
     
     // Extract meeting URL from doctor data or use sample URL
-    final meetingUrl = doctor['meetingLink']?.toString() ?? 
-                      doctor['booking']?['meetingLink']?.toString() ?? 
-                      'https://meet.jit.si/4a0ei6sama'; // Sample URL from your response
+    // final meetingUrl = doctor['meetingLink']?.toString() ?? 
+    //                   doctor['booking']?['meetingLink']?.toString() ?? 
+    //                   'https://meet.jit.si/4a0ei6sama'; // Sample URL from your response
 
     return Container(
       padding: const EdgeInsets.all(16),
@@ -1901,8 +1901,9 @@ class _DoctorScheduleScreenState extends State<DoctorScheduleScreen> {
                     context,
                     MaterialPageRoute(
                       builder: (context) => ConsultationDetailsScreen(
-                          // doctorId: doctorId,
-                          // doctorName: name,
+                        // doctorId: doctorId,
+                          doctorId: doctorId,
+                          doctorName: name,
                           ),
                     ),
                   );
