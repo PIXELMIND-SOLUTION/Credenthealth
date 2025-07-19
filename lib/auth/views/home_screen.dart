@@ -928,21 +928,22 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ),
                 const SizedBox(height: 20),
-          
+
                 // Book Clinic Visit Option
                 GestureDetector(
                   onTap: () {
-                     Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => ScheduleConsultationScreen(
-                                  id: 'Book Clinic Visit',
-                                ),
-                              ),
-                            );
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ScheduleConsultationScreen(
+                          id: 'Book Clinic Visit',
+                        ),
+                      ),
+                    );
                   },
                   child: Container(
-                    margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+                    margin:
+                        const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
                     padding: const EdgeInsets.all(16),
                     decoration: BoxDecoration(
                       border: Border.all(),
@@ -995,7 +996,8 @@ class _HomeScreenState extends State<HomeScreen> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => ScheduleConsultationScreen(
+                                builder: (context) =>
+                                    ScheduleConsultationScreen(
                                   id: 'Book Clinic Visit',
                                 ),
                               ),
@@ -1011,22 +1013,23 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ),
                 ),
-          
+
                 // Book Online Consultation Option
                 GestureDetector(
                   onTap: () {
-                     Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => OnlineScheduleScreen(
-                                id: 'Book Online Consultation',
-                                // type: 'online',
-                              ),
-                            ),
-                          );
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => OnlineScheduleScreen(
+                          id: 'Book Online Consultation',
+                          // type: 'online',
+                        ),
+                      ),
+                    );
                   },
                   child: Container(
-                    margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+                    margin:
+                        const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
                     padding: const EdgeInsets.all(16),
                     decoration: BoxDecoration(
                       border: Border.all(),
@@ -1096,7 +1099,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ),
                 ),
-          
+
                 const SizedBox(height: 30),
               ],
             ),
@@ -1221,86 +1224,185 @@ class _HomeScreenState extends State<HomeScreen> {
         elevation: 0,
         backgroundColor: Colors.white,
         automaticallyImplyLeading: false,
-        title: Row(
-          children: [
-            Text(
-              getGreeting(),
-              style: const TextStyle(fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(
-              width: 60,
-            ),
-            GestureDetector(
-                onTap: () {
-                  Navigator.push(
+        title: LayoutBuilder(
+          builder: (context, constraints) {
+            final screenWidth = MediaQuery.of(context).size.width;
+            return Row(
+              children: [
+                Expanded(
+                  child: Text(
+                    getGreeting(),
+                    style: const TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                ),
+                GestureDetector(
+                  onTap: () {
+                    Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => const WalletScreen()));
-                },
-                child: const Icon(Icons.wallet_rounded)),
-            Consumer<WalletProvider>(
-              builder: (context, walletProvider, child) {
-                if (walletProvider.isLoading) {
-                  return const SizedBox(
-                    width: 60,
-                    height: 17,
-                    child: Center(
-                      child: SizedBox(
-                        width: 12,
-                        height: 12,
-                        child: CircularProgressIndicator(
-                          strokeWidth: 2,
-                          valueColor:
-                              AlwaysStoppedAnimation<Color>(Colors.blue),
+                          builder: (context) => const WalletScreen()),
+                    );
+                  },
+                  child: const Icon(Icons.wallet_rounded),
+                ),
+                const SizedBox(
+                    width: 6), // small spacing between icon and balance
+                Consumer<WalletProvider>(
+                  builder: (context, walletProvider, child) {
+                    if (walletProvider.isLoading) {
+                      return const SizedBox(
+                        width: 60,
+                        height: 17,
+                        child: Center(
+                          child: SizedBox(
+                            width: 12,
+                            height: 12,
+                            child: CircularProgressIndicator(
+                              strokeWidth: 2,
+                              valueColor:
+                                  AlwaysStoppedAnimation<Color>(Colors.blue),
+                            ),
+                          ),
                         ),
-                      ),
-                    ),
-                  );
-                }
+                      );
+                    }
 
-                if (walletProvider.errorMessage != null) {
-                  return GestureDetector(
-                    onTap: () async {
-                      final staffId =
-                          await SharedPrefsHelper.getStaffIdWithFallback();
-                      final token = await SharedPrefsHelper.getUserToken();
-                      if (staffId.isNotEmpty) {
-                        walletProvider.fetchWalletData(staffId, token: token);
-                      }
-                    },
-                    child: const Row(
-                      children: [
-                        Icon(Icons.refresh, size: 16, color: Colors.red),
-                        SizedBox(width: 1),
-                        Text(
-                          'Retry',
-                          style: TextStyle(fontSize: 12, color: Colors.red),
+                    if (walletProvider.errorMessage != null) {
+                      return GestureDetector(
+                        onTap: () async {
+                          final staffId =
+                              await SharedPrefsHelper.getStaffIdWithFallback();
+                          final token = await SharedPrefsHelper.getUserToken();
+                          if (staffId.isNotEmpty) {
+                            walletProvider.fetchWalletData(staffId,
+                                token: token);
+                          }
+                        },
+                        child: const Row(
+                          children: [
+                            Icon(Icons.refresh, size: 16, color: Colors.red),
+                            SizedBox(width: 1),
+                            Text(
+                              'Retry',
+                              style: TextStyle(fontSize: 12, color: Colors.red),
+                            ),
+                          ],
                         ),
-                      ],
-                    ),
-                  );
-                }
+                      );
+                    }
 
-                return Text(
-                  walletProvider.formattedBalance,
-                  style: const TextStyle(fontSize: 15),
-                );
-              },
-            ),
-          ],
+                    return Text(
+                      walletProvider.formattedBalance,
+                      style: const TextStyle(fontSize: 15),
+                    );
+                  },
+                ),
+              ],
+            );
+          },
         ),
         actions: [
           GestureDetector(
-              onTap: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const NotificationScreen()));
-              },
-              child: const Icon(Icons.notifications_none, color: Colors.black)),
-          const SizedBox(width: 15),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const NotificationScreen(),
+                ),
+              );
+            },
+            child: const Icon(Icons.notifications_none, color: Colors.black),
+          ),
+          SizedBox(
+              width: MediaQuery.of(context).size.width *
+                  0.03), // Responsive spacing
         ],
       ),
+
+      // appBar: AppBar(
+      //   elevation: 0,
+      //   backgroundColor: Colors.white,
+      //   automaticallyImplyLeading: false,
+      //   title: Row(
+      //     children: [
+      //       Text(
+      //         getGreeting(),
+      //         style: const TextStyle(fontWeight: FontWeight.bold),
+      //       ),
+      //       const SizedBox(
+      //         width: 60,
+      //       ),
+      //       GestureDetector(
+      //           onTap: () {
+      //             Navigator.push(
+      //                 context,
+      //                 MaterialPageRoute(
+      //                     builder: (context) => const WalletScreen()));
+      //           },
+      //           child: const Icon(Icons.wallet_rounded)),
+      //       Consumer<WalletProvider>(
+      //         builder: (context, walletProvider, child) {
+      //           if (walletProvider.isLoading) {
+      //             return const SizedBox(
+      //               width: 60,
+      //               height: 17,
+      //               child: Center(
+      //                 child: SizedBox(
+      //                   width: 12,
+      //                   height: 12,
+      //                   child: CircularProgressIndicator(
+      //                     strokeWidth: 2,
+      //                     valueColor:
+      //                         AlwaysStoppedAnimation<Color>(Colors.blue),
+      //                   ),
+      //                 ),
+      //               ),
+      //             );
+      //           }
+
+      //           if (walletProvider.errorMessage != null) {
+      //             return GestureDetector(
+      //               onTap: () async {
+      //                 final staffId =
+      //                     await SharedPrefsHelper.getStaffIdWithFallback();
+      //                 final token = await SharedPrefsHelper.getUserToken();
+      //                 if (staffId.isNotEmpty) {
+      //                   walletProvider.fetchWalletData(staffId, token: token);
+      //                 }
+      //               },
+      //               child: const Row(
+      //                 children: [
+      //                   Icon(Icons.refresh, size: 16, color: Colors.red),
+      //                   SizedBox(width: 1),
+      //                   Text(
+      //                     'Retry',
+      //                     style: TextStyle(fontSize: 12, color: Colors.red),
+      //                   ),
+      //                 ],
+      //               ),
+      //             );
+      //           }
+
+      //           return Text(
+      //             walletProvider.formattedBalance,
+      //             style: const TextStyle(fontSize: 15),
+      //           );
+      //         },
+      //       ),
+      //     ],
+      //   ),
+      //   actions: [
+      //     GestureDetector(
+      //         onTap: () {
+      //           Navigator.push(
+      //               context,
+      //               MaterialPageRoute(
+      //                   builder: (context) => const NotificationScreen()));
+      //         },
+      //         child: const Icon(Icons.notifications_none, color: Colors.black)),
+      //     const SizedBox(width: 15),
+      //   ],
+      // ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -1669,6 +1771,229 @@ class _HomeScreenState extends State<HomeScreen> {
             const SizedBox(
               height: 15,
             ),
+            // const Padding(
+            //   padding: EdgeInsets.all(8.0),
+            //   child: Text("Recent Lookups",
+            //       style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+            // ),
+            // const SizedBox(height: 20),
+            // Consumer<RecentLookupProvider>(
+            //   builder: (context, recentLookupProvider, child) {
+            //     if (recentLookupProvider.isLoading) {
+            //       return const SizedBox(
+            //         height: 150,
+            //         child: Center(
+            //           child: CircularProgressIndicator(),
+            //         ),
+            //       );
+            //     }
+
+            //     if (recentLookupProvider.hasError) {
+            //       return SizedBox(
+            //         height: 150,
+            //         child: Center(
+            //           child: Column(
+            //             mainAxisAlignment: MainAxisAlignment.center,
+            //             children: [
+            //               const Icon(Icons.error_outline,
+            //                   size: 32, color: Colors.red),
+            //               const SizedBox(height: 8),
+            //               const Text(
+            //                 'Failed to load recent doctors',
+            //                 style: TextStyle(
+            //                     fontSize: 14, fontWeight: FontWeight.bold),
+            //               ),
+            //               const SizedBox(height: 4),
+            //               Text(
+            //                 recentLookupProvider.errorMessage
+            //                     .replaceFirst('Exception: ', ''),
+            //                 textAlign: TextAlign.center,
+            //                 style: const TextStyle(
+            //                     color: Colors.grey, fontSize: 12),
+            //               ),
+            //               const SizedBox(height: 8),
+            //               ElevatedButton(
+            //                 onPressed: () =>
+            //                     recentLookupProvider.fetchRecentDoctors(),
+            //                 child: const Text('Retry'),
+            //               ),
+            //             ],
+            //           ),
+            //         ),
+            //       );
+            //     }
+
+            //     if (recentLookupProvider.recentDoctors.isEmpty) {
+            //       return const SizedBox(
+            //         height: 150,
+            //         child: Center(
+            //           child: Column(
+            //             mainAxisAlignment: MainAxisAlignment.center,
+            //             children: [
+            //               Icon(Icons.person_search,
+            //                   size: 48, color: Colors.grey),
+            //               SizedBox(height: 8),
+            //               Text(
+            //                 'No recent doctors found',
+            //                 style: TextStyle(fontSize: 14, color: Colors.grey),
+            //               ),
+            //             ],
+            //           ),
+            //         ),
+            //       );
+            //     }
+
+            //     return Column(
+            //       children: recentLookupProvider.recentDoctors.map((doctor) {
+            //         return Card(
+            //           color: Colors.white,
+            //           margin: const EdgeInsets.only(bottom: 12),
+            //           child: Padding(
+            //             padding: const EdgeInsets.all(12.0),
+            //             child: Row(
+            //               crossAxisAlignment: CrossAxisAlignment.start,
+            //               children: [
+            //                 GestureDetector(
+            //                   onTap: () {
+            //                     Navigator.push(
+            //                         context,
+            //                         MaterialPageRoute(
+            //                             builder: (context) =>
+            //                                 ConsultationDetailsScreen(
+            //                                   doctorId: doctor.id,
+            //                                 )));
+            //                   },
+            //                   child: Container(
+            //                     width: 90,
+            //                     height: 90,
+            //                     decoration: BoxDecoration(
+            //                       borderRadius: BorderRadius.circular(10),
+            //                       color: Colors.grey.shade200,
+            //                     ),
+            //                     child: ClipRRect(
+            //                       borderRadius: BorderRadius.circular(10),
+            //                       child: doctor.image.isNotEmpty
+            //                           ? Image.network(
+            //                               doctor.image.startsWith('http')
+            //                                   ? doctor.image
+            //                                   : 'http://31.97.206.144:4051${doctor.image}',
+            //                               width: 90,
+            //                               height: 90,
+            //                               fit: BoxFit.cover,
+            //                               loadingBuilder: (context, child,
+            //                                   loadingProgress) {
+            //                                 if (loadingProgress == null)
+            //                                   return child;
+            //                                 return Center(
+            //                                   child: CircularProgressIndicator(
+            //                                     value: loadingProgress
+            //                                                 .expectedTotalBytes !=
+            //                                             null
+            //                                         ? loadingProgress
+            //                                                 .cumulativeBytesLoaded /
+            //                                             loadingProgress
+            //                                                 .expectedTotalBytes!
+            //                                         : null,
+            //                                   ),
+            //                                 );
+            //                               },
+            //                               errorBuilder:
+            //                                   (context, error, stackTrace) {
+            //                                 print(
+            //                                     'Image loading error: $error');
+            //                                 return Container(
+            //                                   width: 90,
+            //                                   height: 90,
+            //                                   color: Colors.grey.shade200,
+            //                                   child: const Icon(
+            //                                     Icons.person,
+            //                                     size: 40,
+            //                                     color: Colors.grey,
+            //                                   ),
+            //                                 );
+            //                               },
+            //                             )
+            //                           : Container(
+            //                               width: 90,
+            //                               height: 90,
+            //                               color: Colors.grey.shade200,
+            //                               child: const Icon(
+            //                                 Icons.person,
+            //                                 size: 40,
+            //                                 color: Colors.grey,
+            //                               ),
+            //                             ),
+            //                     ),
+            //                   ),
+            //                 ),
+            //                 const SizedBox(width: 12),
+
+            //                 // Doctor Details
+            //                 Expanded(
+            //                   child: Column(
+            //                     crossAxisAlignment: CrossAxisAlignment.start,
+            //                     children: [
+            //                       Text(
+            //                         doctor.name.isNotEmpty
+            //                             ? doctor.name
+            //                             : "Dr. Unknown",
+            //                         style: const TextStyle(
+            //                             fontWeight: FontWeight.bold,
+            //                             fontSize: 16),
+            //                       ),
+            //                       const SizedBox(height: 4),
+            //                       Row(
+            //                         mainAxisAlignment:
+            //                             MainAxisAlignment.spaceBetween,
+            //                         children: [
+            //                           Text(
+            //                             doctor.specialization.isNotEmpty
+            //                                 ? doctor.specialization
+            //                                 : "General",
+            //                             style: const TextStyle(fontSize: 14),
+            //                           ),
+            //                           GestureDetector(
+            //                             onTap: () {
+            //                               Navigator.push(
+            //                                   context,
+            //                                   MaterialPageRoute(
+            //                                       builder: (context) =>
+            //                                           ConsultationDetailsScreen(
+            //                                             doctorId: doctor.id,
+            //                                           )));
+            //                             },
+            //                             child: const Icon(
+            //                                 Icons.arrow_forward_ios,
+            //                                 size: 16),
+            //                           ),
+            //                         ],
+            //                       ),
+            //                       const SizedBox(height: 4),
+            //                       Row(
+            //                         children: [
+            //                           const Icon(Icons.star,
+            //                               color: Colors.orange, size: 16),
+            //                           const SizedBox(width: 4),
+            //                           Text.rich(
+            //                             TextSpan(
+            //                               children: [],
+            //                             ),
+            //                           )
+            //                         ],
+            //                       ),
+            //                       const SizedBox(height: 2),
+            //                     ],
+            //                   ),
+            //                 ),
+            //               ],
+            //             ),
+            //           ),
+            //         );
+            //       }).toList(),
+            //     );
+            //   },
+            // ),
+
             const Padding(
               padding: EdgeInsets.all(8.0),
               child: Text("Recent Lookups",
@@ -1677,6 +2002,16 @@ class _HomeScreenState extends State<HomeScreen> {
             const SizedBox(height: 20),
             Consumer<RecentLookupProvider>(
               builder: (context, recentLookupProvider, child) {
+                // Initialize provider if needed
+                if (recentLookupProvider.currentStaffId.isEmpty &&
+                    !recentLookupProvider.isLoading) {
+                  WidgetsBinding.instance.addPostFrameCallback((_) {
+                    recentLookupProvider.initialize().then((_) {
+                      recentLookupProvider.fetchRecentDoctors();
+                    });
+                  });
+                }
+
                 if (recentLookupProvider.isLoading) {
                   return const SizedBox(
                     height: 150,
@@ -1686,40 +2021,40 @@ class _HomeScreenState extends State<HomeScreen> {
                   );
                 }
 
-                if (recentLookupProvider.hasError) {
-                  return SizedBox(
-                    height: 150,
-                    child: Center(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const Icon(Icons.error_outline,
-                              size: 32, color: Colors.red),
-                          const SizedBox(height: 8),
-                          const Text(
-                            'Failed to load recent doctors',
-                            style: TextStyle(
-                                fontSize: 14, fontWeight: FontWeight.bold),
-                          ),
-                          const SizedBox(height: 4),
-                          Text(
-                            recentLookupProvider.errorMessage
-                                .replaceFirst('Exception: ', ''),
-                            textAlign: TextAlign.center,
-                            style: const TextStyle(
-                                color: Colors.grey, fontSize: 12),
-                          ),
-                          const SizedBox(height: 8),
-                          ElevatedButton(
-                            onPressed: () =>
-                                recentLookupProvider.fetchRecentDoctors(),
-                            child: const Text('Retry'),
-                          ),
-                        ],
-                      ),
-                    ),
-                  );
-                }
+                // if (recentLookupProvider.hasError) {
+                //   return SizedBox(
+                //     height: 150,
+                //     child: Center(
+                //       child: Column(
+                //         mainAxisAlignment: MainAxisAlignment.center,
+                //         children: [
+                //           const Icon(Icons.error_outline,
+                //               size: 32, color: Colors.red),
+                //           const SizedBox(height: 8),
+                //           const Text(
+                //             'Failed to load recent doctors',
+                //             style: TextStyle(
+                //                 fontSize: 14, fontWeight: FontWeight.bold),
+                //           ),
+                //           const SizedBox(height: 4),
+                //           Text(
+                //             recentLookupProvider.errorMessage
+                //                 .replaceFirst('Exception: ', ''),
+                //             textAlign: TextAlign.center,
+                //             style: const TextStyle(
+                //                 color: Colors.grey, fontSize: 12),
+                //           ),
+                //           const SizedBox(height: 8),
+                //           ElevatedButton(
+                //             onPressed: () =>
+                //                 recentLookupProvider.refreshRecentDoctors(),
+                //             child: const Text('Retry'),
+                //           ),
+                //         ],
+                //       ),
+                //     ),
+                //   );
+                // }
 
                 if (recentLookupProvider.recentDoctors.isEmpty) {
                   return const SizedBox(
@@ -1735,71 +2070,104 @@ class _HomeScreenState extends State<HomeScreen> {
                             'No recent doctors found',
                             style: TextStyle(fontSize: 14, color: Colors.grey),
                           ),
+                          Text(
+                            'Your recent consultations will appear here',
+                            style: TextStyle(fontSize: 12, color: Colors.grey),
+                          ),
                         ],
                       ),
                     ),
                   );
                 }
 
-                return Column(
-                  children: recentLookupProvider.recentDoctors.map((doctor) {
-                    return Card(
-                      color: Colors.white,
-                      margin: const EdgeInsets.only(bottom: 12),
-                      child: Padding(
-                        padding: const EdgeInsets.all(12.0),
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            GestureDetector(
-                              onTap: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            ConsultationDetailsScreen(
-                                              doctorId: doctor.id,
-                                            )));
-                              },
-                              child: Container(
-                                width: 90,
-                                height: 90,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10),
-                                  color: Colors.grey.shade200,
-                                ),
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(10),
-                                  child: doctor.image.isNotEmpty
-                                      ? Image.network(
-                                          doctor.image.startsWith('http')
-                                              ? doctor.image
-                                              : 'http://31.97.206.144:4051${doctor.image}',
-                                          width: 90,
-                                          height: 90,
-                                          fit: BoxFit.cover,
-                                          loadingBuilder: (context, child,
-                                              loadingProgress) {
-                                            if (loadingProgress == null)
-                                              return child;
-                                            return Center(
-                                              child: CircularProgressIndicator(
-                                                value: loadingProgress
-                                                            .expectedTotalBytes !=
-                                                        null
-                                                    ? loadingProgress
-                                                            .cumulativeBytesLoaded /
-                                                        loadingProgress
-                                                            .expectedTotalBytes!
-                                                    : null,
-                                              ),
-                                            );
-                                          },
-                                          errorBuilder:
-                                              (context, error, stackTrace) {
-                                            print(
-                                                'Image loading error: $error');
-                                            return Container(
+                return RefreshIndicator(
+                  onRefresh: () async {
+                    await recentLookupProvider.refreshRecentDoctors();
+                  },
+                  child: Column(
+                    children: [
+                      // Show staff info (optional, for debugging)
+                      if (recentLookupProvider.currentStaffId.isNotEmpty)
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 8.0),
+                          // child: Text(
+                          //   'Staff ID: ${recentLookupProvider.currentStaffId}',
+                          //   style: const TextStyle(fontSize: 10, color: Colors.grey),
+                          // ),
+                        ),
+
+                      // Recent doctors list
+                      ...recentLookupProvider.recentDoctors.map((doctor) {
+                        return Card(
+                          color: Colors.white,
+                          margin: const EdgeInsets.only(bottom: 12),
+                          child: Padding(
+                            padding: const EdgeInsets.all(12.0),
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                GestureDetector(
+                                  onTap: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                ConsultationDetailsScreen(
+                                                  doctorId: doctor.id,
+                                                )));
+                                  },
+                                  child: Container(
+                                    width: 90,
+                                    height: 90,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(10),
+                                      color: Colors.grey.shade200,
+                                    ),
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(10),
+                                      child: doctor.image.isNotEmpty
+                                          ? Image.network(
+                                              doctor.image.startsWith('http')
+                                                  ? doctor.image
+                                                  : 'http://31.97.206.144:4051${doctor.image}',
+                                              width: 90,
+                                              height: 90,
+                                              fit: BoxFit.cover,
+                                              loadingBuilder: (context, child,
+                                                  loadingProgress) {
+                                                if (loadingProgress == null)
+                                                  return child;
+                                                return Center(
+                                                  child:
+                                                      CircularProgressIndicator(
+                                                    value: loadingProgress
+                                                                .expectedTotalBytes !=
+                                                            null
+                                                        ? loadingProgress
+                                                                .cumulativeBytesLoaded /
+                                                            loadingProgress
+                                                                .expectedTotalBytes!
+                                                        : null,
+                                                  ),
+                                                );
+                                              },
+                                              errorBuilder:
+                                                  (context, error, stackTrace) {
+                                                print(
+                                                    'Image loading error: $error');
+                                                return Container(
+                                                  width: 90,
+                                                  height: 90,
+                                                  color: Colors.grey.shade200,
+                                                  child: const Icon(
+                                                    Icons.person,
+                                                    size: 40,
+                                                    color: Colors.grey,
+                                                  ),
+                                                );
+                                              },
+                                            )
+                                          : Container(
                                               width: 90,
                                               height: 90,
                                               color: Colors.grey.shade200,
@@ -1808,86 +2176,85 @@ class _HomeScreenState extends State<HomeScreen> {
                                                 size: 40,
                                                 color: Colors.grey,
                                               ),
-                                            );
-                                          },
-                                        )
-                                      : Container(
-                                          width: 90,
-                                          height: 90,
-                                          color: Colors.grey.shade200,
-                                          child: const Icon(
-                                            Icons.person,
-                                            size: 40,
-                                            color: Colors.grey,
-                                          ),
-                                        ),
-                                ),
-                              ),
-                            ),
-                            const SizedBox(width: 12),
-
-                            // Doctor Details
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    doctor.name.isNotEmpty
-                                        ? doctor.name
-                                        : "Dr. Unknown",
-                                    style: const TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 16),
+                                            ),
+                                    ),
                                   ),
-                                  const SizedBox(height: 4),
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
+                                ),
+                                const SizedBox(width: 12),
+
+                                // Doctor Details
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                        doctor.specialization.isNotEmpty
-                                            ? doctor.specialization
-                                            : "General",
-                                        style: const TextStyle(fontSize: 14),
+                                        doctor.name.isNotEmpty
+                                            ? doctor.name
+                                            : "Dr. Melvin",
+                                        style: const TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 16),
                                       ),
-                                      GestureDetector(
-                                        onTap: () {
-                                          Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      ConsultationDetailsScreen(
-                                                        doctorId: doctor.id,
-                                                      )));
-                                        },
-                                        child: const Icon(
-                                            Icons.arrow_forward_ios,
-                                            size: 16),
+                                      const SizedBox(height: 4),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Expanded(
+                                            child: Text(
+                                              doctor.specialization.isNotEmpty
+                                                  ? doctor.specialization
+                                                  : "General",
+                                              style:
+                                                  const TextStyle(fontSize: 14),
+                                            ),
+                                          ),
+                                          GestureDetector(
+                                            onTap: () {
+                                              Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          ConsultationDetailsScreen(
+                                                            doctorId: doctor.id,
+                                                          )));
+                                            },
+                                            child: const Icon(
+                                                Icons.arrow_forward_ios,
+                                                size: 16),
+                                          ),
+                                        ],
                                       ),
+                                      const SizedBox(height: 4),
+                                      Row(
+                                        children: [
+                                          const Icon(Icons.star,
+                                              color: Colors.orange, size: 16),
+                                          const SizedBox(width: 4),
+                                          // Text.rich(
+                                          //   TextSpan(
+                                          //     children: [
+                                          //       TextSpan(
+                                          //         text: doctor.rating?.toString() ?? "N/A",
+                                          //         style: const TextStyle(fontSize: 12),
+                                          //       ),
+                                          //     ],
+                                          //   ),
+                                          // )
+                                        ],
+                                      ),
+                                      const SizedBox(height: 2),
                                     ],
                                   ),
-                                  const SizedBox(height: 4),
-                                  Row(
-                                    children: [
-                                      const Icon(Icons.star,
-                                          color: Colors.orange, size: 16),
-                                      const SizedBox(width: 4),
-                                      Text.rich(
-                                        TextSpan(
-                                          children: [],
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                  const SizedBox(height: 2),
-                                ],
-                              ),
+                                ),
+                              ],
                             ),
-                          ],
-                        ),
-                      ),
-                    );
-                  }).toList(),
+                          ),
+                        );
+                      }).toList(),
+                    ],
+                  ),
                 );
               },
             ),
@@ -2122,13 +2489,13 @@ class _HomeScreenState extends State<HomeScreen> {
                       borderRadius: BorderRadius.circular(12),
                     ),
                     elevation: 2,
-                    child:const Padding(
-                      padding:  EdgeInsets.all(16.0),
+                    child: const Padding(
+                      padding: EdgeInsets.all(16.0),
                       child: Column(
                         children: [
-                           Icon(Icons.error_outline,
+                          Icon(Icons.error_outline,
                               color: Colors.red, size: 48),
-                           SizedBox(height: 8),
+                          SizedBox(height: 8),
                           Text('No data found'),
                           // Text(
                           //   provider.errorMessage.isNotEmpty
