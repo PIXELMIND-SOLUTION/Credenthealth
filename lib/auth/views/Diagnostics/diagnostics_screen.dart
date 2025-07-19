@@ -509,40 +509,43 @@ class _DiagnosticsScreenState extends State<DiagnosticsScreen> {
                       //         ),
                       // ),
                       CircleAvatar(
-  radius: 28,
-  backgroundColor: const Color.fromARGB(255, 245, 244, 239),
-  child: (diagnostic.image != null && diagnostic.image!.isNotEmpty)
-      ? ClipRRect(
-          borderRadius: BorderRadius.circular(28),
-          child: Image.network(
-            'http://31.97.206.144:4051${diagnostic.image}',
-            width: 56,
-            height: 56,
-            fit: BoxFit.cover,
-            loadingBuilder: (context, child, loadingProgress) {
-              if (loadingProgress == null) return child;
-              return const Center(
-                child: CircularProgressIndicator(
-                  strokeWidth: 2,
-                  color: Colors.blue,
-                ),
-              );
-            },
-            errorBuilder: (context, error, stackTrace) {
-              return const Icon(
-                Icons.local_hospital,
-                color: Colors.blue,
-                size: 30,
-              );
-            },
-          ),
-        )
-      : const Icon(
-          Icons.local_hospital,
-          color: Colors.blue,
-          size: 30,
-        ),
-),
+                        radius: 28,
+                        backgroundColor:
+                            const Color.fromARGB(255, 245, 244, 239),
+                        child: (diagnostic.image != null &&
+                                diagnostic.image!.isNotEmpty)
+                            ? ClipRRect(
+                                borderRadius: BorderRadius.circular(28),
+                                child: Image.network(
+                                  'http://31.97.206.144:4051${diagnostic.image}',
+                                  width: 56,
+                                  height: 56,
+                                  fit: BoxFit.cover,
+                                  loadingBuilder:
+                                      (context, child, loadingProgress) {
+                                    if (loadingProgress == null) return child;
+                                    return const Center(
+                                      child: CircularProgressIndicator(
+                                        strokeWidth: 2,
+                                        color: Colors.blue,
+                                      ),
+                                    );
+                                  },
+                                  errorBuilder: (context, error, stackTrace) {
+                                    return const Icon(
+                                      Icons.local_hospital,
+                                      color: Colors.blue,
+                                      size: 30,
+                                    );
+                                  },
+                                ),
+                              )
+                            : const Icon(
+                                Icons.local_hospital,
+                                color: Colors.blue,
+                                size: 30,
+                              ),
+                      ),
                       const SizedBox(width: 12),
 
                       Expanded(

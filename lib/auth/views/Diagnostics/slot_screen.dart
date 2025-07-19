@@ -1904,14 +1904,11 @@ class SlotScreen extends StatefulWidget {
 }
 
 class _SlotScreenState extends State<SlotScreen> {
-  
   int selectedDateIndex = 0; // Changed to 0 since we'll start with today
   int selectedTimeIndex = 0;
   FamilyMember? selectedFamilyMember;
   String? _currentStaffId;
   bool _isLoadingStaffId = true;
-
-  String _selectedServiceType = 'Center Visit';
   
   // Profile data for automatic selection
   Map<String, dynamic>? _profileData;
@@ -1930,7 +1927,7 @@ class _SlotScreenState extends State<SlotScreen> {
   @override
   void initState() {
     super.initState();
-    _generateDates(); // Generate dates based on current date
+    _generateDates(); 
     _initializeStaffId();
     _initializeBookingData();
     _loadProfileData();
@@ -1982,6 +1979,7 @@ class _SlotScreenState extends State<SlotScreen> {
 
       // Set default service type
       bookingProvider.setSelectedServiceType('Home Collection');
+      bookingProvider.setSelectedServiceType('Center Visit');
 
       // Clear any previous messages
       bookingProvider.clearMessages();
@@ -2133,8 +2131,6 @@ class _SlotScreenState extends State<SlotScreen> {
         throw Exception('No family member selected and no profile data available');
       }
 
-      
-
       // Create booking with dynamic date
       final selectedDate = dates[selectedDateIndex];
       final success = await bookingProvider.createBooking(
@@ -2144,7 +2140,7 @@ class _SlotScreenState extends State<SlotScreen> {
         diagnosticId: widget.diagnosticId,
         packageId: widget.packageId,
         familyMemberId: familyMemberIdToUse,
-        serviceType: 'Center Visit',
+        serviceType: 'Home Collection',
       );
 
       // Hide loading dialog

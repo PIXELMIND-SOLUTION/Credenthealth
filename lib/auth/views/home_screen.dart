@@ -905,174 +905,201 @@ class _HomeScreenState extends State<HomeScreen> {
       context: context,
       backgroundColor: Colors.transparent,
       builder: (BuildContext context) {
-        return Container(
-          decoration: const BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(20),
-              topRight: Radius.circular(20),
+        return GestureDetector(
+          child: Container(
+            decoration: const BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(20),
+                topRight: Radius.circular(20),
+              ),
             ),
-          ),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              // Top indicator bar
-              Container(
-                margin: const EdgeInsets.only(top: 8),
-                width: 40,
-                height: 4,
-                decoration: BoxDecoration(
-                  color: Colors.blue,
-                  borderRadius: BorderRadius.circular(2),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                // Top indicator bar
+                Container(
+                  margin: const EdgeInsets.only(top: 8),
+                  width: 40,
+                  height: 4,
+                  decoration: BoxDecoration(
+                    color: Colors.blue,
+                    borderRadius: BorderRadius.circular(2),
+                  ),
                 ),
-              ),
-              const SizedBox(height: 20),
-
-              // Book Clinic Visit Option
-              Container(
-                margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
-                padding: const EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  border: Border.all(),
-                  color: Colors.grey.shade50,
-                  borderRadius: BorderRadius.circular(12),
+                const SizedBox(height: 20),
+          
+                // Book Clinic Visit Option
+                GestureDetector(
+                  onTap: () {
+                     Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => ScheduleConsultationScreen(
+                                  id: 'Book Clinic Visit',
+                                ),
+                              ),
+                            );
+                  },
+                  child: Container(
+                    margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+                    padding: const EdgeInsets.all(16),
+                    decoration: BoxDecoration(
+                      border: Border.all(),
+                      color: Colors.grey.shade50,
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: Row(
+                      children: [
+                        Container(
+                          width: 50,
+                          height: 50,
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          child: const Icon(
+                            Icons.local_hospital,
+                            color: Colors.blue,
+                            size: 28,
+                          ),
+                        ),
+                        const SizedBox(width: 16),
+                        const Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Book Clinic Visit',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w600,
+                                  color: Colors.black,
+                                ),
+                              ),
+                              SizedBox(height: 4),
+                              Text(
+                                'Schedule an in-person visit\nwith your preferred doctor',
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: Colors.grey,
+                                  height: 1.3,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.pop(context);
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => ScheduleConsultationScreen(
+                                  id: 'Book Clinic Visit',
+                                ),
+                              ),
+                            );
+                          },
+                          child: const Icon(
+                            Icons.arrow_forward_ios,
+                            color: Colors.black,
+                            size: 16,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
-                child: Row(
-                  children: [
-                    Container(
-                      width: 50,
-                      height: 50,
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: const Icon(
-                        Icons.local_hospital,
-                        color: Colors.blue,
-                        size: 28,
-                      ),
-                    ),
-                    const SizedBox(width: 16),
-                    const Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Book Clinic Visit',
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w600,
-                              color: Colors.black,
+          
+                // Book Online Consultation Option
+                GestureDetector(
+                  onTap: () {
+                     Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => OnlineScheduleScreen(
+                                id: 'Book Online Consultation',
+                                // type: 'online',
+                              ),
                             ),
-                          ),
-                          SizedBox(height: 4),
-                          Text(
-                            'Schedule an in-person visit\nwith your preferred doctor',
-                            style: TextStyle(
-                              fontSize: 12,
-                              color: Colors.grey,
-                              height: 1.3,
-                            ),
-                          ),
-                        ],
-                      ),
+                          );
+                  },
+                  child: Container(
+                    margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+                    padding: const EdgeInsets.all(16),
+                    decoration: BoxDecoration(
+                      border: Border.all(),
+                      color: Colors.grey.shade50,
+                      borderRadius: BorderRadius.circular(12),
                     ),
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.pop(context);
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => ScheduleConsultationScreen(
-                              id: 'Book Clinic Visit',
-                            ),
+                    child: Row(
+                      children: [
+                        Container(
+                          width: 50,
+                          height: 50,
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(12),
                           ),
-                        );
-                      },
-                      child: const Icon(
-                        Icons.arrow_forward_ios,
-                        color: Colors.black,
-                        size: 16,
-                      ),
+                          child: const Icon(
+                            Icons.video_call,
+                            color: Colors.green,
+                            size: 28,
+                          ),
+                        ),
+                        const SizedBox(width: 16),
+                        const Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Book Online Consultation',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w600,
+                                  color: Colors.black,
+                                ),
+                              ),
+                              SizedBox(height: 4),
+                              Text(
+                                'Connect with doctors through\nvideo or audio calls',
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: Colors.grey,
+                                  height: 1.3,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.pop(context);
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => OnlineScheduleScreen(
+                                  id: 'Book Online Consultation',
+                                  // type: 'online',
+                                ),
+                              ),
+                            );
+                          },
+                          child: const Icon(
+                            Icons.arrow_forward_ios,
+                            color: Colors.black,
+                            size: 16,
+                          ),
+                        ),
+                      ],
                     ),
-                  ],
+                  ),
                 ),
-              ),
-
-              // Book Online Consultation Option
-              Container(
-                margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
-                padding: const EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  border: Border.all(),
-                  color: Colors.grey.shade50,
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: Row(
-                  children: [
-                    Container(
-                      width: 50,
-                      height: 50,
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: const Icon(
-                        Icons.video_call,
-                        color: Colors.green,
-                        size: 28,
-                      ),
-                    ),
-                    const SizedBox(width: 16),
-                    const Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Book Online Consultation',
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w600,
-                              color: Colors.black,
-                            ),
-                          ),
-                          SizedBox(height: 4),
-                          Text(
-                            'Connect with doctors through\nvideo or audio calls',
-                            style: TextStyle(
-                              fontSize: 12,
-                              color: Colors.grey,
-                              height: 1.3,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.pop(context);
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => OnlineScheduleScreen(
-                              id: 'Book Online Consultation',
-                              // type: 'online',
-                            ),
-                          ),
-                        );
-                      },
-                      child: const Icon(
-                        Icons.arrow_forward_ios,
-                        color: Colors.black,
-                        size: 16,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-
-              const SizedBox(height: 30),
-            ],
+          
+                const SizedBox(height: 30),
+              ],
+            ),
           ),
         );
       },
@@ -1382,37 +1409,37 @@ class _HomeScreenState extends State<HomeScreen> {
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              const Icon(
-                                Icons.error_outline,
-                                color: Colors.red,
-                                size: 32,
-                              ),
+                              // const Icon(
+                              //   Icons.error_outline,
+                              //   color: Colors.red,
+                              //   size: 32,
+                              // ),
                               const SizedBox(height: 8),
-                              Text(
-                                trackerProvider.errorMessage,
-                                textAlign: TextAlign.center,
-                                style: const TextStyle(
-                                  color: Colors.red,
-                                  fontSize: 12,
-                                ),
-                              ),
+                              // Text(
+                              //   trackerProvider.errorMessage,
+                              //   textAlign: TextAlign.center,
+                              //   style: const TextStyle(
+                              //     color: Colors.red,
+                              //     fontSize: 12,
+                              //   ),
+                              // ),
                               const SizedBox(height: 8),
-                              ElevatedButton(
-                                onPressed: () {
-                                  trackerProvider.refreshData();
-                                },
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: Colors.blue,
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 16,
-                                    vertical: 8,
-                                  ),
-                                ),
-                                child: const Text(
-                                  'Retry',
-                                  style: TextStyle(color: Colors.white),
-                                ),
-                              ),
+                              // ElevatedButton(
+                              //   onPressed: () {
+                              //     trackerProvider.refreshData();
+                              //   },
+                              //   style: ElevatedButton.styleFrom(
+                              //     backgroundColor: Colors.blue,
+                              //     padding: const EdgeInsets.symmetric(
+                              //       horizontal: 16,
+                              //       vertical: 8,
+                              //     ),
+                              //   ),
+                              //   child: const Text(
+                              //     'Retry',
+                              //     style: TextStyle(color: Colors.white),
+                              //   ),
+                              // ),
                             ],
                           ),
                         ),
@@ -1545,93 +1572,99 @@ class _HomeScreenState extends State<HomeScreen> {
             //     ),
             //   ],
             // ),
-            SizedBox(height: 15,),
+            SizedBox(
+              height: 15,
+            ),
             Row(
-  mainAxisAlignment: MainAxisAlignment.spaceAround,
-  children: [
-    GestureDetector(
-      onTap: () {
-        _showConsultationOptions(context);
-      },
-      child: const _ImageWithLabel(
-        imageUrl: 'lib/assets/7cdd89d896030f8574013e72652cb5be844e4d73.png',
-        label: 'Consult a Doctor',
-      ),
-    ),
-    GestureDetector(
-      onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => const LabtestPackagesScreen(),
-          ),
-        );
-      },
-      child: const _ImageWithLabel(
-        imageUrl: 'lib/assets/0ba3665652697af44e4a0e838b7ce086923e5177.png',
-        label: 'Lab test & Packages',
-      ),
-    ),
-    GestureDetector(
-      onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => const HraScreen(),
-          ),
-        );
-      },
-      child: const _ImageWithLabel(
-        imageUrl: 'lib/assets/1e90069b10a439afd8c44bacc8a0207579683c9d.png',
-        label: 'HRA',
-      ),
-    ),
-  ],
-),
-  SizedBox(height: 15,),
-Row(
-  mainAxisAlignment: MainAxisAlignment.spaceAround,
-  children: [
-    GestureDetector(
-      onTap: () {
-        // _showConsultationOptions(context);
-      },
-      child: const _ImageWithLabel(
-        imageUrl: 'lib/assets/eye.png',
-        label: 'Eye',
-      ),
-    ),
-    GestureDetector(
-      onTap: () {
-        // Navigator.push(
-        //   context,
-        //   MaterialPageRoute(
-        //     builder: (context) => const LabtestPackagesScreen(),
-        //   ),
-        // );
-      },
-      child: const _ImageWithLabel(
-        imageUrl: 'lib/assets/dental.png',
-        label: 'Dental',
-      ),
-    ),
-    GestureDetector(
-      onTap: () {
-        // Navigator.push(
-        //   context,
-        //   MaterialPageRoute(
-        //     builder: (context) => const HraScreen(),
-        //   ),
-        // );
-      },
-      child: const _ImageWithLabel(
-        imageUrl: 'lib/assets/medicines.png',
-        label:'Medicines',
-      ),
-    ),
-  ],
-),
-
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                GestureDetector(
+                  onTap: () {
+                    _showConsultationOptions(context);
+                  },
+                  child: const _ImageWithLabel(
+                    imageUrl:
+                        'lib/assets/7cdd89d896030f8574013e72652cb5be844e4d73.png',
+                    label: 'Consult a Doctor',
+                  ),
+                ),
+                GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const LabtestPackagesScreen(),
+                      ),
+                    );
+                  },
+                  child: const _ImageWithLabel(
+                    imageUrl:
+                        'lib/assets/0ba3665652697af44e4a0e838b7ce086923e5177.png',
+                    label: 'Lab test & Packages',
+                  ),
+                ),
+                GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const HraScreen(),
+                      ),
+                    );
+                  },
+                  child: const _ImageWithLabel(
+                    imageUrl:
+                        'lib/assets/1e90069b10a439afd8c44bacc8a0207579683c9d.png',
+                    label: 'HRA',
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(
+              height: 15,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                GestureDetector(
+                  onTap: () {
+                    // _showConsultationOptions(context);
+                  },
+                  child: const _ImageWithLabel(
+                    imageUrl: 'lib/assets/eye.png',
+                    label: 'Eye',
+                  ),
+                ),
+                GestureDetector(
+                  onTap: () {
+                    // Navigator.push(
+                    //   context,
+                    //   MaterialPageRoute(
+                    //     builder: (context) => const LabtestPackagesScreen(),
+                    //   ),
+                    // );
+                  },
+                  child: const _ImageWithLabel(
+                    imageUrl: 'lib/assets/dental.png',
+                    label: 'Dental',
+                  ),
+                ),
+                GestureDetector(
+                  onTap: () {
+                    // Navigator.push(
+                    //   context,
+                    //   MaterialPageRoute(
+                    //     builder: (context) => const HraScreen(),
+                    //   ),
+                    // );
+                  },
+                  child: const _ImageWithLabel(
+                    imageUrl: 'lib/assets/medicines.png',
+                    label: 'Medicines',
+                  ),
+                ),
+              ],
+            ),
 
             const SizedBox(
               height: 15,
@@ -1718,65 +1751,77 @@ Row(
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Container(
-                              width: 90,
-                              height: 90,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10),
-                                color: Colors.grey.shade200,
-                              ),
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(10),
-                                child: doctor.image.isNotEmpty
-                                    ? Image.network(
-                                        doctor.image.startsWith('http')
-                                            ? doctor.image
-                                            : 'http://31.97.206.144:4051${doctor.image}',
-                                        width: 90,
-                                        height: 90,
-                                        fit: BoxFit.cover,
-                                        loadingBuilder:
-                                            (context, child, loadingProgress) {
-                                          if (loadingProgress == null)
-                                            return child;
-                                          return Center(
-                                            child: CircularProgressIndicator(
-                                              value: loadingProgress
-                                                          .expectedTotalBytes !=
-                                                      null
-                                                  ? loadingProgress
-                                                          .cumulativeBytesLoaded /
-                                                      loadingProgress
-                                                          .expectedTotalBytes!
-                                                  : null,
-                                            ),
-                                          );
-                                        },
-                                        errorBuilder:
-                                            (context, error, stackTrace) {
-                                          print('Image loading error: $error');
-                                          return Container(
-                                            width: 90,
-                                            height: 90,
-                                            color: Colors.grey.shade200,
-                                            child: const Icon(
-                                              Icons.person,
-                                              size: 40,
-                                              color: Colors.grey,
-                                            ),
-                                          );
-                                        },
-                                      )
-                                    : Container(
-                                        width: 90,
-                                        height: 90,
-                                        color: Colors.grey.shade200,
-                                        child: const Icon(
-                                          Icons.person,
-                                          size: 40,
-                                          color: Colors.grey,
+                            GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            ConsultationDetailsScreen(
+                                              doctorId: doctor.id,
+                                            )));
+                              },
+                              child: Container(
+                                width: 90,
+                                height: 90,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                  color: Colors.grey.shade200,
+                                ),
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(10),
+                                  child: doctor.image.isNotEmpty
+                                      ? Image.network(
+                                          doctor.image.startsWith('http')
+                                              ? doctor.image
+                                              : 'http://31.97.206.144:4051${doctor.image}',
+                                          width: 90,
+                                          height: 90,
+                                          fit: BoxFit.cover,
+                                          loadingBuilder: (context, child,
+                                              loadingProgress) {
+                                            if (loadingProgress == null)
+                                              return child;
+                                            return Center(
+                                              child: CircularProgressIndicator(
+                                                value: loadingProgress
+                                                            .expectedTotalBytes !=
+                                                        null
+                                                    ? loadingProgress
+                                                            .cumulativeBytesLoaded /
+                                                        loadingProgress
+                                                            .expectedTotalBytes!
+                                                    : null,
+                                              ),
+                                            );
+                                          },
+                                          errorBuilder:
+                                              (context, error, stackTrace) {
+                                            print(
+                                                'Image loading error: $error');
+                                            return Container(
+                                              width: 90,
+                                              height: 90,
+                                              color: Colors.grey.shade200,
+                                              child: const Icon(
+                                                Icons.person,
+                                                size: 40,
+                                                color: Colors.grey,
+                                              ),
+                                            );
+                                          },
+                                        )
+                                      : Container(
+                                          width: 90,
+                                          height: 90,
+                                          color: Colors.grey.shade200,
+                                          child: const Icon(
+                                            Icons.person,
+                                            size: 40,
+                                            color: Colors.grey,
+                                          ),
                                         ),
-                                      ),
+                                ),
                               ),
                             ),
                             const SizedBox(width: 12),
@@ -2077,26 +2122,27 @@ Row(
                       borderRadius: BorderRadius.circular(12),
                     ),
                     elevation: 2,
-                    child: Padding(
-                      padding: const EdgeInsets.all(16.0),
+                    child:const Padding(
+                      padding:  EdgeInsets.all(16.0),
                       child: Column(
                         children: [
-                          const Icon(Icons.error_outline,
+                           Icon(Icons.error_outline,
                               color: Colors.red, size: 48),
+                           SizedBox(height: 8),
+                          Text('No data found'),
+                          // Text(
+                          //   provider.errorMessage.isNotEmpty
+                          //       ? provider.errorMessage
+                          //       : 'Error loading package',
+                          //   style: const TextStyle(
+                          //       color: Colors.red, fontSize: 16),
+                          //   textAlign: TextAlign.center,
+                          // ),
                           const SizedBox(height: 8),
-                          Text(
-                            provider.errorMessage.isNotEmpty
-                                ? provider.errorMessage
-                                : 'Error loading package',
-                            style: const TextStyle(
-                                color: Colors.red, fontSize: 16),
-                            textAlign: TextAlign.center,
-                          ),
-                          const SizedBox(height: 8),
-                          ElevatedButton(
-                            onPressed: () => provider.fetchRecentPackage(),
-                            child: const Text('Retry'),
-                          ),
+                          // ElevatedButton(
+                          //   onPressed: () => provider.fetchRecentPackage(),
+                          //   child: const Text('Retry'),
+                          // ),
                         ],
                       ),
                     ),
@@ -2124,126 +2170,135 @@ Row(
 
                 final package = provider.package!;
 
-                return Card(
-                  color: Colors.white,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  elevation: 2,
-                  child: Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        // Main content section
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                return GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => BookingScreen(
+                                // bookingId: package.id,
+                                )));
+                  },
+                  child: Card(
+                    color: Colors.white,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    elevation: 2,
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          // Main content section
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  package.name,
+                                  style: const TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 16,
+                                    color: Colors.black87,
+                                  ),
+                                ),
+                                const SizedBox(height: 4),
+                                Text(
+                                  "Includes ${package.totalTestsIncluded} Tests",
+                                  style: const TextStyle(
+                                    color: Colors.grey,
+                                    fontSize: 14,
+                                  ),
+                                ),
+                                const SizedBox(height: 8),
+                                Text(
+                                  "₹ ${package.price}",
+                                  style: const TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 16,
+                                    color: Colors.black87,
+                                  ),
+                                ),
+                                //  Text(
+                                //   " ${package.doctorInfo}",
+                                //   style: const TextStyle(
+                                //     fontWeight: FontWeight.bold,
+                                //     fontSize: 16,
+                                //     color: Colors.black87,
+                                //   ),
+                                // ),
+                                const SizedBox(height: 8),
+                                Row(
+                                  children: [
+                                    Icon(
+                                      package.precautions == true
+                                          ? Icons.no_food
+                                          : Icons.free_breakfast,
+                                      size: 16,
+                                      color: Colors.grey,
+                                    ),
+                                    const SizedBox(width: 4),
+                                    Text(
+                                      package.precautions == true
+                                          ? "Fasting Required"
+                                          : "No Fasting Required",
+                                      style: const TextStyle(
+                                        color: Colors.grey,
+                                        fontSize: 12,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+
+                          // Right side with arrow and button
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.end,
                             children: [
-                              Text(
-                                package.name,
-                                style: const TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 16,
-                                  color: Colors.black87,
-                                ),
+                              const SizedBox(height: 50),
+                              // Arrow icon
+                              GestureDetector(
+                                onTap: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => BookingScreen(
+                                              // bookingId: package.id,
+                                              )));
+                                },
+                                child: const Icon(Icons.arrow_forward_ios,
+                                    size: 16, color: Colors.black),
                               ),
-                              const SizedBox(height: 4),
-                              Text(
-                                "Includes ${package.totalTestsIncluded} Tests",
-                                style: const TextStyle(
-                                  color: Colors.grey,
-                                  fontSize: 14,
-                                ),
-                              ),
-                              const SizedBox(height: 8),
-                              Text(
-                                "₹ ${package.price}",
-                                style: const TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 16,
-                                  color: Colors.black87,
-                                ),
-                              ),
-                              //  Text(
-                              //   " ${package.doctorInfo}",
-                              //   style: const TextStyle(
-                              //     fontWeight: FontWeight.bold,
-                              //     fontSize: 16,
-                              //     color: Colors.black87,
+                              const SizedBox(height: 50),
+                              // Uncomment if you want to add the book now button
+                              // ElevatedButton(
+                              //   onPressed: () {
+                              //     Navigator.push(context, MaterialPageRoute(builder: (context)=>PackagesScreen(packageId: package.id,)));
+                              //   },
+                              //   style: ElevatedButton.styleFrom(
+                              //     backgroundColor: const Color.fromARGB(255, 33, 58, 243),
+                              //     foregroundColor: Colors.white,
+                              //     padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+                              //     shape: RoundedRectangleBorder(
+                              //       borderRadius: BorderRadius.circular(8),
+                              //     ),
+                              //     elevation: 0,
+                              //   ),
+                              //   child: const Text(
+                              //     "Book now",
+                              //     style: TextStyle(
+                              //       fontSize: 14,
+                              //       fontWeight: FontWeight.w500,
+                              //     ),
                               //   ),
                               // ),
-                              const SizedBox(height: 8),
-                              Row(
-                                children: [
-                                  Icon(
-                                    package.precautions == true
-                                        ? Icons.no_food
-                                        : Icons.free_breakfast,
-                                    size: 16,
-                                    color: Colors.grey,
-                                  ),
-                                  const SizedBox(width: 4),
-                                  Text(
-                                    package.precautions == true
-                                        ? "Fasting Required"
-                                        : "No Fasting Required",
-                                    style: const TextStyle(
-                                      color: Colors.grey,
-                                      fontSize: 12,
-                                    ),
-                                  ),
-                                  
-                                ],
-                              ),
                             ],
                           ),
-                        ),
-
-                        // Right side with arrow and button
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          children: [
-                            const SizedBox(height: 50),
-                            // Arrow icon
-                            GestureDetector(
-                              onTap: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => BookingScreen(
-                                              // bookingId: package.id,
-                                            )));
-                              },
-                              child: const Icon(Icons.arrow_forward_ios,
-                                  size: 16, color: Colors.black),
-                            ),
-                            const SizedBox(height: 50),
-                            // Uncomment if you want to add the book now button
-                            // ElevatedButton(
-                            //   onPressed: () {
-                            //     Navigator.push(context, MaterialPageRoute(builder: (context)=>PackagesScreen(packageId: package.id,)));
-                            //   },
-                            //   style: ElevatedButton.styleFrom(
-                            //     backgroundColor: const Color.fromARGB(255, 33, 58, 243),
-                            //     foregroundColor: Colors.white,
-                            //     padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
-                            //     shape: RoundedRectangleBorder(
-                            //       borderRadius: BorderRadius.circular(8),
-                            //     ),
-                            //     elevation: 0,
-                            //   ),
-                            //   child: const Text(
-                            //     "Book now",
-                            //     style: TextStyle(
-                            //       fontSize: 14,
-                            //       fontWeight: FontWeight.w500,
-                            //     ),
-                            //   ),
-                            // ),
-                          ],
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
                 );
@@ -2337,159 +2392,172 @@ Row(
                     itemCount: blogProvider.blogs.length,
                     itemBuilder: (context, index) {
                       final blog = blogProvider.blogs[index];
-                      return Container(
-                        width: 260,
-                        margin: const EdgeInsets.only(right: 12),
-                        decoration: BoxDecoration(
-                          border: Border.all(color: Colors.blue.shade100),
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: Card(
-                          color: Colors.white,
-                          shape: RoundedRectangleBorder(
+                      return GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => BlogDetailScreen(
+                                        blogId: blog.id,
+                                        date: blog.createdAt,
+                                      )));
+                        },
+                        child: Container(
+                          width: 260,
+                          margin: const EdgeInsets.only(right: 12),
+                          decoration: BoxDecoration(
+                            border: Border.all(color: Colors.blue.shade100),
                             borderRadius: BorderRadius.circular(10),
                           ),
-                          elevation: 2,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              ClipRRect(
-                                borderRadius: const BorderRadius.only(
-                                    topLeft: Radius.circular(10),
-                                    topRight: Radius.circular(10)),
-                                child: Image.network(
-                                  blog.image.isNotEmpty
-                                      ? blog.image
-                                      : 'https://media.istockphoto.com/id/156292188/photo/doctor-holding-out-several-packs-of-a-variety-of-pills.jpg?s=612x612&w=0&k=20&c=WEYtSbG6FM0WDbm7E_3QT8ZCqIEwQ9tDnGakyg5hhIw=',
-                                  height: 100,
-                                  width: double.infinity,
-                                  fit: BoxFit.cover,
-                                  errorBuilder: (context, error, stackTrace) {
-                                    return Container(
-                                      height: 100,
-                                      width: double.infinity,
-                                      color: Colors.grey.shade200,
-                                      child: const Icon(
-                                        Icons.image_not_supported,
-                                        color: Colors.grey,
-                                        size: 40,
-                                      ),
-                                    );
-                                  },
+                          child: Card(
+                            color: Colors.white,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            elevation: 2,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                ClipRRect(
+                                  borderRadius: const BorderRadius.only(
+                                      topLeft: Radius.circular(10),
+                                      topRight: Radius.circular(10)),
+                                  child: Image.network(
+                                    blog.image.isNotEmpty
+                                        ? blog.image
+                                        : 'https://media.istockphoto.com/id/156292188/photo/doctor-holding-out-several-packs-of-a-variety-of-pills.jpg?s=612x612&w=0&k=20&c=WEYtSbG6FM0WDbm7E_3QT8ZCqIEwQ9tDnGakyg5hhIw=',
+                                    height: 100,
+                                    width: double.infinity,
+                                    fit: BoxFit.cover,
+                                    errorBuilder: (context, error, stackTrace) {
+                                      return Container(
+                                        height: 100,
+                                        width: double.infinity,
+                                        color: Colors.grey.shade200,
+                                        child: const Icon(
+                                          Icons.image_not_supported,
+                                          color: Colors.grey,
+                                          size: 40,
+                                        ),
+                                      );
+                                    },
+                                  ),
                                 ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 8.0, vertical: 6),
-                                child: Text(
-                                  blog.title.isNotEmpty
-                                      ? blog.title
-                                      : "Blog Title",
-                                  style: const TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 14,
-                                      color: Colors.black),
-                                  maxLines: 2,
-                                  overflow: TextOverflow.ellipsis,
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 8.0, vertical: 6),
+                                  child: Text(
+                                    blog.title.isNotEmpty
+                                        ? blog.title
+                                        : "Blog Title",
+                                    style: const TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 14,
+                                        color: Colors.black),
+                                    maxLines: 2,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
                                 ),
-                              ),
-                              Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 8.0),
-                                child: Text(
-                                  blog.description.isNotEmpty
-                                      ? blog.description
-                                      : "Blog description...",
-                                  style: const TextStyle(
-                                      fontSize: 12, color: Colors.black54),
-                                  maxLines: 2,
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                              ),
-                              const SizedBox(height: 8),
-                              Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 8.0),
-                                child: Row(
-                                  children: [
-                                    CircleAvatar(
-                                      radius: 17,
-                                      backgroundImage: blog
-                                              .doctor.image.isNotEmpty
-                                          ? NetworkImage(blog.doctor.image
-                                                  .startsWith('http')
-                                              ? blog.doctor.image
-                                              : 'http://194.164.148.244:4051${blog.doctor.image}')
-                                          : const NetworkImage(
-                                              'https://static.vecteezy.com/system/resources/thumbnails/026/375/249/small_2x/ai-generative-portrait-of-confident-male-doctor-in-white-coat-and-stethoscope-standing-with-arms-crossed-and-looking-at-camera-photo.jpg'),
-                                      onBackgroundImageError:
-                                          (exception, stackTrace) {},
-                                      child: blog.doctor.image.isEmpty
-                                          ? const Icon(Icons.person, size: 20)
-                                          : null,
-                                    ),
-                                    const SizedBox(width: 6),
-                                    Expanded(
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            "By ${blog.doctor.name.isNotEmpty ? blog.doctor.name : 'Dr. Unknown'}",
-                                            style: const TextStyle(
-                                                fontSize: 12,
-                                                fontWeight: FontWeight.w500),
-                                            overflow: TextOverflow.ellipsis,
-                                          ),
-                                          Text(
-                                            blogProvider
-                                                .formatDate(blog.createdAt),
-                                            style: const TextStyle(
-                                                fontSize: 11,
-                                                color: Colors.black54),
-                                          ),
-                                        ],
-                                      ),
-                                    )
-                                  ],
-                                ),
-                              ),
-                              const Spacer(),
-                              Align(
-                                alignment: Alignment.bottomRight,
-                                child: Padding(
+                                Padding(
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 8.0),
-                                  child: GestureDetector(
-                                    onTap: () {
-                                      Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  BlogDetailScreen(
-                                                    blogId: blog.id,
-                                                    date: blog.createdAt,
-                                                  )));
-                                    },
-                                    child: Container(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 12, vertical: 6),
-                                      decoration: BoxDecoration(
-                                        color: const Color.fromARGB(
-                                            255, 33, 58, 243),
-                                        borderRadius: BorderRadius.circular(6),
+                                  child: Text(
+                                    blog.description.isNotEmpty
+                                        ? blog.description
+                                        : "Blog description...",
+                                    style: const TextStyle(
+                                        fontSize: 12, color: Colors.black54),
+                                    maxLines: 2,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ),
+                                const SizedBox(height: 8),
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 8.0),
+                                  child: Row(
+                                    children: [
+                                      CircleAvatar(
+                                        radius: 17,
+                                        backgroundImage: blog
+                                                .doctor.image.isNotEmpty
+                                            ? NetworkImage(blog.doctor.image
+                                                    .startsWith('http')
+                                                ? blog.doctor.image
+                                                : 'http://194.164.148.244:4051${blog.doctor.image}')
+                                            : const NetworkImage(
+                                                'https://static.vecteezy.com/system/resources/thumbnails/026/375/249/small_2x/ai-generative-portrait-of-confident-male-doctor-in-white-coat-and-stethoscope-standing-with-arms-crossed-and-looking-at-camera-photo.jpg'),
+                                        onBackgroundImageError:
+                                            (exception, stackTrace) {},
+                                        child: blog.doctor.image.isEmpty
+                                            ? const Icon(Icons.person, size: 20)
+                                            : null,
                                       ),
-                                      child: const Text(
-                                        "Read more >>",
-                                        style: TextStyle(
-                                            color: Colors.white, fontSize: 12),
+                                      const SizedBox(width: 6),
+                                      Expanded(
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              "By ${blog.doctor.name.isNotEmpty ? blog.doctor.name : 'Dr. Unknown'}",
+                                              style: const TextStyle(
+                                                  fontSize: 12,
+                                                  fontWeight: FontWeight.w500),
+                                              overflow: TextOverflow.ellipsis,
+                                            ),
+                                            Text(
+                                              blogProvider
+                                                  .formatDate(blog.createdAt),
+                                              style: const TextStyle(
+                                                  fontSize: 11,
+                                                  color: Colors.black54),
+                                            ),
+                                          ],
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                                const Spacer(),
+                                Align(
+                                  alignment: Alignment.bottomRight,
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 8.0),
+                                    child: GestureDetector(
+                                      onTap: () {
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    BlogDetailScreen(
+                                                      blogId: blog.id,
+                                                      date: blog.createdAt,
+                                                    )));
+                                      },
+                                      child: Container(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 12, vertical: 6),
+                                        decoration: BoxDecoration(
+                                          color: const Color.fromARGB(
+                                              255, 33, 58, 243),
+                                          borderRadius:
+                                              BorderRadius.circular(6),
+                                        ),
+                                        child: const Text(
+                                          "Read more >>",
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 12),
+                                        ),
                                       ),
                                     ),
                                   ),
                                 ),
-                              ),
-                              const SizedBox(height: 8),
-                            ],
+                                const SizedBox(height: 8),
+                              ],
+                            ),
                           ),
                         ),
                       );
@@ -2543,8 +2611,6 @@ Row(
 //   }
 // }
 
-
-
 class _ImageWithLabel extends StatelessWidget {
   final String imageUrl;
   final String label;
@@ -2589,4 +2655,3 @@ class _ImageWithLabel extends StatelessWidget {
     );
   }
 }
-

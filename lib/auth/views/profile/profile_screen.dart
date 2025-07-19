@@ -197,11 +197,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     children: [
                       GestureDetector(
                         onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const EditProfile()),
-                          );
+                          // Navigator.push(
+                          //   context,
+                          //   MaterialPageRoute(
+                          //       builder: (context) => const EditProfile()),
+                          // );
                         },
                         child: const CircleAvatar(
                           radius: 35,

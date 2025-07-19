@@ -1124,7 +1124,7 @@ Future<void> _downloadPdfReport(String bookingId) async {
           ),
           const SizedBox(height: 12),
           Text(
-            'Booking ID : ${booking.id}',
+            'Booking ID : ${booking}',
             style: const TextStyle(
               fontSize: 15,
               color: Colors.black,

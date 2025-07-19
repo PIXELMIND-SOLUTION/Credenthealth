@@ -438,7 +438,7 @@ class _BookingScreenState extends State<BookingScreen> {
             Navigator.pushAndRemoveUntil(
               context,
               MaterialPageRoute(builder: (context) => const NavbarScreen()),
-              (Route<dynamic> route) => false,
+              (Route<dynamic> route) => false, // removes all previous routes
             );
           },
         ),
@@ -651,6 +651,13 @@ class _BookingScreenState extends State<BookingScreen> {
               color: Colors.black,
             ),
           ),
+          // Text(
+          //   'Doctor Name : ${booking.doctorName}',
+          //   style: const TextStyle(
+          //     fontSize: 15,
+          //     color: Colors.black,
+          //   ),
+          // ),
           // const SizedBox(height: 8),
           // Text(
           //   'Title : ${booking.primaryServiceName}',
@@ -743,9 +750,11 @@ class _BookingScreenState extends State<BookingScreen> {
                 context,
                 MaterialPageRoute(
                     builder: (context) => ConsultDoctor(
-                        bookingId: booking.id,
-                        staffId: booking.staffId,
-                        name: booking.primaryServiceName)));
+                          bookingId: booking.id,
+                          staffId: booking.staffId,
+                          name: booking.primaryServiceName,
+                          title: booking.title,
+                        )));
           },
           child: Container(
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
@@ -854,8 +863,10 @@ class _BookingScreenState extends State<BookingScreen> {
               ),
             ),
             const SizedBox(height: 20),
-            _buildDetailRow('Booking ID', booking.id),
+            // _buildDetailRow('Booking ID', booking.id),
             _buildDetailRow('Service Type', booking.serviceType),
+
+            //  _buildDetailRow('Name', booking.),
             _buildDetailRow(
                 'Date', _formatDateTime(booking.date, booking.timeSlot)),
             _buildDetailRow('Status', booking.status),
@@ -876,13 +887,13 @@ class _BookingScreenState extends State<BookingScreen> {
 
             // if (booking.couponCode.isNotEmpty)
             //   _buildDetailRow('Coupon Code', booking.couponCode.toString()),
-            _buildDetailRow('Family Member ID', booking.familyMemberId),
+            // _buildDetailRow('Family Member ID', booking.familyMemberId),
             // _buildDetailRow(
             //     'Created At', _formatCreatedDate(booking.createdAt)),
             // const Spacer(),
             _buildDetailRow('Updated At', _formatCreatedDate(booking.timeSlot)),
 
-            _buildDetailRow('Daignostic name', booking.primaryServiceName),
+            // _buildDetailRow('Daignostic name', booking.title.toString()),
 
             // _buildDetailRow('Daignostic name', booking.preparation.toString()),
             // const Spacer(),
