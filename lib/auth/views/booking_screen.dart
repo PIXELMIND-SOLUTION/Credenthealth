@@ -438,7 +438,7 @@ class _BookingScreenState extends State<BookingScreen> {
             Navigator.pushAndRemoveUntil(
               context,
               MaterialPageRoute(builder: (context) => const NavbarScreen()),
-              (Route<dynamic> route) => false,
+              (Route<dynamic> route) => false, // removes all previous routes
             );
           },
         ),

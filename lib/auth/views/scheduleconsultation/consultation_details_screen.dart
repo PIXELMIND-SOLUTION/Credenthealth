@@ -1265,6 +1265,7 @@ class _ConsultationDetailsScreenState extends State<ConsultationDetailsScreen> {
         date: formattedDate,
         timeSlot: selectedTime,
         familyMemberId: familyMemberIdToUse,
+        
       );
 
       // if (!validation['isValid']) {

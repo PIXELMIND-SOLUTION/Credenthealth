@@ -1524,6 +1524,7 @@ class _ConsultDoctorState extends State<ConsultDoctor> {
 
   @override
   Widget build(BuildContext context) {
+    print('sssssssssssssssssssssssssssssssssssssssssssssssssssssss${widget.bookingId}');
     return Scaffold(
       backgroundColor: Colors.grey[50],
       appBar: AppBar(
