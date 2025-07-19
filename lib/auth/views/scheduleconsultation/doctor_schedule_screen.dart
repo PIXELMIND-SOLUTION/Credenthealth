@@ -1863,7 +1863,7 @@ class _DoctorScheduleScreenState extends State<DoctorScheduleScreen> {
         'Hyderabad';
     final price = doctor['consultationFee']?.toString() ??
         doctor['fee']?.toString() ??
-        '₹399';
+        '399';
     final doctorId = doctor['_id']?.toString() ?? '';
     final image = doctor['image']?.toString() ?? '';
     final rating = doctor['rating']?.toString() ?? '4.5';

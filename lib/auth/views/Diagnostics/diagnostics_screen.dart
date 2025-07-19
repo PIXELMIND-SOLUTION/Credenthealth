@@ -299,7 +299,8 @@ import 'package:provider/provider.dart';
 
 class DiagnosticsScreen extends StatefulWidget {
   final String? packageId;
-  const DiagnosticsScreen({super.key, this.packageId});
+  final String? amount;
+  const DiagnosticsScreen({super.key, this.packageId, this.amount});
 
   @override
   State<DiagnosticsScreen> createState() => _DiagnosticsScreenState();
@@ -749,9 +750,10 @@ class _DiagnosticsScreenState extends State<DiagnosticsScreen> {
                           MaterialPageRoute(
                             builder: (context) => SlotScreen(
                               diagnostic: diagnostic.toString(),
-                              bookingType: 'home_collection',
+                              bookingType: "Home Collection",
                               diagnosticId: diagnostic.id,
                               packageId: widget.packageId,
+                              amount: widget.amount
                             ),
                           ),
                         );
@@ -838,9 +840,10 @@ class _DiagnosticsScreenState extends State<DiagnosticsScreen> {
                           MaterialPageRoute(
                             builder: (context) => SlotScreen(
                               diagnostic: diagnostic.toString(),
-                              bookingType: 'center_visit',
+                              bookingType: 'Center Visit',
                               diagnosticId: diagnostic.id,
                               packageId: widget.packageId,
+                              amount: widget.amount
                             ),
                           ),
                         );

@@ -1329,6 +1329,8 @@ class _ConsultationDetailsScreenState extends State<ConsultationDetailsScreen> {
                         : () {
                             final feeRaw = widget.consultationFee;
 
+                            print('kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk$feeRaw');
+
                             if (feeRaw == null) {
                               print(
                                   "Consultation fee is null${widget.consultationFee}");

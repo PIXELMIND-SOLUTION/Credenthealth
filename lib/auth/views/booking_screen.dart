@@ -396,6 +396,7 @@ import 'package:consultation_app/auth/views/navbar_screen.dart';
 import 'package:consultation_app/auth/views/provider/get_all_booking_provider.dart';
 import 'package:consultation_app/model/booking_model.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 class BookingScreen extends StatefulWidget {
@@ -819,15 +820,30 @@ class _BookingScreenState extends State<BookingScreen> {
   }
 
   String _formatDateTime(String date, String timeSlot) {
+  try {
+    final DateTime dateTime = DateTime.parse(date);
+
+    // Format: July 20, 2025
+    final String formattedDate = DateFormat('MMMM d, y').format(dateTime);
+
+    // Parse and format the time if needed
+    DateTime? time;
     try {
-      final DateTime dateTime = DateTime.parse(date);
-      final String formattedDate =
-          '${dateTime.day.toString().padLeft(2, '0')}-${dateTime.month.toString().padLeft(2, '0')}-${dateTime.year}';
-      return '$formattedDate , $timeSlot';
-    } catch (e) {
-      return '$date , $timeSlot';
+      time = DateFormat('HH:mm').parse(timeSlot);
+    } catch (_) {
+      try {
+        time = DateFormat('hh:mm a').parse(timeSlot);
+      } catch (_) {
+        return '$formattedDate, $timeSlot'; // Return as-is if time parsing fails
+      }
     }
+
+    final String formattedTime = DateFormat('hh:mm a').format(time);
+    return '$formattedDate, $formattedTime';
+  } catch (e) {
+    return '$date, $timeSlot';
   }
+}
 
   void _showBookingDetails(Booking booking) {
     showModalBottomSheet(

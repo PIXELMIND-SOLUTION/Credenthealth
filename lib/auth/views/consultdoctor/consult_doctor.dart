@@ -453,7 +453,7 @@
 //                         Row(
 //                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
 //                           children: [
-                            
+
 //                             const Text(
 //                               'Booking Details',
 //                               style: TextStyle(
@@ -691,18 +691,6 @@
 //   }
 // }
 
-
-
-
-
-
-
-
-
-
-
-
-
 // import 'package:flutter/material.dart';
 // import 'package:provider/provider.dart';
 // import 'package:url_launcher/url_launcher.dart';
@@ -774,10 +762,10 @@
 //       // Use a proper Google Meet URL instead of Jitsi
 //       const String meetingLink = "https://meet.jit.si/4a0ei6sama";
 //       final Uri url = Uri.parse(meetingLink);
-      
+
 //       // Try to launch with different modes
 //       bool launched = false;
-      
+
 //       // First try with external application
 //       try {
 //         launched = await launchUrl(
@@ -799,7 +787,7 @@
 //           );
 //         }
 //       }
-      
+
 //       if (!launched) {
 //         ScaffoldMessenger.of(context).showSnackBar(
 //           const SnackBar(
@@ -1140,11 +1128,11 @@
 //                             booking.discount > 0
 //                                 ? 'Original: ₹${booking.totalPrice.toStringAsFixed(2)} | Discount: ₹${booking.discount.toStringAsFixed(2)}'
 //                                 : ''),
-                           
+
 //                         // Show meeting type
 //                         const SizedBox(height: 6),
 //                         const Divider(),
-                        
+
 //                           // booking.itemDetails.isNotEmpty
 // //                         //     ? Column(
 // //                         //         children: booking.itemDetails
@@ -1176,8 +1164,8 @@
 //                     //     height: 50,
 //                     //     margin: const EdgeInsets.only(bottom: 12),
 //                     //     child: ElevatedButton(
-//                     //       onPressed: provider.isLoading 
-//                     //           ? null 
+//                     //       onPressed: provider.isLoading
+//                     //           ? null
 //                     //           : _joinMeeting,
 //                     //       style: ElevatedButton.styleFrom(
 //                     //         backgroundColor: const Color(0xFF2196F3),
@@ -1321,16 +1309,6 @@
 //   }
 // }
 
-
-
-
-
-
-
-
-
-
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -1342,16 +1320,15 @@ class ConsultDoctor extends StatefulWidget {
   final String? staffId;
   final String? name;
   final String? title;
-  final String?serviceType;
+  final String? serviceType;
 
-  const ConsultDoctor({
-    super.key,
-    required this.bookingId,
-    this.staffId,
-    this.name,
-    this.title,
-    this.serviceType
-  });
+  const ConsultDoctor(
+      {super.key,
+      required this.bookingId,
+      this.staffId,
+      this.name,
+      this.title,
+      this.serviceType});
 
   @override
   State<ConsultDoctor> createState() => _ConsultDoctorState();
@@ -1528,7 +1505,8 @@ class _ConsultDoctorState extends State<ConsultDoctor> {
 
   @override
   Widget build(BuildContext context) {
-    print('sssssssssssssssssssssssssssssssssssssssssssssssssssssss${widget.bookingId}');
+    print(
+        'sssssssssssssssssssssssssssssssssssssssssssssssssssssss${widget.bookingId}');
     return Scaffold(
       backgroundColor: Colors.grey[50],
       appBar: AppBar(
@@ -1655,41 +1633,55 @@ class _ConsultDoctorState extends State<ConsultDoctor> {
                             ],
                           ),
                           const SizedBox(height: 20),
-                       
-                         
-                          
-                          
 
-
-                          _buildDetailRow('Service Type', booking.serviceType, ''),
+                          _buildDetailRow(
+                              'Service Type', booking.serviceType, ''),
                           const Divider(),
                           const SizedBox(height: 20),
+
                           _buildDetailRow('Booking ID', booking.id, ''),
                           const Divider(),
                           const SizedBox(height: 20),
-                          _buildDetailRow('Date & Time',
-                              _formatDateTime(booking.date, booking.timeSlot), ''),
-                          const Divider(),
-                          const SizedBox(height: 20),
-                         _buildDetailRow('Family Member', booking.familyMember?.fullName ?? 'N/A', ''),
 
-                          const Divider(),
-                          const SizedBox(height: 20),
-                          _buildDetailRow('Doctor name', booking.doctorName, ''),
-                          const Divider(),
-                          const SizedBox(height: 20),
-                          _buildDetailRow('Qualification', booking.doctorQualification, ''),
-                          const Divider(),
-                          const SizedBox(height: 20),
-                          _buildDetailRow('Specialization', booking.doctorSpecialization, ''),
-                          const Divider(),
-                          const SizedBox(height: 20),
                           _buildDetailRow(
-                              'Payment',
-                              '₹${booking.payableAmount.toStringAsFixed(2)}',
-                              booking.discount > 0
-                                  ? 'Original: ₹${booking.totalPrice.toStringAsFixed(2)} | Discount: ₹${booking.discount.toStringAsFixed(2)}'
-                                  : ''),
+                            'Date & Time',
+                            _formatDateTime(booking.date, booking.timeSlot),
+                            '',
+                          ),
+                          const Divider(),
+                          const SizedBox(height: 20),
+
+                          _buildDetailRow(
+                            'Family Member',
+                            booking.familyMember?.fullName ?? 'N/A',
+                            '',
+                          ),
+                          const Divider(),
+                          const SizedBox(height: 20),
+
+// Conditionally show only if serviceType is Doctor Consultation
+                          if (booking.serviceType == 'Doctor Consultation') ...[
+                            _buildDetailRow(
+                                'Doctor name', booking.doctorName, ''),
+                            const Divider(),
+                            const SizedBox(height: 20),
+                            _buildDetailRow('Qualification',
+                                booking.doctorQualification, ''),
+                            const Divider(),
+                            const SizedBox(height: 20),
+                            _buildDetailRow('Specialization',
+                                booking.doctorSpecialization, ''),
+                            const Divider(),
+                            const SizedBox(height: 20),
+                          ],
+
+                          _buildDetailRow(
+                            'Payment',
+                            '₹${booking.payableAmount.toStringAsFixed(2)}',
+                            booking.discount > 0
+                                ? 'Original: ₹${booking.totalPrice.toStringAsFixed(2)} | Discount: ₹${booking.discount.toStringAsFixed(2)}'
+                                : '',
+                          ),
                           const Divider(),
                         ],
                       ),
