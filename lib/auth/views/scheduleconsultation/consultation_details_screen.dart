@@ -1017,6 +1017,7 @@ import 'package:consultation_app/auth/views/provider/family_provider.dart';
 import 'package:consultation_app/model/family_model.dart';
 import 'package:consultation_app/Helper/auth_preference.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 class ConsultationDetailsScreen extends StatefulWidget {
@@ -1114,10 +1115,13 @@ class _ConsultationDetailsScreenState extends State<ConsultationDetailsScreen> {
   // }
 
 
-  String _formatDateForApi(DateTime date) {
-  // Format as DD-MM-YYYY to match your API expectation
-  return '${date.day.toString().padLeft(2, '0')}-${date.month.toString().padLeft(2, '0')}-${date.year}';
+String _formatDateForApi(DateTime date) {
+  // Example: Monday, 19-07-2025
+  final dayName = DateFormat('EEEE').format(date); // Monday, Tuesday, etc.
+  final dateFormatted = DateFormat('dd-MM-yyyy').format(date); // 19-07-2025
+  return '$dayName';
 }
+
 
 
   
@@ -1284,7 +1288,7 @@ class _ConsultationDetailsScreenState extends State<ConsultationDetailsScreen> {
       final result = await bookingProvider.bookConsultation(
           staffId: _currentStaffId!,
           doctorId: widget.doctorId ?? '68645a56f1cde0b197534b26',
-          date: formattedDate,
+          day: formattedDate,
           timeSlot: selectedTime,
           familyMemberId: familyMemberIdToUse,
           type: selectedConsultationType,

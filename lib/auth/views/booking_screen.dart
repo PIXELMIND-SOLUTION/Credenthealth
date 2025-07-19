@@ -708,6 +708,7 @@ class _BookingScreenState extends State<BookingScreen> {
   }
 
   Widget _buildStatusButton(Booking booking, GetAllBookingProvider provider) {
+    print("Booooooooooooooooooooooooooooooooooooooooook${booking.id}");
     switch (booking.status.toLowerCase()) {
       case 'completed':
         return GestureDetector(

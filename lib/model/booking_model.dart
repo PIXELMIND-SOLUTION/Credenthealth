@@ -495,7 +495,7 @@ class Booking {
 
   factory Booking.fromJson(Map<String, dynamic> json) {
     return Booking(
-      id: json['_id'] ?? '',
+      id: json['bookingId'] ?? '',
       staffId: json['staffId'] ?? '',
       familyMemberId: json['familyMemberId'] ?? '',
       diagnosticId: json['diagnosticId'] != null 
@@ -532,7 +532,7 @@ class Booking {
 
   Map<String, dynamic> toJson() {
     return {
-      '_id': id,
+      'bookingId': id,
       'staffId': staffId,
       'familyMemberId': familyMemberId,
       'diagnosticId': diagnosticId?.toJson(),

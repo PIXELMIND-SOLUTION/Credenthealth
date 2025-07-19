@@ -1367,6 +1367,7 @@ class _ConsultDoctorState extends State<ConsultDoctor> {
   }
 
   Future<void> _fetchBookingDetails() async {
+    print("lllllllllllllllllllllllllllllllllllllllllllllllllllll${widget.bookingId}");
     try {
       setState(() {
         _isLoading = true;

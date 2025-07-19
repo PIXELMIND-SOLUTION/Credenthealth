@@ -1,0 +1,2 @@
+D:/Users/kakkodi/Flutter/PIXEL_MIND_SOLUTION/Credenthealth/Credenthealth/android/app/.cxx/Debug/r611a4d1/x86_64/CMakeFiles/edit_cache.dir
+D:/Users/kakkodi/Flutter/PIXEL_MIND_SOLUTION/Credenthealth/Credenthealth/android/app/.cxx/Debug/r611a4d1/x86_64/CMakeFiles/rebuild_cache.dir
