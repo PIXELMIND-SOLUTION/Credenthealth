@@ -7,7 +7,7 @@ class ConsultationBookingService {
   Future<Map<String, dynamic>> bookConsultation({
     required String staffId,
     required String doctorId,
-    required String date,
+    required String day,
     required String timeSlot,
     required String familyMemberId,
     required String type
@@ -22,9 +22,9 @@ class ConsultationBookingService {
         },
         body: jsonEncode({
           'doctorId': doctorId,
-          'date': date,
+          'day': day,
           'timeSlot': timeSlot,
-          'familyMemberId': familyMemberId,
+          // 'familyMemberId': familyMemberId,
           'type':type
         }),
       );
@@ -32,9 +32,9 @@ class ConsultationBookingService {
       print('📞 API Call: POST $url');
       print('📋 Request Body: ${jsonEncode({
         'doctorId': doctorId,
-        'date': date,
+        'day': day,
         'timeSlot': timeSlot,
-        'familyMemberId': familyMemberId,
+        // 'familyMemberId': familyMemberId,
         'type':type
       })}');
       print('📊 Response Status: ${response.statusCode}');
