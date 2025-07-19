@@ -33,9 +33,11 @@ class ConsultationBookingProvider extends ChangeNotifier {
     required String staffId,
     required String doctorId,
     required String day,
+    required String date,
     required String timeSlot,
     required String familyMemberId,
-    required String type
+    required String type,
+    String? transactionId
   }) async {
     _isBooking = true;
     _error = null;
@@ -47,9 +49,11 @@ class ConsultationBookingProvider extends ChangeNotifier {
         staffId: staffId,
         doctorId: doctorId,
         day: day,
+        date: date,
         timeSlot: timeSlot,
         familyMemberId: familyMemberId,
-        type: type
+        type: type,
+        transactionId: transactionId
       );
 
       if (result['success']) {
@@ -87,7 +91,7 @@ class ConsultationBookingProvider extends ChangeNotifier {
   // Validate booking data
   Map<String, dynamic> validateBookingData({
     required String doctorId,
-    required String date,
+    required String day,
     required String timeSlot,
     required String familyMemberId,
   }) {
@@ -97,7 +101,7 @@ class ConsultationBookingProvider extends ChangeNotifier {
       errors.add('Doctor ID is required');
     }
 
-    if (date.isEmpty) {
+    if (day.isEmpty) {
       errors.add('Date is required');
     }
 
@@ -112,9 +116,9 @@ class ConsultationBookingProvider extends ChangeNotifier {
 
 
     // Validate date format (basic check)
-    if (date.isNotEmpty) {
+    if (day.isNotEmpty) {
       try {
-        DateTime.parse(date);
+        DateTime.parse(day);
       } catch (e) {
         errors.add('Invalid date format');
       }

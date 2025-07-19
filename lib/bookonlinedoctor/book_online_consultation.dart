@@ -766,7 +766,7 @@ class _OnlineScheduleScreenState extends State<OnlineScheduleScreen> with Single
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (_) => ConsultationDetailsScreen(doctorId: doctor.id),
+                      builder: (_) => ConsultationDetailsScreen(doctorId: doctor.id, consultationFee: doctor.consultationFee.toString(),),
                     ),
                   );
                 },

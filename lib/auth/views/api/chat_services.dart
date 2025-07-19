@@ -447,6 +447,8 @@ class Doctor {
   final List<String> myBlogs;
   final DateTime createdAt;
   final DateTime updatedAt;
+  final BookingSlot? bookingSlot;
+
 
   Doctor({
     required this.id,
@@ -464,6 +466,8 @@ class Doctor {
     required this.myBlogs,
     required this.createdAt,
     required this.updatedAt,
+    required this.bookingSlot,
+
   });
 
   factory Doctor.fromJson(Map<String, dynamic> json) {
@@ -491,6 +495,10 @@ class Doctor {
       updatedAt: json['updatedAt'] != null 
           ? DateTime.parse(json['updatedAt']) 
           : DateTime.now(),
+          bookingSlot: json['bookingSlot'] != null
+    ? BookingSlot.fromJson(json['bookingSlot'])
+    : null,
+
     );
   }
 
@@ -511,9 +519,36 @@ class Doctor {
       'myBlogs': myBlogs,
       'createdAt': createdAt.toIso8601String(),
       'updatedAt': updatedAt.toIso8601String(),
+      'bookingSlot': bookingSlot?.toJson(),
     };
   }
 }
+
+
+class BookingSlot {
+  final String timeSlot;
+  final String date;
+
+  BookingSlot({
+    required this.timeSlot,
+    required this.date,
+  });
+
+  factory BookingSlot.fromJson(Map<String, dynamic> json) {
+    return BookingSlot(
+      timeSlot: json['timeSlot'] ?? '',
+      date: json['date'] ?? '',
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'timeSlot': timeSlot,
+      'date': date,
+    };
+  }
+}
+
 
 class Schedule {
   final String id;

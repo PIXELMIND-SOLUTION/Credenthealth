@@ -8,9 +8,11 @@ class ConsultationBookingService {
     required String staffId,
     required String doctorId,
     required String day,
+    required String date,
     required String timeSlot,
     required String familyMemberId,
-    required String type
+    required String type,
+    String? transactionId
   }) async {
     try {
       final url = Uri.parse('$baseUrl/api/staff/consultationbooking/$staffId');
@@ -23,9 +25,11 @@ class ConsultationBookingService {
         body: jsonEncode({
           'doctorId': doctorId,
           'day': day,
+          'date': date,
           'timeSlot': timeSlot,
-          // 'familyMemberId': familyMemberId,
-          'type':type
+          'familyMemberId': familyMemberId,
+          'type':type,
+          'transactionId':transactionId
         }),
       );
 
@@ -33,9 +37,11 @@ class ConsultationBookingService {
       print('📋 Request Body: ${jsonEncode({
         'doctorId': doctorId,
         'day': day,
+        'date': date,
         'timeSlot': timeSlot,
-        // 'familyMemberId': familyMemberId,
-        'type':type
+        'familyMemberId': familyMemberId,
+        'type':type,
+        'transactionId':transactionId
       })}');
       print('📊 Response Status: ${response.statusCode}');
       print('📄 Response Body: ${response.body}');
