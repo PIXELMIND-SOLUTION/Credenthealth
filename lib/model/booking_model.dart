@@ -919,6 +919,8 @@ class Booking {
   final DiagnosticInfo? diagnosticId;
   final DoctorInfo? doctorId;
   final String serviceType;
+  final String? meetingLink;
+  final String type;
   final CartInfo? cartId;
   final bool isBooked;
   final double totalPrice;
@@ -936,8 +938,8 @@ class Booking {
   final String? diagPrescription;
   final List<dynamic> doctorReports;
   final List<dynamic> doctorPrescriptions;
-  final List<dynamic> doctorReportsAlternate; // for doctor_reports field
-  final List<dynamic> doctorPrescriptionsAlternate; // for doctor_prescriptions field
+  final List<dynamic> doctorReportsAlternate; 
+  final List<dynamic> doctorPrescriptionsAlternate;
 
   // Keep these fields for backward compatibility with diagnostic bookings
   final String? title;
@@ -958,6 +960,9 @@ class Booking {
     this.diagnosticId,
     this.doctorId,
     required this.serviceType,
+    required this.type,
+    required this.meetingLink,
+
     this.cartId,
     required this.isBooked,
     required this.totalPrice,
@@ -1001,6 +1006,9 @@ class Booking {
           ? DoctorInfo.fromJson(json['doctorId']) 
           : null,
       serviceType: json['serviceType'] ?? '',
+      meetingLink: json['meetingLink'],
+
+      type: json['type'] ?? '',
       cartId: json['cartId'] != null 
           ? CartInfo.fromJson(json['cartId']) 
           : null,
@@ -1046,6 +1054,9 @@ class Booking {
       'diagnosticId': diagnosticId?.toJson(),
       'doctorId': doctorId?.toJson(),
       'serviceType': serviceType,
+      'type': type,
+      'meetingLink': meetingLink,
+
       'cartId': cartId?.toJson(),
       'isBooked': isBooked,
       'totalPrice': totalPrice,

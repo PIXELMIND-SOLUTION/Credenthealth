@@ -867,10 +867,10 @@ class _CartScreenState extends State<CartScreen> {
                           children: [
                             Icon(
                               Icons.delete_outline_outlined,
-                              size: 16,
+                              size: 14,
                               color: Color(0XFF2E67F6),
                             ),
-                             SizedBox(width: 4),
+                             SizedBox(width: 2),
                             Text(
                               'Remove',
                               style: TextStyle(

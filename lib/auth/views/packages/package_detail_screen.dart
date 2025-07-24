@@ -280,7 +280,7 @@ class _PackageDetailsScreenState extends State<PackageDetailsScreen> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const Text(
-          'Precautions',
+          'Instructions',
           style: TextStyle(
             fontSize: 20,
             fontWeight: FontWeight.bold,

@@ -310,7 +310,8 @@ class ChatService {
       throw Exception('Error fetching doctors: $e');
     }
   }
-
+  
+  
   // Send chat message
   Future<bool> sendChatMessage(String staffId, String doctorId, String message) async {
     try {

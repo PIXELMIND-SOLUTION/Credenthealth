@@ -54,6 +54,8 @@ dependencies:
   gal: ^2.3.1
   flutter_easyloading: ^3.0.5
   razorpay_flutter: ^1.4.0
+  cached_network_image: ^3.4.1
+  table_calendar: ^3.2.0
 
 dev_dependencies:
   flutter_test:

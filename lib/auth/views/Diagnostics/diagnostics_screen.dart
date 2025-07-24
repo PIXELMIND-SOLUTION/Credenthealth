@@ -319,7 +319,8 @@ class _DiagnosticsScreenState extends State<DiagnosticsScreen> {
   @override
   Widget build(BuildContext context) {
     print(
-        '🔍 meeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee widget.id ${widget.packageId}');
+        '🔍 meeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee widget.id ${widget.amount}');
+        print('heloooooooooooooooooooooooooooooooooooooooooooooooooooooooo ${widget.amount}');
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -602,8 +603,8 @@ class _DiagnosticsScreenState extends State<DiagnosticsScreen> {
                                       _showBookingOptions(context, diagnostic);
                                     },
                                     style: ElevatedButton.styleFrom(
-                                      backgroundColor: const Color.fromARGB(
-                                          255, 30, 57, 229),
+                                      backgroundColor:Color(0xFF2E67F6),
+
                                       foregroundColor: Colors.white,
                                       elevation: 0,
                                       padding: const EdgeInsets.symmetric(
@@ -843,8 +844,8 @@ class _DiagnosticsScreenState extends State<DiagnosticsScreen> {
                               bookingType: 'Center Visit',
                               diagnosticId: diagnostic.id,
                               packageId: widget.packageId,
-                              amount: widget.amount
-                            ),
+                              amount: widget.amount,
+                            )
                           ),
                         );
                       },

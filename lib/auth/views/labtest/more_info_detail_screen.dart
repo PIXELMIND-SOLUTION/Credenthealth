@@ -82,14 +82,14 @@ class _TestDetailScreenState extends State<TestDetailScreen> {
                         ),
                         if (widget.test.fastingRequired) ...[
                           const SizedBox(height: 12),
-                          const Text(
-                            'Maintain 10-12 hours of fasting before sample collection',
-                            style: TextStyle(
-                              fontSize: 14,
-                              color: Colors.black87,
-                              height: 1.5,
-                            ),
-                          ),
+                          // const Text(
+                          //   'Maintain 10-12 hours of fasting before sample collection',
+                          //   style: TextStyle(
+                          //     fontSize: 14,
+                          //     color: Colors.black87,
+                          //     height: 1.5,
+                          //   ),
+                          // ),
                         ],
                       ],
                     ),
@@ -99,14 +99,14 @@ class _TestDetailScreenState extends State<TestDetailScreen> {
                   
                   // Precautions Section
                   if (widget.test.fastingRequired) ...[
-                    const Text(
-                      'Precautions',
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black,
-                      ),
-                    ),
+                    // const Text(
+                    //   'Precautions',
+                    //   style: TextStyle(
+                    //     fontSize: 18,
+                    //     fontWeight: FontWeight.bold,
+                    //     color: Colors.black,
+                    //   ),
+                    // ),
                     const SizedBox(height: 12),
                     Container(
                       padding: const EdgeInsets.all(16),
@@ -122,34 +122,34 @@ class _TestDetailScreenState extends State<TestDetailScreen> {
                             children: [
                               Icon(Icons.warning, color: Colors.orange, size: 20),
                               SizedBox(width: 8),
-                              Text(
-                                'Important Instructions',
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w600,
-                                  color: Colors.orange,
-                                ),
-                              ),
+                              // Text(
+                              //   'Important Instructions',
+                              //   style: TextStyle(
+                              //     fontSize: 16,
+                              //     fontWeight: FontWeight.w600,
+                              //     color: Colors.orange,
+                              //   ),
+                              // ),
                             ],
                           ),
                           SizedBox(height: 8),
-                          Text(
-                            'Maintain 10-12 hours of fasting before sample collection',
-                            style: TextStyle(
-                              fontSize: 14,
-                              color: Colors.black87,
-                              height: 1.5,
-                            ),
-                          ),
+                          // Text(
+                          //   'Maintain 10-12 hours of fasting before sample collection',
+                          //   style: TextStyle(
+                          //     fontSize: 14,
+                          //     color: Colors.black87,
+                          //     height: 1.5,
+                          //   ),
+                          // ),
                           SizedBox(height: 8),
-                          Text(
-                            '• Do not eat or drink anything except water\n• Avoid smoking and alcohol\n• Take medications as prescribed by your doctor\n• Inform the lab about any medications you are taking',
-                            style: TextStyle(
-                              fontSize: 14,
-                              color: Colors.black87,
-                              height: 1.5,
-                            ),
-                          ),
+                          // Text(
+                          //   '• Do not eat or drink anything except water\n• Avoid smoking and alcohol\n• Take medications as prescribed by your doctor\n• Inform the lab about any medications you are taking',
+                          //   style: TextStyle(
+                          //     fontSize: 14,
+                          //     color: Colors.black87,
+                          //     height: 1.5,
+                          //   ),
+                          // ),
                         ],
                       ),
                     ),

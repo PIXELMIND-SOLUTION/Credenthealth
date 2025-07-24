@@ -1265,10 +1265,11 @@ class _DoctorsListScreenState extends State<DoctorsListScreen>
           ),
         ),
         centerTitle: true,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios, color: Colors.black87),
-          onPressed: () => Navigator.pop(context),
-        ),
+        automaticallyImplyLeading: false,
+        // leading: IconButton(
+        //   icon: const Icon(Icons.arrow_back_ios, color: Colors.black87),
+        //   onPressed: () => Navigator.pop(context),
+        // ),
       ),
       body: Column(
         children: [

@@ -1501,7 +1501,7 @@
 //                       doctorSpecialty: specialty,
 //                       consultationFee: price,
 //                       experience: experience,
-                     
+
 //                       ratings: rating,
 //                     ),
 //                   ),
@@ -1530,18 +1530,10 @@
 //   }
 // }
 
-
-
-
-
-
-
-
-
 import 'package:consultation_app/auth/views/provider/get_all_category_provider.dart';
 import 'package:consultation_app/auth/views/scheduleconsultation/consultation_details_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart'; 
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -1550,14 +1542,10 @@ class DoctorScheduleScreen extends StatefulWidget {
   final String? id;
   final String? categoryName;
   final String? categoryId;
+  final String?price;
 
-  const DoctorScheduleScreen({
-    super.key,
-    this.id,
-    this.categoryName,
-    this.categoryId,
-    this.type
-  });
+  const DoctorScheduleScreen(
+      {super.key, this.id, this.categoryName, this.categoryId, this.type,this.price});
 
   @override
   State<DoctorScheduleScreen> createState() => _DoctorScheduleScreenState();
@@ -1611,7 +1599,8 @@ class _DoctorScheduleScreenState extends State<DoctorScheduleScreen> {
   // Method to launch meeting UR
 
   // Method to show meeting URL dialog
-  void _showMeetingUrlDialog(BuildContext context, String meetingUrl, String doctorName) {
+  void _showMeetingUrlDialog(
+      BuildContext context, String meetingUrl, String doctorName) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -1621,7 +1610,8 @@ class _DoctorScheduleScreenState extends State<DoctorScheduleScreen> {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text('Meeting URL:', style: TextStyle(fontWeight: FontWeight.w600)),
+              const Text('Meeting URL:',
+                  style: TextStyle(fontWeight: FontWeight.w600)),
               const SizedBox(height: 8),
               Container(
                 width: double.infinity,
@@ -1641,7 +1631,6 @@ class _DoctorScheduleScreenState extends State<DoctorScheduleScreen> {
                 ),
               ),
               const SizedBox(height: 16),
-          
             ],
           ),
           actions: [
@@ -1849,6 +1838,7 @@ class _DoctorScheduleScreenState extends State<DoctorScheduleScreen> {
   }
 
   Widget _buildDoctorCard({
+    
     required BuildContext context,
     required Map<String, dynamic> doctor,
   }) {
@@ -1861,17 +1851,28 @@ class _DoctorScheduleScreenState extends State<DoctorScheduleScreen> {
     final location = doctor['location']?.toString() ??
         doctor['address']?.toString() ??
         'Hyderabad';
-    final price = doctor['consultationFee']?.toString() ??
+    final price = doctor['consultation_fee']?.toString() ??
         doctor['fee']?.toString() ??
         '399';
     final doctorId = doctor['_id']?.toString() ?? '';
     final image = doctor['image']?.toString() ?? '';
     final rating = doctor['rating']?.toString() ?? '4.5';
     final experience = doctor['experience']?.toString() ?? '';
-    
+    final description=doctor['description']?.toString()??'';
+    final isBooked=doctor['isBooked']==true;
+    final timeSlot=doctor['time_slots']?.toString();
+    final type=doctor['consultation_type']?.toString();
+
+
+
+
+
+    print('hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh$type');
+     print('hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh${'consultation_type'}');
+
     // Extract meeting URL from doctor data or use sample URL
-    // final meetingUrl = doctor['meetingLink']?.toString() ?? 
-    //                   doctor['booking']?['meetingLink']?.toString() ?? 
+    // final meetingUrl = doctor['meetingLink']?.toString() ??
+    //                   doctor['booking']?['meetingLink']?.toString() ??
     //                   'https://meet.jit.si/4a0ei6sama'; // Sample URL from your response
 
     return Container(
@@ -1902,9 +1903,9 @@ class _DoctorScheduleScreenState extends State<DoctorScheduleScreen> {
                     MaterialPageRoute(
                       builder: (context) => ConsultationDetailsScreen(
                         // doctorId: doctorId,
-                          doctorId: doctorId,
-                          doctorName: name,
-                          ),
+                        doctorId: doctorId,
+                        doctorName: name,
+                      ),
                     ),
                   );
                 },
@@ -1921,7 +1922,7 @@ class _DoctorScheduleScreenState extends State<DoctorScheduleScreen> {
                           child: Image.network(
                             image.startsWith('http')
                                 ? image
-                                : 'http://194.164.148.244:4051$image',
+                                : 'http://31.97.206.144:4051$image',
                             fit: BoxFit.cover,
                             errorBuilder: (context, error, stackTrace) {
                               return const Icon(
@@ -2013,19 +2014,19 @@ class _DoctorScheduleScreenState extends State<DoctorScheduleScreen> {
                   Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      const Icon(
-                        Icons.star,
-                        size: 14,
-                        color: Colors.amber,
-                      ),
+                      // const Icon(
+                      //   Icons.star,
+                      //   size: 14,
+                      //   color: Colors.amber,
+                      // ),
                       const SizedBox(width: 2),
-                      Text(
-                        rating,
-                        style: TextStyle(
-                          fontSize: 12,
-                          color: Colors.grey[600],
-                        ),
-                      ),
+                      // Text(
+                      //   rating,
+                      //   style: TextStyle(
+                      //     fontSize: 12,
+                      //     color: Colors.grey[600],
+                      //   ),
+                      // ),
                     ],
                   ),
                 ],
@@ -2051,6 +2052,10 @@ class _DoctorScheduleScreenState extends State<DoctorScheduleScreen> {
                       consultationFee: price,
                       experience: experience,
                       ratings: rating,
+                      description: description,
+                      isBooked: isBooked,
+                      // type: type,
+                 
                     ),
                   ),
                 );

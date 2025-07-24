@@ -2184,6 +2184,7 @@ import 'package:consultation_app/auth/views/HRA/life_style_screen.dart';
 import 'package:consultation_app/auth/views/HRA/result_screen.dart';
 import 'package:consultation_app/auth/views/provider/hra_questions_provider.dart';
 import 'package:consultation_app/auth/views/provider/hra_answer_provider.dart'; // Add this import
+import 'package:consultation_app/model/hra_question_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -2191,6 +2192,8 @@ class LifeStyleQuiz extends StatefulWidget {
   final String? selectedHraId;
   final String? id;
   final List<dynamic>? hraList;
+  final String? points;
+  final String?text;
   final Set<String>? completedCategories;
 
   const LifeStyleQuiz({
@@ -2199,6 +2202,8 @@ class LifeStyleQuiz extends StatefulWidget {
     this.hraList,
     this.selectedHraId,
     this.completedCategories,
+    this.points,
+    this.text
   });
 
   @override
@@ -2316,52 +2321,107 @@ class _LifeStyleQuizState extends State<LifeStyleQuiz> {
   }
 
   // Method to submit all answers and navigate to result screen
-  Future<void> _submitAllAnswersAndNavigate() async {
-    final hraAnswerProvider =
-        Provider.of<HraAnswerProvider>(context, listen: false);
+  // Future<void> _submitAllAnswersAndNavigate() async {
+  //   final hraAnswerProvider =
+  //       Provider.of<HraAnswerProvider>(context, listen: false);
 
-    // Show loading dialog
-    showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (context) => const Center(
-        child: CircularProgressIndicator(),
-      ),
-    );
+  //   // Show loading dialog
+  //   showDialog(
+  //     context: context,
+  //     barrierDismissible: false,
+  //     builder: (context) => const Center(
+  //       child: CircularProgressIndicator(),
+  //     ),
+  //   );
 
-    try {
-      // Submit all answers
-      final success = await hraAnswerProvider.submitAllAnswers();
+  //   try {
+  //     // Submit all answers
+  //     final success = await hraAnswerProvider.submitAllAnswers();
 
-      // Close loading dialog
-      Navigator.of(context).pop();
+  //     // Close loading dialog
+  //     Navigator.of(context).pop();
 
-      if (success) {
-        // Navigate to results screen
-        Navigator.pushAndRemoveUntil(
-          context,
-          MaterialPageRoute(builder: (context) => const ResultScreen()),
-          (Route<dynamic> route) => false,
-        );
-      } else {
-        // Show error dialog
-        _showErrorDialog(
-          'Submission Failed',
-          hraAnswerProvider.submissionError ??
-              'Failed to submit answers. Please try again.',
-        );
-      }
-    } catch (e) {
-      // Close loading dialog
-      Navigator.of(context).pop();
+  //     if (success) {
+  //       final resultData = await hraAnswerProvider.submitAllAnswers();
+  //       // Navigate to results screen
+  //       Navigator.pushAndRemoveUntil(
+  //         context,
+  //         MaterialPageRoute(builder: (context) => const ResultScreen()),
+  //         (Route<dynamic> route) => false,
+  //       );
+  //     } else {
+  //       // Show error dialog
+  //       _showErrorDialog(
+  //         'Submission Failed',
+  //         hraAnswerProvider.submissionError ??
+  //             'Failed to submit answers. Please try again.',
+  //       );
+  //     }
+  //   } catch (e) {
+  //     // Close loading dialog
+  //     Navigator.of(context).pop();
 
+  //     // Show error dialog
+  //     _showErrorDialog(
+  //       'Error',
+  //       'An unexpected error occurred: $e',
+  //     );
+  //   }
+  // }
+
+
+
+  // Method to submit all answers and navigate to result screen
+Future<void> _submitAllAnswersAndNavigate() async {
+  final hraAnswerProvider = Provider.of<HraAnswerProvider>(context, listen: false);
+
+  // Show loading dialog
+  showDialog(
+    context: context,
+    barrierDismissible: false,
+    builder: (context) => const Center(
+      child: CircularProgressIndicator(),
+    ),
+  );
+
+  try {
+    // Submit all answers and get the result data
+    final resultData = await hraAnswerProvider.submitAllAnswers();
+
+    // Close loading dialog
+    Navigator.of(context).pop();
+
+    if (resultData != null) {
+      // Navigate to results screen with the returned data
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(
+          builder: (context) => ResultScreen(
+            totalPoints: resultData['point'] ?? 0,
+            riskLevel: resultData['riskLevel'] ?? 'Moderate',
+            riskMessage: resultData['text'] ?? 'Assessment completed successfully.',
+          ),
+        ),
+        (Route<dynamic> route) => false,
+      );
+    } else {
       // Show error dialog
       _showErrorDialog(
-        'Error',
-        'An unexpected error occurred: $e',
+        'Submission Failed',
+        hraAnswerProvider.submissionError ?? 'Failed to submit answers. Please try again.',
       );
     }
+  } catch (e) {
+    // Close loading dialog
+    Navigator.of(context).pop();
+
+    // Show error dialog
+    _showErrorDialog(
+      'Error',
+      'An unexpected error occurred: $e',
+    );
   }
+}
 
   // Method to show error dialog
   void _showErrorDialog(String title, String message) {
@@ -2880,6 +2940,8 @@ class _LifeStyleQuizState extends State<LifeStyleQuiz> {
                               hraList: widget.hraList,
                               selectedHraId: widget.selectedHraId,
                               completedCategories: completedCategories,
+                              points: widget.points,
+                              text: widget.text,
                             ),
                           ),
                         );
@@ -2937,68 +2999,132 @@ class _LifeStyleQuizState extends State<LifeStyleQuiz> {
     return Icons.check;
   }
 
-  Widget _buildRadioOption(String value, String questionId) {
-    return GestureDetector(
-      onTap: () {
-        setState(() {
-          selectedAnswer = value;
-        });
-        // Save the answer to both providers
-        final hraProvider =
-            Provider.of<HraQuestionsProvider>(context, listen: false);
-        final hraAnswerProvider =
-            Provider.of<HraAnswerProvider>(context, listen: false);
+  // Widget _buildRadioOption(String value, String questionId) {
+  //   return GestureDetector(
+  //     onTap: () {
+  //       setState(() {
+  //         selectedAnswer = value;
+  //       });
+  //       // Save the answer to both providers
+  //       final hraProvider =
+  //           Provider.of<HraQuestionsProvider>(context, listen: false);
+  //       final hraAnswerProvider =
+  //           Provider.of<HraAnswerProvider>(context, listen: false);
 
-        hraProvider.saveAnswer(questionId, value);
-        hraAnswerProvider.saveAnswer(selectedHraName, questionId, value);
-      },
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
-        decoration: BoxDecoration(
-          color: Colors.grey[50],
-          borderRadius: BorderRadius.circular(8),
-          border: Border.all(
-            color: selectedAnswer == value ? Colors.blue : Colors.grey[200]!,
-            width: selectedAnswer == value ? 2 : 1,
-          ),
-        ),
-        child: Row(
-          children: [
-            Expanded(
-              child: Text(
-                value,
-                style: TextStyle(
-                  fontSize: 16,
-                  color: selectedAnswer == value ? Colors.blue : Colors.black,
-                  fontWeight: selectedAnswer == value
-                      ? FontWeight.w500
-                      : FontWeight.normal,
-                ),
-              ),
-            ),
-            Radio<String>(
-              value: value,
-              groupValue: selectedAnswer,
-              onChanged: (String? newValue) {
-                setState(() {
-                  selectedAnswer = newValue;
-                });
-                if (newValue != null) {
-                  final hraProvider =
-                      Provider.of<HraQuestionsProvider>(context, listen: false);
-                  final hraAnswerProvider =
-                      Provider.of<HraAnswerProvider>(context, listen: false);
+  //       hraProvider.saveAnswer(questionId, value);
+  //       hraAnswerProvider.saveAnswer(selectedHraName, questionId, value);
+  //     },
+  //     child: Container(
+  //       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+  //       decoration: BoxDecoration(
+  //         color: Colors.grey[50],
+  //         borderRadius: BorderRadius.circular(8),
+  //         border: Border.all(
+  //           color: selectedAnswer == value ? Colors.blue : Colors.grey[200]!,
+  //           width: selectedAnswer == value ? 2 : 1,
+  //         ),
+  //       ),
+  //       child: Row(
+  //         children: [
+  //           Expanded(
+  //             child: Text(
+  //               value,
+  //               style: TextStyle(
+  //                 fontSize: 16,
+  //                 color: selectedAnswer == value ? Colors.blue : Colors.black,
+  //                 fontWeight: selectedAnswer == value
+  //                     ? FontWeight.w500
+  //                     : FontWeight.normal,
+  //               ),
+  //             ),
+  //           ),
+  //           Radio<String>(
+  //             value: value,
+  //             groupValue: selectedAnswer,
+  //             onChanged: (String? newValue) {
+  //               setState(() {
+  //                 selectedAnswer = newValue;
+  //               });
+  //               if (newValue != null) {
+  //                 final hraProvider =
+  //                     Provider.of<HraQuestionsProvider>(context, listen: false);
+  //                 final hraAnswerProvider =
+  //                     Provider.of<HraAnswerProvider>(context, listen: false);
 
-                  hraProvider.saveAnswer(questionId, newValue);
-                  hraAnswerProvider.saveAnswer(
-                      selectedHraName, questionId, newValue);
-                }
-              },
-              activeColor: Colors.blue,
-            ),
-          ],
+  //                 hraProvider.saveAnswer(questionId, newValue);
+  //                 hraAnswerProvider.saveAnswer(
+  //                     selectedHraName, questionId, newValue);
+  //               }
+  //             },
+  //             activeColor: Colors.blue,
+  //           ),
+  //         ],
+  //       ),
+  //     ),
+  //   );
+  // }
+  Widget _buildRadioOption(HraOption option, String questionId) {
+  return GestureDetector(
+    onTap: () {
+      setState(() {
+        selectedAnswer = option.id; // Store the option ID or text as needed
+      });
+      // Save the answer to both providers
+      final hraProvider =
+          Provider.of<HraQuestionsProvider>(context, listen: false);
+      final hraAnswerProvider =
+          Provider.of<HraAnswerProvider>(context, listen: false);
+
+      hraProvider.saveAnswer(questionId, option.id); // or option.text
+      hraAnswerProvider.saveAnswer(selectedHraName, questionId, option.id); // or option.text
+    },
+    child: Container(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+      decoration: BoxDecoration(
+        color: Colors.grey[50],
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(
+          color: selectedAnswer == option.id ? Colors.blue : Colors.grey[200]!,
+          width: selectedAnswer == option.id ? 2 : 1,
         ),
       ),
-    );
-  }
+      child: Row(
+        children: [
+          Expanded(
+            child: Text(
+              option.text, // Display the text property
+              style: TextStyle(
+                fontSize: 16,
+                color: selectedAnswer == option.id ? Colors.blue : Colors.black,
+                fontWeight: selectedAnswer == option.id
+                    ? FontWeight.w500
+                    : FontWeight.normal,
+              ),
+            ),
+          ),
+          Radio<String>(
+            value: option.id, // or option.text
+            groupValue: selectedAnswer,
+            onChanged: (String? newValue) {
+              setState(() {
+                selectedAnswer = newValue;
+              });
+              if (newValue != null) {
+                final hraProvider =
+                    Provider.of<HraQuestionsProvider>(context, listen: false);
+                final hraAnswerProvider =
+                    Provider.of<HraAnswerProvider>(context, listen: false);
+
+                hraProvider.saveAnswer(questionId, newValue);
+                hraAnswerProvider.saveAnswer(
+                    selectedHraName, questionId, newValue);
+              }
+            },
+            activeColor: Colors.blue,
+          ),
+        ],
+      ),
+    ),
+  );
+}
 }

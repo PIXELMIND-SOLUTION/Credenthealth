@@ -35,9 +35,11 @@
 
 import 'package:consultation_app/auth/views/provider/address_provider.dart';
 import 'package:consultation_app/auth/views/provider/booking_provider.dart';
+import 'package:consultation_app/auth/views/provider/booking_slot_provider.dart';
 import 'package:consultation_app/auth/views/provider/cart_provider.dart';
 import 'package:consultation_app/auth/views/provider/chat_provider.dart';
 import 'package:consultation_app/auth/views/provider/consulatation_booking_provider.dart';
+import 'package:consultation_app/auth/views/provider/doctor_slot_provider.dart';
 import 'package:consultation_app/auth/views/provider/family_provider.dart';
 import 'package:consultation_app/auth/views/provider/forgot_password_provider.dart';
 import 'package:consultation_app/auth/views/provider/get_all_blog_provider.dart';
@@ -149,7 +151,9 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_)=>HraAnswerProvider()),
         ChangeNotifierProvider(create: (_)=>DoctorProvider()),
         ChangeNotifierProvider(create: (_)=>ChatProvider()),
-        ChangeNotifierProvider(create: (_)=>NewRecentPackageProvider())
+        ChangeNotifierProvider(create: (_)=>NewRecentPackageProvider()),
+        ChangeNotifierProvider(create: (_)=>DoctorSlotProvider()),
+        ChangeNotifierProvider(create: (_)=>BookingSlotProvider())
       ],
       child: Consumer<ThemeProvider>(
         builder: (context, themeProvider, child) {

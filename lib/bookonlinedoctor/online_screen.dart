@@ -45,7 +45,7 @@ showLoading() {
   return EasyLoading.show(status: 'loading...');
 }
 
-class ConsultationDetailsScreen extends StatefulWidget {
+class OnlineScreen extends StatefulWidget {
   final String? doctorId;
   final String? doctorName;
   final String? doctorSpecialty;
@@ -54,9 +54,9 @@ class ConsultationDetailsScreen extends StatefulWidget {
   final String? ratings;
   final String? description;
   final bool? isBooked;
-  final String? type;
+  final String?type;
 
-  const ConsultationDetailsScreen(
+  const OnlineScreen(
       {super.key,
       this.doctorId,
       this.doctorName,
@@ -66,20 +66,21 @@ class ConsultationDetailsScreen extends StatefulWidget {
       this.experience,
       this.description,
       this.isBooked,
-      this.type});
+      this.type
+      });
 
   @override
-  State<ConsultationDetailsScreen> createState() =>
+  State<OnlineScreen> createState() =>
       _ConsultationDetailsScreenState();
 }
 
-class _ConsultationDetailsScreenState extends State<ConsultationDetailsScreen> {
+class _ConsultationDetailsScreenState extends State<OnlineScreen> {
   int selectedDateIndex = 0; // Changed to 0 since we'll start from today
   String selectedTime = '9:00 AM';
   FamilyMember? selectedFamilyMember;
   String? _currentStaffId;
   bool _isLoadingStaffId = true;
-  String selectedConsultationType = 'Offline';
+  String selectedConsultationType = 'Online';
   bool isLoading = true;
   String? day;
   String? Date;
@@ -365,6 +366,145 @@ class _ConsultationDetailsScreenState extends State<ConsultationDetailsScreen> {
 
 //*>*>*>*>*>*>*>*>*>*>*>*>*>*>*>*>*>*>*>*>*>  RAZRO PAY INTEGRATION  *>*>*>*>*>*>*>*>*>*>*>*>*>*>*>*>*>*>*>*>
 
+  // Future<void> submitBooking() async {
+  //   final bookingProvider =
+  //       Provider.of<ConsultationBookingProvider>(context, listen: false);
+
+  //   // Check if we should use profile data automatically
+  //   if (selectedFamilyMember == null) {
+  //     if (_profileData != null) {
+  //       setState(() {
+  //         _useProfileData = true;
+  //       });
+  //     } else {
+  //       ScaffoldMessenger.of(context).showSnackBar(
+  //         const SnackBar(
+  //           content: Text(
+  //               'Please select a family member or ensure profile data is available'),
+  //           backgroundColor: Colors.orange,
+  //         ),
+  //       );
+  //       return;
+  //     }
+  //   }
+
+  //   if (_currentStaffId == null || _currentStaffId!.isEmpty) {
+  //     ScaffoldMessenger.of(context).showSnackBar(
+  //       const SnackBar(
+  //         content: Text('User information not available'),
+  //         backgroundColor: Colors.red,
+  //       ),
+  //     );
+  //     return;
+  //   }
+
+  //   // Debug information
+  //   print('🔍 Debug - selectedFamilyMember ID: ${selectedFamilyMember?.id}');
+  //   print('🔍 Debug - useProfileData: $_useProfileData');
+  //   print('🔍 Debug - currentStaffId: $_currentStaffId');
+
+  //   // Show loading dialog
+  //   showDialog(
+  //     context: context,
+  //     barrierDismissible: false,
+  //     builder: (context) => const AlertDialog(
+  //       content: Row(
+  //         children: [
+  //           CircularProgressIndicator(),
+  //           SizedBox(width: 16),
+  //           Text('Preparing payment...'),
+  //         ],
+  //       ),
+  //     ),
+  //   );
+
+  //   try {
+  //     // Get selected date from the dynamic dates
+  //     final selectedDate = dates[selectedDateIndex]['fullDate'] as DateTime;
+  //     final formattedDate = _formatDayForApi(selectedDate);
+  //     final dateFormat = _formatDateForApi(selectedDate.toString());
+
+  //     // Determine family member ID to use
+  //     String familyMemberIdToUse;
+  //     if (selectedFamilyMember != null) {
+  //       familyMemberIdToUse = selectedFamilyMember!.id.toString();
+  //     } else if (_useProfileData && _currentStaffId != null) {
+  //       familyMemberIdToUse = _currentStaffId!;
+  //     } else {
+  //       throw Exception(
+  //           'No family member selected and no profile data available');
+  //     }
+
+  //     // SET GLOBAL VARIABLES HERE - This is what you were missing
+  //     setState(() {
+  //       day = formattedDate;
+  //       Date = dateFormat;
+  //       timeSlot = selectedTime;
+  //       familyMemberId = familyMemberIdToUse;
+  //       type = selectedConsultationType;
+  //     });
+
+  //     // Validate booking data
+  //     final validation = bookingProvider.validateBookingData(
+  //       doctorId: widget.doctorId ??
+  //           '68645a56f1cde0b197534b26', // Default doctor ID from your curl example
+  //       day: formattedDate,
+  //       timeSlot: selectedTime,
+  //       familyMemberId: familyMemberIdToUse,
+  //     );
+
+  //     Navigator.pop(context); // Close loading dialog
+
+  //     final feeStr = widget.consultationFee?.toString() ?? '100';
+  //     final fee = double.tryParse(feeStr);
+
+  //     if (fee == null) {
+  //       Navigator.pop(context);
+  //       ScaffoldMessenger.of(context).showSnackBar(
+  //         const SnackBar(content: Text('Invalid consultation fee')),
+  //       );
+  //       return;
+  //     }
+
+  //     final amountInPaise = (fee * 100).round();
+
+  //     // Initialize Razorpay payment
+  //     Razorpay razorpay = Razorpay();
+  //     var options = {
+  //       'key': 'rzp_test_BxtRNvflG06PTV', // test keys
+  //       'amount': amountInPaise.toInt(), // Use actual consultation fee
+  //       'name': 'CredentHealth',
+  //       'description': 'Consultation with Dr. ${widget.doctorName}',
+  //       'retry': {'enabled': true, 'max_count': 1},
+  //       'send_sms_hash': true,
+  //       'prefill': {
+  //         'contact':
+  //             "6282714883", // You might want to get this from user profile
+  //         'email':
+  //             "pvishnukakkodi@gmail.com", // You might want to get this from user profile
+  //       },
+  //       'external': {
+  //         'wallets': ['paytm']
+  //       }
+  //     };
+
+  //     razorpay.on(Razorpay.EVENT_PAYMENT_ERROR, handlePaymentErrorResponse);
+  //     razorpay.on(Razorpay.EVENT_PAYMENT_SUCCESS, handlePaymentSuccessResponse);
+  //     razorpay.on(Razorpay.EVENT_EXTERNAL_WALLET, handleExternalWalletSelected);
+  //     razorpay.open(options);
+  //   } catch (e) {
+  //     print('Unexpected error: ${e.toString()}');
+  //     Navigator.pop(context);
+  //     ScaffoldMessenger.of(context).showSnackBar(
+  //       SnackBar(
+  //         content: Text('Unexpected error: ${e.toString()}'),
+  //         backgroundColor: Colors.red,
+  //       ),
+  //     );
+  //   }
+  // }
+
+
   Future<void> submitBooking(int amount) async {
     final bookingProvider =
         Provider.of<ConsultationBookingProvider>(context, listen: false);
@@ -617,6 +757,147 @@ class _ConsultationDetailsScreenState extends State<ConsultationDetailsScreen> {
     }
   }
 
+  // Future<void> _proceedToBooking() async {
+  //   final bookingProvider =
+  //       Provider.of<ConsultationBookingProvider>(context, listen: false);
+
+  //   // Check if we should use profile data automatically
+  //   if (selectedFamilyMember == null) {
+  //     if (_profileData != null) {
+  //       setState(() {
+  //         _useProfileData = true;
+  //       });
+  //     } else {
+  //       ScaffoldMessenger.of(context).showSnackBar(
+  //         const SnackBar(
+  //           content: Text(
+  //               'Please select a family member or ensure profile data is available'),
+  //           backgroundColor: Colors.orange,
+  //         ),
+  //       );
+  //       return;
+  //     }
+  //   }
+
+  //   if (_currentStaffId == null || _currentStaffId!.isEmpty) {
+  //     ScaffoldMessenger.of(context).showSnackBar(
+  //       const SnackBar(
+  //         content: Text('User information not available'),
+  //         backgroundColor: Colors.red,
+  //       ),
+  //     );
+  //     return;
+  //   }
+
+  //   // Debug information
+  //   print('🔍 Debug - selectedFamilyMember ID: ${selectedFamilyMember?.id}');
+  //   print('🔍 Debug - useProfileData: $_useProfileData');
+  //   print('🔍 Debug - currentStaffId: $_currentStaffId');
+
+  //   // Show loading dialog
+  //   showDialog(
+  //     context: context,
+  //     barrierDismissible: false,
+  //     builder: (context) => const AlertDialog(
+  //       content: Row(
+  //         children: [
+  //           CircularProgressIndicator(),
+  //           SizedBox(width: 16),
+  //           Text('Booking consultation...'),
+  //         ],
+  //       ),
+  //     ),
+  //   );
+
+  //   try {
+  //     // Get selected date from the dynamic dates
+  //     final selectedDate = dates[selectedDateIndex]['fullDate'] as DateTime;
+  //     final formattedDate = _formatDayForApi(selectedDate);
+  //     final dateFormat = _formatDateForApi(selectedDate.toString());
+
+  //     // Determine family member ID to use
+  //     String familyMemberIdToUse;
+  //     if (selectedFamilyMember != null) {
+  //       familyMemberIdToUse = selectedFamilyMember!.id.toString();
+  //     } else if (_useProfileData && _currentStaffId != null) {
+  //       familyMemberIdToUse = _currentStaffId!;
+  //     } else {
+  //       throw Exception(
+  //           'No family member selected and no profile data available');
+  //     }
+
+  //     // Validate booking data
+  //     final validation = bookingProvider.validateBookingData(
+  //       doctorId: widget.doctorId ??
+  //           '68645a56f1cde0b197534b26', // Default doctor ID from your curl example
+  //       day: formattedDate,
+  //       timeSlot: selectedTime,
+  //       familyMemberId: familyMemberIdToUse,
+  //     );
+
+  //     // if (!validation['isValid']) {
+  //     //   Navigator.pop(context); // Close loading dialog
+  //     //   ScaffoldMessenger.of(context).showSnackBar(
+  //     //     SnackBar(
+  //     //       content:
+  //     //           Text('Validation errors: ${validation['errors'].join(', ')}'),
+  //     //       backgroundColor: Colors.red,
+  //     //     ),
+  //     //   );
+  //     //   return;
+  //     // }
+
+  //     // Book consultation
+  //     final result = await bookingProvider.bookConsultation(
+  //       staffId: _currentStaffId!,
+  //       doctorId: widget.doctorId ?? '68645a56f1cde0b197534b26',
+  //       day: formattedDate,
+  //       date: dateFormat,
+  //       timeSlot: selectedTime,
+  //       familyMemberId: familyMemberIdToUse,
+  //       type: selectedConsultationType,
+  //     );
+
+  //     Navigator.pop(context); // Close loading dialog
+
+  //     if (result['success']) {
+  //       ScaffoldMessenger.of(context).showSnackBar(
+  //         const SnackBar(
+  //           content: Text('Consultation booked successfully!'),
+  //           backgroundColor: Colors.green,
+  //         ),
+  //       );
+
+  //       Navigator.pushReplacement(
+  //         context,
+  //         MaterialPageRoute(
+  //           builder: (context) => ConfirmBookingScreen(
+  //             selectedDate: formattedDate,
+  //             selectedTime: selectedTime,
+  //             selectedDay: dates[selectedDateIndex]['day'],
+  //           ),
+  //         ),
+  //       );
+  //     } else {
+  //       ScaffoldMessenger.of(context).showSnackBar(
+  //         SnackBar(
+  //           content: Text(result['error'] ?? 'Failed to book consultation'),
+  //           backgroundColor: Colors.red,
+  //         ),
+  //       );
+  //     }
+  //   } catch (e) {
+  //     Navigator.pop(context);
+  //     ScaffoldMessenger.of(context).showSnackBar(
+  //       SnackBar(
+  //         content: Text('Unexpected error: ${e.toString()}'),
+  //         backgroundColor: Colors.red,
+  //       ),
+  //     );
+  //   }
+  // }
+
+
   Future<void> _proceedToBooking() async {
   final bookingProvider =
       Provider.of<ConsultationBookingProvider>(context, listen: false);
@@ -752,47 +1033,7 @@ class _ConsultationDetailsScreenState extends State<ConsultationDetailsScreen> {
   }
 }
 
-// Add this new function to handle online payment
-// Future<void> _initiateOnlinePayment(
-//     int amount, Map<String, String> bookingData) async {
-//   try {
-//     // Show payment confirmation dialog
-//     final shouldProceed = await showDialog<bool>(
-//       context: context,
-//       builder: (context) => AlertDialog(
-//         title: Text('Payment Required'),
-//         content: Text(
-//           'Insufficient wallet balance. You need to pay ₹$amount to confirm this booking.\n\nDo you want to proceed with online payment?',
-//         ),
-//         actions: [
-//           TextButton(
-//             onPressed: () => Navigator.pop(context, false),
-//             child: Text('Cancel'),
-//           ),
-//           ElevatedButton(
-//             onPressed: () => Navigator.pop(context, true),
-//             child: Text('Pay Now'),
-//           ),
-//         ],
-//       ),
-//     );
 
-//     if (shouldProceed == true) {
-//       // Call your Razorpay function here
-//       await _startRazorpayPayment(amount, bookingData);
-//     }
-//   } catch (e) {
-//     print('❌ Error initiating payment: $e');
-//     ScaffoldMessenger.of(context).showSnackBar(
-//       SnackBar(
-//         content: Text('Error initiating payment: ${e.toString()}'),
-//         backgroundColor: Colors.red,
-//       ),
-//     );
-//   }
-// }
-
-// Add this function to handle Razorpay payment
 Future<void> _startRazorpayPayment(
     int amount, Map<String, String> bookingData) async {
   try {
@@ -911,9 +1152,9 @@ Future<void> _confirmBookingWithTransactionId(
     );
   }
 }
+
+
   Widget _buildProfileDataItem() {
-    print('ttttttttttttttttttttttttttttttttt$type');
-    // print('rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr$');
     if (_profileData == null) return const SizedBox.shrink();
 
     final name =
@@ -1957,32 +2198,11 @@ Future<void> _confirmBookingWithTransactionId(
                                         Text('Consultation fee is missing')),
                               );
                               return;
-                            } else {
+                            }
+                            else {
                               _proceedToBooking();
                             }
-
-                            // final requiredAmount =
-                            //     double.tryParse(feeRaw.toString());
-
-                            // if (requiredAmount == null) {
-                            //   print(
-                            //       "Consultation fee is not a valid number. Actual value: $feeRaw");
-
-                            //   ScaffoldMessenger.of(context).showSnackBar(
-                            //     const SnackBar(
-                            //         content: Text(
-                            //             'Invalid consultation fee format')),
-                            //   );
-                            //   return;
-                            // }
-
-                            // if ((wallet ?? 0.0) >= requiredAmount) {
-                            //   _proceedToBooking();
-                            // } else {
-                            //   print(
-                            //       "jjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj");
-                            //   submitBooking();
-                            // }
+                           
                           },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.blue,

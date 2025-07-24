@@ -494,114 +494,262 @@ class _BookingScreenState extends State<BookingScreen> {
     );
   }
 
-  Widget _buildBookingsList(GetAllBookingProvider provider) {
-    if (provider.isLoading) {
-      return const Center(
-        child: CircularProgressIndicator(),
-      );
-    }
+  // Widget _buildBookingsList(GetAllBookingProvider provider) {
+  //   if (provider.isLoading) {
+  //     return const Center(
+  //       child: CircularProgressIndicator(),
+  //     );
+  //   }
 
-    if (provider.hasError) {
-      return Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(
-              Icons.error_outline,
-              size: 64,
-              color: Colors.grey[400],
-            ),
-            const SizedBox(height: 16),
-            Text(
-              'Error loading bookings',
-              style: TextStyle(
-                fontSize: 16,
-                color: Colors.grey[600],
-              ),
-            ),
-            const SizedBox(height: 8),
-            Text(
-              provider.errorMessage,
-              style: TextStyle(
-                fontSize: 14,
-                color: Colors.grey[500],
-              ),
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(height: 16),
-            ElevatedButton(
-              onPressed: () => provider.fetchAllBookings(),
-              child: const Text('Retry'),
-            ),
-          ],
-        ),
-      );
-    }
+  //   if (provider.hasError) {
+  //     return Center(
+  //       child: Column(
+  //         mainAxisAlignment: MainAxisAlignment.center,
+  //         children: [
+  //           Icon(
+  //             Icons.error_outline,
+  //             size: 64,
+  //             color: Colors.grey[400],
+  //           ),
+  //           const SizedBox(height: 16),
+  //           Text(
+  //             'Error loading bookings',
+  //             style: TextStyle(
+  //               fontSize: 16,
+  //               color: Colors.grey[600],
+  //             ),
+  //           ),
+  //           const SizedBox(height: 8),
+  //           Text(
+  //             provider.errorMessage,
+  //             style: TextStyle(
+  //               fontSize: 14,
+  //               color: Colors.grey[500],
+  //             ),
+  //             textAlign: TextAlign.center,
+  //           ),
+  //           const SizedBox(height: 16),
+  //           ElevatedButton(
+  //             onPressed: () => provider.fetchAllBookings(),
+  //             child: const Text('Retry'),
+  //           ),
+  //         ],
+  //       ),
+  //     );
+  //   }
 
-    List<Booking> bookings = _searchQuery.isEmpty
-        ? provider.filteredBookings
-        : provider.searchBookings(_searchQuery);
+  //   List<Booking> bookings = _searchQuery.isEmpty
+  //       ? provider.filteredBookings
+  //       : provider.searchBookings(_searchQuery);
 
-    // Sort bookings by creation date (most recent first)
-    bookings = List.from(bookings)
-      ..sort((a, b) {
-        try {
-          final dateA = DateTime.parse(a.createdAt);
-          final dateB = DateTime.parse(b.createdAt);
-          return dateB.compareTo(dateA); // Descending order (newest first)
-        } catch (e) {
-          // If date parsing fails, maintain original order
-          return 0;
-        }
-      });
+  //   // Sort bookings by creation date (most recent first)
+  //   bookings = List.from(bookings)
+  //     ..sort((a, b) {
+  //       try {
+  //         final dateA = DateTime.parse(a.createdAt);
+  //         final dateB = DateTime.parse(b.createdAt);
+  //         return dateB.compareTo(dateA); // Descending order (newest first)
+  //       } catch (e) {
+  //         // If date parsing fails, maintain original order
+  //         return 0;
+  //       }
+  //     });
 
-    if (bookings.isEmpty) {
-      return Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(
-              Icons.calendar_today_outlined,
-              size: 64,
-              color: Colors.grey[400],
-            ),
-            const SizedBox(height: 16),
-            Text(
-              'No bookings found',
-              style: TextStyle(
-                fontSize: 16,
-                color: Colors.grey[600],
-              ),
-            ),
-            const SizedBox(height: 8),
-            Text(
-              _searchQuery.isEmpty
-                  ? 'You haven\'t made any bookings yet'
-                  : 'No bookings match your search',
-              style: TextStyle(
-                fontSize: 14,
-                color: Colors.grey[500],
-              ),
-            ),
-          ],
-        ),
-      );
-    }
+  //   if (bookings.isEmpty) {
+  //     return Center(
+  //       child: Column(
+  //         mainAxisAlignment: MainAxisAlignment.center,
+  //         children: [
+  //           Icon(
+  //             Icons.calendar_today_outlined,
+  //             size: 64,
+  //             color: Colors.grey[400],
+  //           ),
+  //           const SizedBox(height: 16),
+  //           Text(
+  //             'No bookings found',
+  //             style: TextStyle(
+  //               fontSize: 16,
+  //               color: Colors.grey[600],
+  //             ),
+  //           ),
+  //           const SizedBox(height: 8),
+  //           Text(
+  //             _searchQuery.isEmpty
+  //                 ? 'You haven\'t made any bookings yet'
+  //                 : 'No bookings match your search',
+  //             style: TextStyle(
+  //               fontSize: 14,
+  //               color: Colors.grey[500],
+  //             ),
+  //           ),
+  //         ],
+  //       ),
+  //     );
+  //   }
 
-    return RefreshIndicator(
-      onRefresh: () => provider.refreshBookings(),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16),
-        child: ListView.builder(
-          itemCount: bookings.length,
-          itemBuilder: (context, index) {
-            final booking = bookings[index];
-            return _buildBookingCard(booking, provider);
-          },
-        ),
+  //   return RefreshIndicator(
+  //     onRefresh: () => provider.refreshBookings(),
+  //     child: Padding(
+  //       padding: const EdgeInsets.symmetric(horizontal: 16),
+  //       child: ListView.builder(
+  //         itemCount: bookings.length,
+  //         itemBuilder: (context, index) {
+  //           final booking = bookings[index];
+  //           return _buildBookingCard(booking, provider);
+  //         },
+  //       ),
+  //     ),
+  //   );
+  // }
+
+
+Widget _buildBookingsList(GetAllBookingProvider provider) {
+  if (provider.isLoading) {
+    return const Center(
+      child: CircularProgressIndicator(),
+    );
+  }
+
+  if (provider.hasError) {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(
+            Icons.error_outline,
+            size: 64,
+            color: Colors.grey[400],
+          ),
+          const SizedBox(height: 16),
+          Text(
+            'Error loading bookings',
+            style: TextStyle(
+              fontSize: 16,
+              color: Colors.grey[600],
+            ),
+          ),
+          const SizedBox(height: 8),
+          Text(
+            provider.errorMessage,
+            style: TextStyle(
+              fontSize: 14,
+              color: Colors.grey[500],
+            ),
+            textAlign: TextAlign.center,
+          ),
+          const SizedBox(height: 16),
+          ElevatedButton(
+            onPressed: () => provider.fetchAllBookings(),
+            child: const Text('Retry'),
+          ),
+        ],
       ),
     );
   }
+
+  List<Booking> bookings = _searchQuery.isEmpty
+      ? provider.filteredBookings
+      : provider.searchBookings(_searchQuery);
+
+  // Enhanced sorting logic with better error handling and multiple fallbacks
+  bookings = List.from(bookings)
+    ..sort((a, b) {
+      try {
+        // Primary sort: Try parsing createdAt as ISO 8601 date
+        final dateA = DateTime.parse(a.createdAt);
+        final dateB = DateTime.parse(b.createdAt);
+        
+        // Sort in descending order (newest first)
+        int comparison = dateB.compareTo(dateA);
+        
+        // If dates are equal, use booking ID as secondary sort
+        if (comparison == 0) {
+          return b.id.compareTo(a.id);
+        }
+        
+        return comparison;
+      } catch (e) {
+        print('Error parsing createdAt dates: $e');
+        
+        // Fallback 1: Try to parse the 'date' field instead
+        try {
+          final dateA = DateTime.parse(a.date);
+          final dateB = DateTime.parse(b.date);
+          
+          int comparison = dateB.compareTo(dateA);
+          if (comparison == 0) {
+            return b.id.compareTo(a.id);
+          }
+          return comparison;
+        } catch (e2) {
+          print('Error parsing date field: $e2');
+          
+          // Fallback 2: Sort by booking ID (assuming higher ID = more recent)
+          try {
+            // If IDs are numeric
+            final idA = int.tryParse(a.id) ?? 0;
+            final idB = int.tryParse(b.id) ?? 0;
+            if (idA != 0 && idB != 0) {
+              return idB.compareTo(idA); // Descending order
+            }
+          } catch (e3) {
+            print('Error parsing booking IDs as numbers: $e3');
+          }
+          
+          // Fallback 3: String comparison of IDs
+          return b.id.compareTo(a.id);
+        }
+      }
+    });
+
+  if (bookings.isEmpty) {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(
+            Icons.calendar_today_outlined,
+            size: 64,
+            color: Colors.grey[400],
+          ),
+          const SizedBox(height: 16),
+          Text(
+            'No bookings found',
+            style: TextStyle(
+              fontSize: 16,
+              color: Colors.grey[600],
+            ),
+          ),
+          const SizedBox(height: 8),
+          Text(
+            _searchQuery.isEmpty
+                ? 'You haven\'t made any bookings yet'
+                : 'No bookings match your search',
+            style: TextStyle(
+              fontSize: 14,
+              color: Colors.grey[500],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  return RefreshIndicator(
+    onRefresh: () => provider.refreshBookings(),
+    child: Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      child: ListView.builder(
+        itemCount: bookings.length,
+        itemBuilder: (context, index) {
+          final booking = bookings[index];
+          return _buildBookingCard(booking, provider);
+        },
+      ),
+    ),
+  );
+}
 
   Widget _buildBookingCard(Booking booking, GetAllBookingProvider provider) {
     return Container(
@@ -622,18 +770,89 @@ class _BookingScreenState extends State<BookingScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          // Row(
+          //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          //   children: [
+          //     Expanded(
+          //       child: Text(
+          //         booking.serviceType,
+          //         style: const TextStyle(
+          //           fontSize: 16,
+          //           fontWeight: FontWeight.w600,
+          //         ),
+          //       ),
+          //     ),
+          //     Text(
+          //       '₹ ${booking.payableAmount.toStringAsFixed(0)}',
+          //       style: TextStyle(
+          //         fontSize: 16,
+          //         fontWeight: FontWeight.w600,
+          //         color: Colors.grey[800],
+          //       ),
+          //     ),
+          //   ],
+          // ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
+              // Expanded(
+              //   child: Text(
+              //     booking.type.toLowerCase() == 'Offline'
+              //         ? 'Clinic Visit'
+              //         : booking.type.toLowerCase() == 'online'
+              //             ? 'Online Consultation'
+              //             : booking.type.isNotEmpty
+              //                 ? booking.type
+              //                 : (booking.serviceType ?? ''),
+              //     style: const TextStyle(
+              //       fontSize: 16,
+              //       fontWeight: FontWeight.w600,
+              //     ),
+              //   ),
+              // ),
+              // Expanded(
+              //   child: Text(
+              //     booking.type.toLowerCase() == 'offline'
+              //         ? 'Clinic Visit'
+              //         : booking.type.toLowerCase() == 'online'
+              //             ? 'Online Consultation'
+              //             : booking.type.isNotEmpty
+              //                 ? booking.type
+              //                 : (booking.serviceType ?? ''),
+              //     style: const TextStyle(
+              //       fontSize: 16,
+              //       fontWeight: FontWeight.w600,
+              //     ),
+              //   ),
+              // ),
+
               Expanded(
-                child: Text(
-                  booking.serviceType,
-                  style: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600,
-                  ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      booking.type.toLowerCase() == 'offline'
+                          ? 'Clinic Visit'
+                          : booking.type.toLowerCase() == 'online'
+                              ? 'Online Consultation'
+                              : booking.type.isNotEmpty
+                                  ? booking.type
+                                  : (booking.serviceType ?? ''),
+                      style: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    Container(
+                      width: 120,
+                      height: 2.5,
+                      color: const Color(0xFF2E67F6), // Blue underline
+                    ),
+                  ],
                 ),
               ),
+
               Text(
                 '₹ ${booking.payableAmount.toStringAsFixed(0)}',
                 style: TextStyle(
@@ -645,13 +864,36 @@ class _BookingScreenState extends State<BookingScreen> {
             ],
           ),
           const SizedBox(height: 8),
-          Text(
-            'Booking ID : ${booking.id}',
-            style: const TextStyle(
-              fontSize: 15,
-              color: Colors.black,
+          Text.rich(
+            TextSpan(
+              children: [
+                const TextSpan(
+                  text: 'Booking ID : ',
+                  style: TextStyle(
+                    fontSize: 15,
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                TextSpan(
+                  text: booking.id,
+                  style: const TextStyle(
+                    fontSize: 15,
+                    color: Colors.black,
+                    fontWeight: FontWeight.normal,
+                  ),
+                ),
+              ],
             ),
           ),
+
+          //  Text(
+          //   'Booking ID : ${booking.}',
+          //   style: const TextStyle(
+          //     fontSize: 15,
+          //     color: Colors.black,
+          //   ),
+          // ),
           // Text(
           //   'Doctor Name : ${booking.doctorName}',
           //   style: const TextStyle(
@@ -668,21 +910,67 @@ class _BookingScreenState extends State<BookingScreen> {
           //   ),
           // ),
           const SizedBox(height: 6),
-          Text(
-            'Date & Time : ${_formatDateTime(booking.date, booking.timeSlot)}',
-            style: const TextStyle(
-              fontSize: 15,
-              color: Colors.black,
+          Text.rich(
+            TextSpan(
+              children: [
+                const TextSpan(
+                  text: 'Date & Time : ',
+                  style: TextStyle(
+                    fontSize: 15,
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                TextSpan(
+                  text: _formatDateTime(booking.date, booking.timeSlot),
+                  style: const TextStyle(
+                    fontSize: 15,
+                    color: Colors.black,
+                    fontWeight: FontWeight.normal,
+                  ),
+                ),
+              ],
             ),
           ),
+
+          // Text(
+          //   'Date & Time : ${_formatDateTime(booking.date, booking.timeSlot)}',
+          //   style: const TextStyle(
+          //     fontSize: 15,
+          //     color: Colors.black,
+          //   ),
+          // ),
           const SizedBox(height: 4),
-          Text(
-            'Payment :${booking.totalPrice}',
-            style: const TextStyle(
-              fontSize: 15,
-              color: Colors.black,
+          // Text(
+          //   'Payment :${booking.totalPrice}',
+          //   style: const TextStyle(
+          //     fontSize: 15,
+          //     color: Colors.black,
+          //   ),
+          // ),
+          Text.rich(
+            TextSpan(
+              children: [
+                const TextSpan(
+                  text: 'Payment : ',
+                  style: TextStyle(
+                    fontSize: 15,
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                TextSpan(
+                  text: booking.totalPrice.toString(),
+                  style: const TextStyle(
+                    fontSize: 15,
+                    color: Colors.black,
+                    fontWeight: FontWeight.normal,
+                  ),
+                ),
+              ],
             ),
           ),
+
           const SizedBox(height: 16),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -754,7 +1042,8 @@ class _BookingScreenState extends State<BookingScreen> {
                           bookingId: booking.id,
                           staffId: booking.staffId,
                           name: booking.primaryServiceName,
-                          title: booking.title,
+                          type: booking.type,
+                          serviceType: booking.serviceType,
                         )));
           },
           child: Container(
@@ -820,30 +1109,30 @@ class _BookingScreenState extends State<BookingScreen> {
   }
 
   String _formatDateTime(String date, String timeSlot) {
-  try {
-    final DateTime dateTime = DateTime.parse(date);
-
-    // Format: July 20, 2025
-    final String formattedDate = DateFormat('MMMM d, y').format(dateTime);
-
-    // Parse and format the time if needed
-    DateTime? time;
     try {
-      time = DateFormat('HH:mm').parse(timeSlot);
-    } catch (_) {
-      try {
-        time = DateFormat('hh:mm a').parse(timeSlot);
-      } catch (_) {
-        return '$formattedDate, $timeSlot'; // Return as-is if time parsing fails
-      }
-    }
+      final DateTime dateTime = DateTime.parse(date);
 
-    final String formattedTime = DateFormat('hh:mm a').format(time);
-    return '$formattedDate, $formattedTime';
-  } catch (e) {
-    return '$date, $timeSlot';
+      // Format: July 20, 2025
+      final String formattedDate = DateFormat('MMMM d, y').format(dateTime);
+
+      // Parse and format the time if needed
+      DateTime? time;
+      try {
+        time = DateFormat('HH:mm').parse(timeSlot);
+      } catch (_) {
+        try {
+          time = DateFormat('hh:mm a').parse(timeSlot);
+        } catch (_) {
+          return '$formattedDate, $timeSlot';
+        }
+      }
+
+      final String formattedTime = DateFormat('hh:mm a').format(time);
+      return '$formattedDate, $formattedTime';
+    } catch (e) {
+      return '$date, $timeSlot';
+    }
   }
-}
 
   void _showBookingDetails(Booking booking) {
     showModalBottomSheet(
@@ -880,7 +1169,14 @@ class _BookingScreenState extends State<BookingScreen> {
             ),
             const SizedBox(height: 20),
             // _buildDetailRow('Booking ID', booking.id),
-            _buildDetailRow('Service Type', booking.serviceType),
+            _buildDetailRow(
+              'Service Type',
+              booking.type.toLowerCase() == 'online'
+                  ? 'Online Consultation'
+                  : booking.type.toLowerCase() == 'offline'
+                      ? 'Clinic Visit'
+                      : booking.serviceType ?? '',
+            ),
 
             //  _buildDetailRow('Name', booking.),
             _buildDetailRow(

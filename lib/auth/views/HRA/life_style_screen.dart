@@ -34,9 +34,9 @@
 //       body: Padding(
 //         padding: const EdgeInsets.all(20.0),
 //         child: Column(
-         
+
 //           children: [
-         
+
 //             const SizedBox(height: 10),
 //             const Row(
 //               children: [
@@ -199,13 +199,6 @@
 //   }
 // }
 
-
-
-
-
-
-
-
 // import 'package:consultation_app/auth/views/HRA/life_style_quiz.dart';
 // import 'package:consultation_app/auth/views/provider/get_all_hra_provider.dart';
 // import 'package:flutter/material.dart';
@@ -352,7 +345,7 @@
 //             child: Column(
 //               children: [
 //                 const SizedBox(height: 10),
-                
+
 //                 // Dynamic HRA List
 //                 Expanded(
 //                   child: ListView.builder(
@@ -361,7 +354,7 @@
 //                       final hra = hraProvider.hras[index];
 //                       final isSelected = selectedHraId == hra.id;
 //                       final isSpecialItem = hra.hraName == 'Mental & Emotional Wellness';
-                      
+
 //                       return Column(
 //                         children: [
 //                           if (isSpecialItem)
@@ -463,7 +456,7 @@
 //                                 ],
 //                               ),
 //                             ),
-                          
+
 //                           const SizedBox(height: 15),
 //                           if (index < hraProvider.hras.length - 1)
 //                             const Divider(),
@@ -497,7 +490,7 @@
 //         borderRadius: BorderRadius.circular(12),
 //         border: isSelected
 //             ? Border.all(
-//                 color: const Color.fromARGB(255, 115, 100, 246), 
+//                 color: const Color.fromARGB(255, 115, 100, 246),
 //                 width: 2
 //               )
 //             : null,
@@ -565,9 +558,8 @@
 //   }
 // }
 
-
-
 import 'package:consultation_app/auth/views/HRA/life_style_quiz.dart';
+import 'package:consultation_app/auth/views/navbar_screen.dart';
 import 'package:consultation_app/auth/views/provider/get_all_hra_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -601,7 +593,13 @@ class _LifeStyleScreenState extends State<LifeStyleScreen> {
         elevation: 0,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.black),
-          onPressed: () => Navigator.of(context).pop(),
+          onPressed: () {
+            Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(builder: (context) => NavbarScreen()),
+              (Route<dynamic> route) => false,
+            );
+          },
         ),
         title: const Text(
           'HRA',
@@ -705,7 +703,7 @@ class _LifeStyleScreenState extends State<LifeStyleScreen> {
             child: Column(
               children: [
                 const SizedBox(height: 10),
-                
+
                 // Dynamic HRA List
                 Expanded(
                   child: ListView.builder(
@@ -713,16 +711,15 @@ class _LifeStyleScreenState extends State<LifeStyleScreen> {
                     itemBuilder: (context, index) {
                       final hra = hraProvider.hras[index];
                       final isSelected = selectedHraId == hra.id;
-                      
+
                       return Column(
                         children: [
-                   
                           GestureDetector(
                             onTap: () {
                               setState(() {
                                 selectedHraId = hra.id;
                               });
-                            
+
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
@@ -741,11 +738,12 @@ class _LifeStyleScreenState extends State<LifeStyleScreen> {
                                   child: hra.hraImage.isNotEmpty
                                       ? ClipOval(
                                           child: Image.network(
-                                            'http://194.164.148.244:4051${hra.hraImage}',
+                                            'http://31.97.206.144:4051${hra.hraImage}',
                                             width: 40,
                                             height: 40,
                                             fit: BoxFit.cover,
-                                            errorBuilder: (context, error, stackTrace) {
+                                            errorBuilder:
+                                                (context, error, stackTrace) {
                                               return Container(
                                                 width: 40,
                                                 height: 40,
@@ -754,14 +752,17 @@ class _LifeStyleScreenState extends State<LifeStyleScreen> {
                                                   shape: BoxShape.circle,
                                                 ),
                                                 child: Icon(
-                                                  Icons.image_not_supported_outlined,
+                                                  Icons
+                                                      .image_not_supported_outlined,
                                                   color: Colors.grey[500],
                                                   size: 20,
                                                 ),
                                               );
                                             },
-                                            loadingBuilder: (context, child, loadingProgress) {
-                                              if (loadingProgress == null) return child;
+                                            loadingBuilder: (context, child,
+                                                loadingProgress) {
+                                              if (loadingProgress == null)
+                                                return child;
                                               return Container(
                                                 width: 40,
                                                 height: 40,
@@ -773,11 +774,16 @@ class _LifeStyleScreenState extends State<LifeStyleScreen> {
                                                   child: SizedBox(
                                                     width: 20,
                                                     height: 20,
-                                                    child: CircularProgressIndicator(
+                                                    child:
+                                                        CircularProgressIndicator(
                                                       strokeWidth: 2,
-                                                      value: loadingProgress.expectedTotalBytes != null
-                                                          ? loadingProgress.cumulativeBytesLoaded /
-                                                              loadingProgress.expectedTotalBytes!
+                                                      value: loadingProgress
+                                                                  .expectedTotalBytes !=
+                                                              null
+                                                          ? loadingProgress
+                                                                  .cumulativeBytesLoaded /
+                                                              loadingProgress
+                                                                  .expectedTotalBytes!
                                                           : null,
                                                     ),
                                                   ),
@@ -807,7 +813,9 @@ class _LifeStyleScreenState extends State<LifeStyleScreen> {
                                     style: TextStyle(
                                       fontWeight: FontWeight.bold,
                                       fontSize: 18,
-                                      color: isSelected ? Colors.blue[700] : Colors.black,
+                                      color: isSelected
+                                          ? Colors.blue[700]
+                                          : Colors.black,
                                     ),
                                   ),
                                 ),
@@ -819,7 +827,6 @@ class _LifeStyleScreenState extends State<LifeStyleScreen> {
                               ],
                             ),
                           ),
-                          
                           const SizedBox(height: 15),
                           if (index < hraProvider.hras.length - 1)
                             const Divider(),

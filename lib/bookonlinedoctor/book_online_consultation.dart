@@ -18,7 +18,7 @@
 //   @override
 //   void initState() {
 //     super.initState();
- 
+
 //     WidgetsBinding.instance.addPostFrameCallback((_) {
 //       final doctorProvider = Provider.of<DoctorProvider>(context, listen: false);
 //       doctorProvider.fetchAllDoctors();
@@ -173,16 +173,16 @@
 //               trailing: Container(
 //                 padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
 //                 decoration: BoxDecoration(
-//                   color: type.toLowerCase() == 'online' 
-//                       ? Colors.green[100] 
+//                   color: type.toLowerCase() == 'online'
+//                       ? Colors.green[100]
 //                       : Colors.blue[100],
 //                   borderRadius: BorderRadius.circular(20),
 //                 ),
 //                 child: Text(
 //                   type.toUpperCase(),
 //                   style: TextStyle(
-//                     color: type.toLowerCase() == 'online' 
-//                         ? Colors.green[800] 
+//                     color: type.toLowerCase() == 'online'
+//                         ? Colors.green[800]
 //                         : Colors.blue[800],
 //                     fontWeight: FontWeight.bold,
 //                     fontSize: 12,
@@ -247,7 +247,7 @@
 //           ElevatedButton(
 //             onPressed: () {
 //             Navigator.push(context, MaterialPageRoute(builder: (context)=>ConsultationDetailsScreen(doctorId: doctor.id,)));
-    
+
 //             },
 //             child: const Text('Book Appointment'),
 //           ),
@@ -256,12 +256,6 @@
 //     );
 //   }
 // }
-
-
-
-
-
-
 
 // import 'package:consultation_app/auth/views/provider/get_all_doctor_provider.dart';
 // import 'package:consultation_app/auth/views/scheduleconsultation/consultation_details_screen.dart';
@@ -570,15 +564,10 @@
 //   }
 // }
 
-
-
-
-
-
-
-
+import 'package:consultation_app/auth/views/navbar_screen.dart';
 import 'package:consultation_app/auth/views/provider/get_all_doctor_provider.dart';
 import 'package:consultation_app/auth/views/scheduleconsultation/consultation_details_screen.dart';
+import 'package:consultation_app/bookonlinedoctor/online_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../model/get_all_doctor_model.dart';
@@ -592,14 +581,16 @@ class OnlineScheduleScreen extends StatefulWidget {
   State<OnlineScheduleScreen> createState() => _OnlineScheduleScreenState();
 }
 
-class _OnlineScheduleScreenState extends State<OnlineScheduleScreen> with SingleTickerProviderStateMixin {
+class _OnlineScheduleScreenState extends State<OnlineScheduleScreen>
+    with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _fadeAnimation;
 
   @override
   void initState() {
     super.initState();
-    _controller = AnimationController(vsync: this, duration: const Duration(milliseconds: 700));
+    _controller = AnimationController(
+        vsync: this, duration: const Duration(milliseconds: 700));
     _fadeAnimation = CurvedAnimation(parent: _controller, curve: Curves.easeIn);
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -619,11 +610,22 @@ class _OnlineScheduleScreenState extends State<OnlineScheduleScreen> with Single
     return Scaffold(
       backgroundColor: Colors.grey[100],
       appBar: AppBar(
-        title: Text(widget.id ?? 'Online Doctors', style: const TextStyle(fontWeight: FontWeight.bold)),
+        title: Text(widget.id ?? 'Online Doctors',
+            style: const TextStyle(fontWeight: FontWeight.bold)),
         centerTitle: true,
         backgroundColor: Colors.white,
         foregroundColor: Colors.black,
         elevation: 1,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: Colors.black),
+          onPressed: () {
+            Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(builder: (context) => NavbarScreen()),
+              (Route<dynamic> route) => false,
+            );
+          },
+        ),
       ),
       body: FadeTransition(
         opacity: _fadeAnimation,
@@ -669,13 +671,125 @@ class _OnlineScheduleScreenState extends State<OnlineScheduleScreen> with Single
     );
   }
 
+  // Widget _buildDoctorList(List<Doctor> doctors) {
+  //   if (doctors.isEmpty) {
+  //     return Center(
+  //       child: Column(
+  //         mainAxisAlignment: MainAxisAlignment.center,
+  //         children: [
+  //           Icon(Icons.medical_services_outlined, size: 64, color: Colors.grey[400]),
+  //           const SizedBox(height: 16),
+  //           Text(
+  //             'No online doctors found',
+  //             style: TextStyle(fontSize: 16, color: Colors.grey[600]),
+  //           ),
+  //           const SizedBox(height: 16),
+  //           ElevatedButton(
+  //             onPressed: () {
+  //               final doctorProvider = Provider.of<DoctorProvider>(context, listen: false);
+  //               doctorProvider.refreshData();
+  //             },
+  //             child: const Text('Refresh'),
+  //           ),
+  //         ],
+  //       ),
+  //     );
+  //   }
+
+  //   return RefreshIndicator(
+  //     onRefresh: () async {
+  //       await Provider.of<DoctorProvider>(context, listen: false).refreshData();
+  //     },
+  //     child: ListView.builder(
+  //       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+  //       itemCount: doctors.length,
+  //       itemBuilder: (context, index) {
+  //         final doctor = doctors[index];
+  //         return AnimatedBuilder(
+  //           animation: _controller,
+  //           builder: (context, child) {
+  //             return Opacity(
+  //               opacity: _fadeAnimation.value,
+  //               child: Transform.translate(
+  //                 offset: Offset(0, 20 * (1 - _fadeAnimation.value)),
+  //                 child: child,
+  //               ),
+  //             );
+  //           },
+  //           child: Card(
+  //             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+  //             elevation: 3,
+  //             margin: const EdgeInsets.only(bottom: 16),
+  //             child: ListTile(
+  //               contentPadding: const EdgeInsets.all(12),
+  //               leading: Hero(
+  //                 tag: 'doctor_${doctor.id}',
+  //                 child: CircleAvatar(
+  //                   radius: 28,
+  //                   backgroundImage: doctor.image.isNotEmpty
+  //                       ? NetworkImage('http://194.164.148.244:4051${doctor.image}')
+  //                       : null,
+  //                   child: doctor.image.isEmpty
+  //                       ? Icon(Icons.person, size: 32, color: Colors.grey[600])
+  //                       : null,
+  //                 ),
+  //               ),
+  //               title: Text(
+  //                 doctor.name,
+  //                 style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+  //               ),
+  //               subtitle: Column(
+  //                 crossAxisAlignment: CrossAxisAlignment.start,
+  //                 children: [
+  //                   Text(doctor.specialization),
+  //                   const SizedBox(height: 4),
+  //                   Text(doctor.qualification, style: TextStyle(fontSize: 12, color: Colors.grey[600])),
+  //                   const SizedBox(height: 4),
+  //                   Text('₹${doctor.consultationFee.toStringAsFixed(0)}',
+  //                       style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.green)),
+  //                 ],
+  //               ),
+  //               trailing: Container(
+  //                 padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+  //                 decoration: BoxDecoration(
+  //                   color: Colors.green[100],
+  //                   borderRadius: BorderRadius.circular(20),
+  //                 ),
+  //                 child: Text(
+  //                   'ONLINE',
+  //                   style: TextStyle(
+  //                     fontSize: 12,
+  //                     fontWeight: FontWeight.bold,
+  //                     color: Colors.green[800],
+  //                   ),
+  //                 ),
+  //               ),
+  //               onTap: () {
+  //                 Navigator.push(
+  //                   context,
+  //                   MaterialPageRoute(
+  //                     builder: (_) => ConsultationDetailsScreen(doctorId: doctor.id,
+  //                     doctorName: doctor.name,
+  //                     consultationFee: doctor.consultationFee.toString(),),
+  //                   ),
+  //                 );
+  //               },
+  //             ),
+  //           ),
+  //         );
+  //       },
+  //     ),
+  //   );
+  // }
+
   Widget _buildDoctorList(List<Doctor> doctors) {
     if (doctors.isEmpty) {
       return Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(Icons.medical_services_outlined, size: 64, color: Colors.grey[400]),
+            Icon(Icons.medical_services_outlined,
+                size: 64, color: Colors.grey[400]),
             const SizedBox(height: 16),
             Text(
               'No online doctors found',
@@ -684,7 +798,8 @@ class _OnlineScheduleScreenState extends State<OnlineScheduleScreen> with Single
             const SizedBox(height: 16),
             ElevatedButton(
               onPressed: () {
-                final doctorProvider = Provider.of<DoctorProvider>(context, listen: false);
+                final doctorProvider =
+                    Provider.of<DoctorProvider>(context, listen: false);
                 doctorProvider.refreshData();
               },
               child: const Text('Refresh'),
@@ -715,7 +830,8 @@ class _OnlineScheduleScreenState extends State<OnlineScheduleScreen> with Single
               );
             },
             child: Card(
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(16)),
               elevation: 3,
               margin: const EdgeInsets.only(bottom: 16),
               child: ListTile(
@@ -724,31 +840,31 @@ class _OnlineScheduleScreenState extends State<OnlineScheduleScreen> with Single
                   tag: 'doctor_${doctor.id}',
                   child: CircleAvatar(
                     radius: 28,
-                    backgroundImage: doctor.image.isNotEmpty
-                        ? NetworkImage('http://194.164.148.244:4051${doctor.image}')
-                        : null,
-                    child: doctor.image.isEmpty
-                        ? Icon(Icons.person, size: 32, color: Colors.grey[600])
-                        : null,
+                    child: _buildDoctorImage(doctor),
                   ),
                 ),
                 title: Text(
                   doctor.name,
-                  style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                  style: const TextStyle(
+                      fontWeight: FontWeight.bold, fontSize: 16),
                 ),
                 subtitle: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(doctor.specialization),
                     const SizedBox(height: 4),
-                    Text(doctor.qualification, style: TextStyle(fontSize: 12, color: Colors.grey[600])),
+                    Text(doctor.qualification,
+                        style:
+                            TextStyle(fontSize: 12, color: Colors.grey[600])),
                     const SizedBox(height: 4),
                     Text('₹${doctor.consultationFee.toStringAsFixed(0)}',
-                        style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.green)),
+                        style: const TextStyle(
+                            fontWeight: FontWeight.bold, color: Colors.green)),
                   ],
                 ),
                 trailing: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
                   decoration: BoxDecoration(
                     color: Colors.green[100],
                     borderRadius: BorderRadius.circular(20),
@@ -766,13 +882,68 @@ class _OnlineScheduleScreenState extends State<OnlineScheduleScreen> with Single
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (_) => ConsultationDetailsScreen(doctorId: doctor.id, consultationFee: doctor.consultationFee.toString(),),
+                      builder: (_) => OnlineScreen(
+                        doctorId: doctor.id,
+                        doctorName: doctor.name,
+                        consultationFee: doctor.consultationFee.toString(),
+                        // type: doctor.consultationType,
+                        // type: 'Online',
+                      ),
                     ),
                   );
                 },
               ),
             ),
           );
+        },
+      ),
+    );
+  }
+
+  Widget _buildDoctorImage(Doctor doctor) {
+    if (doctor.image.isEmpty) {
+      return Icon(Icons.person, size: 32, color: Colors.grey[600]);
+    }
+
+    final imageUrl = 'http://31.97.206.144:4051${doctor.image}';
+
+    return ClipOval(
+      child: Image.network(
+        imageUrl,
+        width: 56,
+        height: 56,
+        fit: BoxFit.cover,
+        loadingBuilder: (context, child, loadingProgress) {
+          if (loadingProgress == null) return child;
+
+          return Center(
+            child: CircularProgressIndicator(
+              value: loadingProgress.expectedTotalBytes != null
+                  ? loadingProgress.cumulativeBytesLoaded /
+                      loadingProgress.expectedTotalBytes!
+                  : null,
+              strokeWidth: 2,
+            ),
+          );
+        },
+        errorBuilder: (context, error, stackTrace) {
+          print('Image loading error for ${doctor.name}: $error');
+          return Container(
+            decoration: BoxDecoration(
+              color: Colors.grey[300],
+              shape: BoxShape.circle,
+            ),
+            child: Icon(
+              Icons.person,
+              size: 32,
+              color: Colors.grey[600],
+            ),
+          );
+        },
+        // Add timeout and caching
+        headers: const {
+          'Connection': 'keep-alive',
+          'Cache-Control': 'max-age=3600',
         },
       ),
     );

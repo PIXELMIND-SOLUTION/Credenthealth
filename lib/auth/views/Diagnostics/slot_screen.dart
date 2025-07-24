@@ -40,7 +40,6 @@
 //   return EasyLoading.show(status: 'loading...');
 // }
 
-
 // class SlotScreen extends StatefulWidget {
 //   final String? diagnostic;
 //   final String? bookingType;
@@ -69,7 +68,6 @@
 //   bool _isLoadingStaffId = true;
 //     double? wallet;
 
-  
 //   // Profile data for automatic selection
 //   Map<String, dynamic>? _profileData;
 //   bool _useProfileData = false;
@@ -87,7 +85,7 @@
 //   @override
 //   void initState() {
 //     super.initState();
-//     _generateDates(); 
+//     _generateDates();
 //     _initializeStaffId();
 //     _initializeBookingData();
 //     _loadProfileData();
@@ -95,7 +93,6 @@
 //       _initializeWalletData();
 //     });
 //   }
-
 
 //     Future<void> _initializeWalletData() async {
 //     try {
@@ -127,7 +124,7 @@
 //   void _generateDates() {
 //     DateTime now = DateTime.now();
 //     List<String> dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-    
+
 //     dates = List.generate(5, (index) {
 //       DateTime date = now.add(Duration(days: index));
 //       return {
@@ -237,12 +234,12 @@
 //     // Update date with proper formatting
 //     final selectedDate = dates[selectedDateIndex];
 //     final DateTime fullDate = selectedDate['fullDate'];
-    
+
 //     // Format date as needed by your booking provider
 //     String formattedDate = '${selectedDate['day']}-${selectedDate['date']}';
 //     // Or use a more complete format if needed:
 //     // String formattedDate = '${fullDate.day}/${fullDate.month}/${fullDate.year}';
-    
+
 //     bookingProvider.setSelectedDate(formattedDate);
 
 //     // Update time
@@ -391,8 +388,6 @@
 //     });
 //   }
 
-
-  
 //   //*>*>*>*>*>*>*>*>*>*>*>*>*>*>*>*>*>*>*>*>*>  RAZRO PAY INTEGRATION  *>*>*>*>*>*>*>*>*>*>*>*>*>*>*>*>*>*>*>*>
 //   void handlePaymentErrorResponse(PaymentFailureResponse response) {
 //     /*
@@ -407,7 +402,7 @@
 //   }
 
 //   void handlePaymentSuccessResponse(PaymentSuccessResponse response) async {
-   
+
 //  _updateBookingProviderData();
 
 //     final bookingProvider =
@@ -423,7 +418,6 @@
 //     );
 
 //     final selectedDate = dates[selectedDateIndex];
-
 
 //   final success = await bookingProvider.createBooking(
 //         selectedDay: selectedDate['day'],
@@ -507,7 +501,7 @@
 //         ),
 //       );
 //     }
-    
+
 //       @override
 //       Widget build(BuildContext context) {
 //     // TODO: implement build
@@ -515,7 +509,6 @@
 //       }
 //   }
 
-  
 //   String _formatDayForApi(DateTime date) {
 //     // Example: Monday, 19-07-2025
 //     final dayName = DateFormat('EEEE').format(date); // Monday, Tuesday, etc.
@@ -695,10 +688,6 @@
 //       ),
 //     );
 //   }
-
-
-
-
 
 //   Widget _buildProfileDataItem() {
 //     if (_profileData == null) return const SizedBox.shrink();
@@ -1216,7 +1205,7 @@
 //                         children: [
 //                           // Profile Data Item (always shown first)
 //                           _buildProfileDataItem(),
-                          
+
 //                           // Family Members
 //                           ...familyProvider.familyMembers.map((member) {
 //                             final isSelected = selectedFamilyMember?.id == member.id;
@@ -1230,7 +1219,7 @@
 //                               child: _buildFamilyMemberItem(member, isSelected),
 //                             );
 //                           }).toList(),
-                          
+
 //                           // Show message if no family members
 //                           if (familyProvider.familyMembers.isEmpty)
 //                             Container(
@@ -1360,11 +1349,9 @@
 
 
 
-
-
-
 import 'package:consultation_app/auth/views/Diagnostics/confirm_booking_screen.dart';
 import 'package:consultation_app/auth/views/family/list_family_members.dart';
+import 'package:consultation_app/auth/views/provider/booking_slot_provider.dart';
 import 'package:consultation_app/auth/views/provider/family_provider.dart';
 import 'package:consultation_app/auth/views/provider/booking_provider.dart';
 import 'package:consultation_app/auth/views/provider/wallet_provider.dart';
@@ -1433,7 +1420,9 @@ class _SlotScreenState extends State<SlotScreen> {
   bool _isLoadingStaffId = true;
   double? wallet;
   late Razorpay _razorpay;
-  
+String? dateCustom = DateFormat('yyyy/MM/dd').format(DateTime.now());
+  String? customSlot;
+
   // Profile data for automatic selection
   Map<String, dynamic>? _profileData;
   bool _useProfileData = false;
@@ -1455,11 +1444,13 @@ class _SlotScreenState extends State<SlotScreen> {
     _initializeStaffId();
     _initializeBookingData();
     _loadProfileData();
-    _razorpay = Razorpay();
-    _razorpay.on(Razorpay.EVENT_PAYMENT_ERROR, _handlePaymentErrorResponse);
-    _razorpay.on(Razorpay.EVENT_PAYMENT_SUCCESS, _handlePaymentSuccessResponse);
-    _razorpay.on(Razorpay.EVENT_EXTERNAL_WALLET, _handleExternalWalletSelected);
-    
+    //  Provider.of<BookingSlotProvider>(context, listen: false);
+
+    if (dates.isNotEmpty) {
+      final initialDate = dates[0]['date']; // format: 'dd/MM/yyyy'
+      Provider.of<BookingSlotProvider>(context, listen: false)
+          .fetchSlots(widget.diagnosticId.toString(), initialDate);
+    }
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _initializeWalletData();
     });
@@ -1473,8 +1464,10 @@ class _SlotScreenState extends State<SlotScreen> {
 
   Future<void> _initializeWalletData() async {
     try {
-        print("ooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo${widget.bookingType}");
-
+      print(
+          "ooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo${widget.bookingType}");
+      print(
+          'hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh${widget.amount}');
       final staffId = await SharedPrefsHelper.getStaffIdWithFallback();
       final token = await SharedPrefsHelper.getUserToken();
 
@@ -1498,17 +1491,33 @@ class _SlotScreenState extends State<SlotScreen> {
     }
   }
 
+  // void _generateDates() {
+  //   DateTime now = DateTime.now();
+  //   List<String> dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+
+  //   dates = List.generate(5, (index) {
+  //     DateTime date = now.add(Duration(days: index));
+  //     return {
+  //       'day': dayNames[date.weekday % 7],
+  //       'date': date.day,
+  //       'month': date.month,
+  //       'year': date.year,
+  //       'fullDate': date,
+  //     };
+  //   });
+  // }
+
   void _generateDates() {
     DateTime now = DateTime.now();
     List<String> dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-    
+
     dates = List.generate(5, (index) {
       DateTime date = now.add(Duration(days: index));
       return {
-        'day': dayNames[date.weekday % 7],
-        'date': date.day,
-        'month': date.month,
-        'year': date.year,
+        'day': dayNames[date.weekday % 7], 
+        'dayNumber': date.day.toString(), 
+        'date':
+            DateFormat('dd/MM/yyyy').format(date),
         'fullDate': date,
       };
     });
@@ -1603,9 +1612,9 @@ class _SlotScreenState extends State<SlotScreen> {
 
     final selectedDate = dates[selectedDateIndex];
     final DateTime fullDate = selectedDate['fullDate'];
-    
+
     String formattedDate = '${selectedDate['day']}-${selectedDate['date']}';
-    
+
     bookingProvider.setSelectedDate(formattedDate);
     bookingProvider.setSelectedTime(timeSlots[selectedTimeIndex]);
 
@@ -1618,18 +1627,84 @@ class _SlotScreenState extends State<SlotScreen> {
   }
 
   // Razorpay Payment Handlers
-  void _handlePaymentErrorResponse(PaymentFailureResponse response) {
-    EasyLoading.dismiss();
+  void handlePaymentErrorResponse(PaymentFailureResponse response) {
+    /*
+    * PaymentFailureResponse contains three values:
+    * 1. Error Code
+    * 2. Error Description
+    * 3. Metadata
+    * */
+    // EasyLoading.dismiss();
     showAlertDialog(context, "Payment Failed",
         "Code: ${response.code}\nDescription: ${response.message}\nMetadata:${response.toString()}");
   }
 
-  void _handlePaymentSuccessResponse(PaymentSuccessResponse response) async {
-    EasyLoading.dismiss();
-    await _completeBookingAfterPayment();
-  }
+  void handlePaymentSuccessResponse(PaymentSuccessResponse responsee) async {
 
-  void _handleExternalWalletSelected(ExternalWalletResponse response) {
+ _updateBookingProviderData();
+
+    final bookingProvider =
+        Provider.of<BookingProvider>(context, listen: false);
+
+    // Show loading dialog
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => const Center(
+        child: CircularProgressIndicator(),
+      ),
+    );
+
+    final selectedDate = dates[selectedDateIndex];
+
+  final response = await bookingProvider.createBooking(
+        selectedDay: selectedDate['day'],
+        selectedDate: dateCustom.toString(),
+        selectedTime: customSlot.toString(),
+        diagnosticId: widget.diagnosticId,
+        packageId: widget.packageId,
+        familyMemberId: selectedFamilyMember?.id.toString(),
+        serviceType: widget.bookingType,
+        transactionId: responsee.paymentId.toString()
+      );
+
+      // Hide loading dialog
+      if (mounted) {
+        Navigator.of(context).pop();
+      }
+
+
+
+      if (response['success']) {
+        print("gggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggrrrrr");
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Consultation booked successfully!'),
+            backgroundColor: Colors.green,
+          ),
+        );
+
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => ConfirmBookingScreen(
+              selectedDate: dateCustom,
+              selectedTime: customSlot,
+              selectedDay: dates[selectedDateIndex]['day'],
+            ),
+          ),
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(response['error'] ?? 'Failed to book consultation'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    } 
+
+  void handleExternalWalletSelected(ExternalWalletResponse response) {
     showAlertDialog(
         context, "External Wallet Selected", "${response.walletName}");
   }
@@ -1638,11 +1713,11 @@ class _SlotScreenState extends State<SlotScreen> {
     failed(mesg: "failed", context: context);
   }
 
- Future<void> _completeBookingAfterPayment() async {
+Future<void> _completeBookingAfterPayment() async {
   showLoading();
   try {
     final bookingProvider = Provider.of<BookingProvider>(context, listen: false);
-
+    
     // Determine family member ID to use (optional)
     String? familyMemberIdToUse;
     if (selectedFamilyMember != null) {
@@ -1656,24 +1731,25 @@ class _SlotScreenState extends State<SlotScreen> {
       familyMemberIdToUse = _currentStaffId;
       print('✅ No family member selected, using current user as default (ID: $familyMemberIdToUse)');
     }
-
+    
     // Create booking with dynamic date
     final selectedDate = dates[selectedDateIndex];
     print('📅 Creating booking with date: ${selectedDate['day']}, ${selectedDate['date']}');
     
-    final success = await bookingProvider.createBooking(
+    final response = await bookingProvider.createBooking(
       selectedDay: selectedDate['day'],
       selectedDate: selectedDate['date'].toString(),
       selectedTime: timeSlots[selectedTimeIndex],
       diagnosticId: widget.diagnosticId,
       packageId: widget.packageId,
-      familyMemberId: familyMemberIdToUse, // This can be null
+      familyMemberId: familyMemberIdToUse,
       serviceType: widget.bookingType ?? 'Home Collection',
     );
-
+    
     EasyLoading.dismiss();
-
-    if (success) {
+    
+    // First check if the response itself is successful
+    if (response['success'] == true) {
       print('✅ Booking created successfully');
       Navigator.pushReplacement(
         context,
@@ -1685,17 +1761,41 @@ class _SlotScreenState extends State<SlotScreen> {
           ),
         ),
       );
-    } else {
-      print('❌ Booking creation failed: ${bookingProvider.error}');
+    } 
+    // Then check if we have a payment requirement in the data
+    else if (response['data']['isSuccessfull'] == false) {
+      final requiredOnlineAmount = response['data']['requiredOnline']?.toDouble() ?? 0.0;
+      final walletAvailable = response['data']['walletAvailable']?.toDouble() ?? 0.0;
+      final message = response['data']['message'] ?? 'Insufficient wallet balance';
+      
+      print('💰 Payment required: $message');
+      print('💵 Wallet available: $walletAvailable');
+      print('💳 Required online payment amount: $requiredOnlineAmount');
+      
+      if (requiredOnlineAmount > 0) {
+        await _initiateRazorpayPayment(requiredOnlineAmount.toInt());
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(message),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    }
+    // Handle other error cases
+    else {
+      final errorMessage = response['error'] ?? 
+                          response['message'] ?? 
+                          'Failed to create booking';
+      print('❌ Booking creation failed: $errorMessage');
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Row(
             children: [
               const Icon(Icons.error_outline, color: Colors.white),
               const SizedBox(width: 8),
-              Expanded(
-                child: Text(bookingProvider.error ?? 'Failed to create booking'),
-              ),
+              Expanded(child: Text(errorMessage)),
             ],
           ),
           backgroundColor: Colors.red,
@@ -1726,11 +1826,13 @@ class _SlotScreenState extends State<SlotScreen> {
   }
 }
 
-  Future<void> _initiateRazorpayPayment() async {
+
+
+  Future<void> _initiateRazorpayPayment(int amount) async {
     try {
       final amountStr = widget.amount ?? '0';
       final amount = double.tryParse(amountStr) ?? 0;
-      
+
       if (amount <= 0) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Invalid amount for payment')),
@@ -1739,9 +1841,11 @@ class _SlotScreenState extends State<SlotScreen> {
       }
 
       final amountInPaise = (amount * 100).round();
+      Razorpay razorpay = Razorpay();
 
       var options = {
-        'key': 'rzp_test_BxtRNvflG06PTV', // test key - replace with your production key
+        'key':
+            'rzp_test_BxtRNvflG06PTV', // test key - replace with your production key
         'amount': amountInPaise,
         'name': 'CredentHealth',
         'description': 'Diagnostic Test Payment',
@@ -1756,7 +1860,11 @@ class _SlotScreenState extends State<SlotScreen> {
         }
       };
 
-      _razorpay.open(options);
+      razorpay.on(Razorpay.EVENT_PAYMENT_ERROR, handlePaymentErrorResponse);
+      razorpay.on(Razorpay.EVENT_PAYMENT_SUCCESS, handlePaymentSuccessResponse);
+      razorpay.on(Razorpay.EVENT_EXTERNAL_WALLET, handleExternalWalletSelected);
+            razorpay.open(options);
+
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -1795,7 +1903,7 @@ class _SlotScreenState extends State<SlotScreen> {
   //   _updateBookingProviderData();
 
   //   final amount = double.tryParse(widget.amount ?? '0') ?? 0;
-    
+
   //   if (amount <= 0) {
   //     ScaffoldMessenger.of(context).showSnackBar(
   //       const SnackBar(content: Text('Invalid amount for booking')),
@@ -1813,118 +1921,120 @@ class _SlotScreenState extends State<SlotScreen> {
   //   }
   // }
 
+  Future<void> _proceedToPayment() async {
+    print("Initiating payment validation for amount: ${widget.amount}");
 
-Future<void> _proceedToPayment() async {
-  print("Initiating payment validation for amount: ${widget.amount}");
-  
-  // 1. Validate Amount
-  if (widget.amount == null || widget.amount!.isEmpty) {
-    _showValidationError('Amount is missing. Please go back and select a valid service.');
-    return;
-  }
-  
-  final amount = double.tryParse(widget.amount!);
-  if (amount == null || amount <= 0) {
-    _showValidationError('Invalid amount (${widget.amount}). Please select a valid service.');
-    return;
-  }
-
-  // 2. Validate Diagnostic/Service Selection
-  if (widget.diagnosticId == null || widget.diagnosticId!.isEmpty) {
-    if (widget.packageId == null || widget.packageId!.isEmpty) {
-      _showValidationError('No diagnostic test or package selected. Please go back and select a service.');
+    // 1. Validate Amount
+    if (widget.amount == null || widget.amount!.isEmpty) {
+      _showValidationError(
+          'Amount is missing. Please go back and select a valid service.');
       return;
     }
-  }
+    print('Widgetasdslfjlfd;jlfjsjd;fdjks${widget.amount}');
 
-  // 3. Validate Date Selection
-  if (selectedDateIndex < 0 || selectedDateIndex >= dates.length) {
-    _showValidationError('Please select a valid date for your appointment.');
-    return;
-  }
+    // final amount = int.parse(widget.amount!);
+    // print('kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk$amount');
+    // if ((widget.amount) <= 0) {
+    //   _showValidationError(
+    //       'Invalid amount (${widget.amount}). Please select a valid service.');
+    //   return;
+    // }
 
-  // 4. Validate Time Selection
-  if (selectedTimeIndex < 0 || selectedTimeIndex >= timeSlots.length) {
-    _showValidationError('Please select a valid time slot for your appointment.');
-    return;
-  }
+    // 2. Validate Diagnostic/Service Selection
+    if (widget.diagnosticId == null || widget.diagnosticId!.isEmpty) {
+      if (widget.packageId == null || widget.packageId!.isEmpty) {
+        _showValidationError(
+            'No diagnostic test or package selected. Please go back and select a service.');
+        return;
+      }
+    }
 
-  // 5. Handle Family Member Selection (Optional)
-  String? familyMemberIdToUse;
-  String selectedMemberName = '';
-  
-  if (selectedFamilyMember != null) {
-    // Family member selected
-    familyMemberIdToUse = selectedFamilyMember!.id.toString();
-    selectedMemberName = selectedFamilyMember!.fullName;
-    
-    if (familyMemberIdToUse.isEmpty) {
-      _showValidationError('Selected family member has invalid ID. Please select another member.');
+    // 3. Validate Date Selection
+    if (selectedDateIndex < 0 || selectedDateIndex >= dates.length) {
+      _showValidationError('Please select a valid date for your appointment.');
       return;
     }
-  } else if (_useProfileData && _currentStaffId != null && _currentStaffId!.isNotEmpty) {
-    // Profile data selected
-    familyMemberIdToUse = _currentStaffId!;
-    selectedMemberName = _profileData?['name'] ?? _profileData?['fullName'] ?? 'Your Profile';
-  } else {
-    // No family member selected - this is optional, will use current user
-    familyMemberIdToUse = _currentStaffId;
-    selectedMemberName = 'Current User';
-    print('ℹ️ No family member selected, using current user as default');
-  }
 
-  // 6. Validate Staff ID
-  if (_currentStaffId == null || _currentStaffId!.isEmpty) {
-    _showValidationError('User session expired. Please login again.');
-    return;
-  }
+    // 4. Validate Time Selection
+    if (selectedTimeIndex < 0 || selectedTimeIndex >= timeSlots.length) {
+      _showValidationError(
+          'Please select a valid time slot for your appointment.');
+      return;
+    }
 
-  // 7. Validate Booking Type
-  if (widget.bookingType == null || widget.bookingType!.isEmpty) {
-    print('Warning: Booking type not specified, defaulting to Home Collection');
-  }
+    // 5. Handle Family Member Selection (Optional)
+    String? familyMemberIdToUse;
+    String selectedMemberName = '';
 
-  // 8. Validate Profile Data if specifically using profile
-  if (_useProfileData && _profileData == null) {
-    _showValidationError('Profile data not available. Please try selecting a family member or refresh the page.');
-    return;
-  }
+    if (selectedFamilyMember != null) {
+      // Family member selected
+      familyMemberIdToUse = selectedFamilyMember!.id.toString();
+      selectedMemberName = selectedFamilyMember!.fullName;
 
-  print("ooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo${widget.bookingType}");
+      if (familyMemberIdToUse.isEmpty) {
+        _showValidationError(
+            'Selected family member has invalid ID. Please select another member.');
+        return;
+      }
+    } else if (_useProfileData &&
+        _currentStaffId != null &&
+        _currentStaffId!.isNotEmpty) {
+      // Profile data selected
+      familyMemberIdToUse = _currentStaffId!;
+      selectedMemberName =
+          _profileData?['name'] ?? _profileData?['fullName'] ?? 'Your Profile';
+    } else {
+      // No family member selected - this is optional, will use current user
+      familyMemberIdToUse = _currentStaffId;
+      selectedMemberName = 'Current User';
+      print('ℹ️ No family member selected, using current user as default');
+    }
 
-  // 9. All validations passed - Show confirmation
-  final selectedDate = dates[selectedDateIndex];
-  final selectedTime = timeSlots[selectedTimeIndex];
-  final serviceType = widget.bookingType ?? 'Home Collection';
-  
-  // Create summary for confirmation
-  String serviceName = widget.diagnostic ?? 'Diagnostic Service';
-  if (widget.packageId != null && widget.packageId!.isNotEmpty) {
-    serviceName += ' (Package)';
-  }
+    // 6. Validate Staff ID
+    if (_currentStaffId == null || _currentStaffId!.isEmpty) {
+      _showValidationError('User session expired. Please login again.');
+      return;
+    }
 
-  print('✅ All validation checks passed:');
-  print('- Amount: ₹$amount');
-  print('- Service: $serviceName');
-  print('- Diagnostic ID: ${widget.diagnosticId}');
-  print('- Package ID: ${widget.packageId}');
-  print('- Date: ${selectedDate['day']}, ${selectedDate['date']}/${selectedDate['month']}/${selectedDate['year']}');
-  print('- Time: $selectedTime');
-  print('- Family Member: $selectedMemberName (ID: $familyMemberIdToUse)');
-  print('- Service Type: $serviceType');
-  print('- Staff ID: $_currentStaffId');
-  print('- Wallet Balance: ₹${wallet ?? 0}');
+    // 7. Validate Booking Type
+    if (widget.bookingType == null || widget.bookingType!.isEmpty) {
+      print(
+          'Warning: Booking type not specified, defaulting to Home Collection');
+    }
 
-  // Show confirmation dialog
-  // final bool? confirmed = await _showBookingConfirmation(
-  //   serviceName: serviceName,
-  //   amount: amount,
-  //   selectedDate: selectedDate,
-  //   selectedTime: selectedTime,
-  //   selectedMemberName: selectedMemberName,
-  //   serviceType: serviceType,
-  // );
+    // 8. Validate Profile Data if specifically using profile
+    if (_useProfileData && _profileData == null) {
+      _showValidationError(
+          'Profile data not available. Please try selecting a family member or refresh the page.');
+      return;
+    }
 
+    print(
+        "ooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo${widget.bookingType}");
+
+    // 9. All validations passed - Show confirmation
+    final selectedDate = dates[selectedDateIndex];
+    final selectedTime = timeSlots[selectedTimeIndex];
+    final serviceType = widget.bookingType ?? 'Home Collection';
+
+    // Create summary for confirmation
+    String serviceName = widget.diagnostic ?? 'Diagnostic Service';
+    if (widget.packageId != null && widget.packageId!.isNotEmpty) {
+      serviceName += ' (Package)';
+    }
+
+    print('✅ All validation checks passed:');
+    // print('- Amount: ₹$amount');
+    print('- Service: $serviceName');
+    print('- Diagnostic ID: ${widget.diagnosticId}');
+    print('- Package ID: ${widget.packageId}');
+    print(
+        '- Date: ${selectedDate['day']}, ${selectedDate['date']}/${selectedDate['month']}/${selectedDate['year']}');
+    print('- Time: $selectedTime');
+    print('- Family Member: $selectedMemberName (ID: $familyMemberIdToUse)');
+    print('- Service Type: $serviceType');
+    print('- Staff ID: $_currentStaffId');
+    print('- Wallet Balance: ₹${wallet ?? 0}');
 
     // Update booking provider with validated data
     _updateBookingProviderWithValidatedData(
@@ -1935,190 +2045,191 @@ Future<void> _proceedToPayment() async {
     );
 
     // Proceed with payment
-    if ((wallet ?? 0) >= amount) {
-      print('💰 Using wallet payment - Balance: ₹${wallet}, Amount: ₹$amount');
       await _completeBookingAfterPayment();
-    } else {
-      print('💳 Using Razorpay payment - Wallet: ₹${wallet ?? 0}, Required: ₹$amount');
-      await _initiateRazorpayPayment();
-    }
-}
 
-void _showValidationError(String message) {
-  ScaffoldMessenger.of(context).showSnackBar(
-    SnackBar(
-      content: Row(
-        children: [
-          const Icon(Icons.error_outline, color: Colors.white),
-          const SizedBox(width: 8),
-          Expanded(child: Text(message)),
-        ],
-      ),
-      backgroundColor: Colors.red[700],
-      behavior: SnackBarBehavior.floating,
-      duration: const Duration(seconds: 4),
-      action: SnackBarAction(
-        label: 'OK',
-        textColor: Colors.white,
-        onPressed: () {
-          ScaffoldMessenger.of(context).hideCurrentSnackBar();
-        },
-      ),
-    ),
-  );
-}
+  }
 
-Future<bool?> _showBookingConfirmation({
-  required String serviceName,
-  required double amount,
-  required Map<String, dynamic> selectedDate,
-  required String selectedTime,
-  required String selectedMemberName,
-  required String serviceType,
-}) async {
-  return showDialog<bool>(
-    context: context,
-    barrierDismissible: false,
-    builder: (BuildContext context) {
-      return AlertDialog(
-        title: const Row(
+  void _showValidationError(String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Row(
           children: [
-            Icon(Icons.confirmation_number, color: Colors.blue),
-            SizedBox(width: 8),
-            Text('Confirm Booking'),
+            const Icon(Icons.error_outline, color: Colors.white),
+            const SizedBox(width: 8),
+            Expanded(child: Text(message)),
           ],
         ),
-        content: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
+        backgroundColor: Colors.red[700],
+        behavior: SnackBarBehavior.floating,
+        duration: const Duration(seconds: 4),
+        action: SnackBarAction(
+          label: 'OK',
+          textColor: Colors.white,
+          onPressed: () {
+            ScaffoldMessenger.of(context).hideCurrentSnackBar();
+          },
+        ),
+      ),
+    );
+  }
+
+  Future<bool?> _showBookingConfirmation({
+    required String serviceName,
+    required double amount,
+    required Map<String, dynamic> selectedDate,
+    required String selectedTime,
+    required String selectedMemberName,
+    required String serviceType,
+  }) async {
+    return showDialog<bool>(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Row(
             children: [
-              _buildConfirmationRow('Service', serviceName),
-              _buildConfirmationRow('Amount', '₹${amount.toStringAsFixed(2)}'),
-              _buildConfirmationRow('Date', '${selectedDate['day']}, ${selectedDate['date']}/${selectedDate['month']}/${selectedDate['year']}'),
-              _buildConfirmationRow('Time', selectedTime),
-              _buildConfirmationRow('Patient', selectedMemberName),
-              _buildConfirmationRow('Service Type', serviceType),
-              const Divider(height: 20),
-              Container(
-                padding: const EdgeInsets.all(12),
-                decoration: BoxDecoration(
-                  color: Colors.blue[50],
-                  borderRadius: BorderRadius.circular(8),
-                  border: Border.all(color: Colors.blue[200]!),
-                ),
-                child: Row(
-                  children: [
-                    Icon(Icons.account_balance_wallet, color: Colors.blue[700], size: 20),
-                    const SizedBox(width: 8),
-                    Text(
-                      'Payment Method: ${(wallet ?? 0) >= amount ? 'Wallet Balance' : 'Razorpay Payment'}',
-                      style: TextStyle(
-                        fontWeight: FontWeight.w500,
-                        color: Colors.blue[700],
-                        fontSize: 13,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              if ((wallet ?? 0) < amount) ...[
-                const SizedBox(height: 8),
-                Text(
-                  'Note: Wallet balance (₹${wallet?.toStringAsFixed(2) ?? '0.00'}) is insufficient. Payment will be processed via Razorpay.',
-                  style: TextStyle(
-                    fontSize: 12,
-                    color: Colors.orange[700],
-                    fontStyle: FontStyle.italic,
-                  ),
-                ),
-              ],
+              Icon(Icons.confirmation_number, color: Colors.blue),
+              SizedBox(width: 8),
+              Text('Confirm Booking'),
             ],
           ),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(false),
-            child: const Text('Cancel'),
-          ),
-          ElevatedButton(
-            onPressed: () => Navigator.of(context).pop(true),
-            style: ElevatedButton.styleFrom(
-              backgroundColor: const Color.fromARGB(255, 33, 82, 243),
+          content: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                _buildConfirmationRow('Service', serviceName),
+                _buildConfirmationRow(
+                    'Amount', '₹${amount.toStringAsFixed(2)}'),
+                _buildConfirmationRow('Date',
+                    '${selectedDate['day']}, ${selectedDate['date']}/${selectedDate['month']}/${selectedDate['year']}'),
+                _buildConfirmationRow('Time', selectedTime),
+                _buildConfirmationRow('Patient', selectedMemberName),
+                _buildConfirmationRow('Service Type', serviceType),
+                const Divider(height: 20),
+                Container(
+                  padding: const EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    color: Colors.blue[50],
+                    borderRadius: BorderRadius.circular(8),
+                    border: Border.all(color: Colors.blue[200]!),
+                  ),
+                  child: Row(
+                    children: [
+                      Icon(Icons.account_balance_wallet,
+                          color: Colors.blue[700], size: 20),
+                      const SizedBox(width: 8),
+                      Text(
+                        'Payment Method: ${(wallet ?? 0) >= amount ? 'Wallet Balance' : 'Razorpay Payment'}',
+                        style: TextStyle(
+                          fontWeight: FontWeight.w500,
+                          color: Colors.blue[700],
+                          fontSize: 13,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                if ((wallet ?? 0) < amount) ...[
+                  const SizedBox(height: 8),
+                  Text(
+                    'Note: Wallet balance (₹${wallet?.toStringAsFixed(2) ?? '0.00'}) is insufficient. Payment will be processed via Razorpay.',
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: Colors.orange[700],
+                      fontStyle: FontStyle.italic,
+                    ),
+                  ),
+                ],
+              ],
             ),
-            child: const Text('Confirm & Pay', style: TextStyle(color: Colors.white)),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(false),
+              child: const Text('Cancel'),
+            ),
+            ElevatedButton(
+              onPressed: () => Navigator.of(context).pop(true),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color.fromARGB(255, 33, 82, 243),
+              ),
+              child: const Text('Confirm & Pay',
+                  style: TextStyle(color: Colors.white)),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Widget _buildConfirmationRow(String label, String value) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 4),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          SizedBox(
+            width: 90,
+            child: Text(
+              '$label:',
+              style: const TextStyle(
+                fontWeight: FontWeight.w500,
+                color: Colors.grey,
+                fontSize: 13,
+              ),
+            ),
+          ),
+          Expanded(
+            child: Text(
+              value,
+              style: const TextStyle(
+                fontWeight: FontWeight.w600,
+                fontSize: 13,
+              ),
+            ),
           ),
         ],
-      );
-    },
-  );
-}
-
-Widget _buildConfirmationRow(String label, String value) {
-  return Padding(
-    padding: const EdgeInsets.symmetric(vertical: 4),
-    child: Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        SizedBox(
-          width: 90,
-          child: Text(
-            '$label:',
-            style: const TextStyle(
-              fontWeight: FontWeight.w500,
-              color: Colors.grey,
-              fontSize: 13,
-            ),
-          ),
-        ),
-        Expanded(
-          child: Text(
-            value,
-            style: const TextStyle(
-              fontWeight: FontWeight.w600,
-              fontSize: 13,
-            ),
-          ),
-        ),
-      ],
-    ),
-  );
-}
-
-void _updateBookingProviderWithValidatedData({
-  required Map<String, dynamic> selectedDate,
-  required String selectedTime,
-  required String familyMemberId,
-  required String serviceType,
-}) {
-  final bookingProvider = Provider.of<BookingProvider>(context, listen: false);
-  
-  // Format date as required
-  String formattedDate = '${selectedDate['day']}-${selectedDate['date']}';
-  
-  // Set all validated data
-  bookingProvider.setSelectedDate(formattedDate);
-  bookingProvider.setSelectedTime(selectedTime);
-  bookingProvider.setSelectedFamilyMember(familyMemberId);
-  bookingProvider.setSelectedServiceType(serviceType);
-  
-  if (widget.diagnosticId != null) {
-    bookingProvider.setSelectedDiagnostic(widget.diagnosticId!);
+      ),
+    );
   }
-  if (widget.packageId != null) {
-    bookingProvider.setSelectedPackage(widget.packageId);
+
+  void _updateBookingProviderWithValidatedData({
+    required Map<String, dynamic> selectedDate,
+    required String selectedTime,
+    required String familyMemberId,
+    required String serviceType,
+  }) {
+    final bookingProvider =
+        Provider.of<BookingProvider>(context, listen: false);
+
+    // Format date as required
+    String formattedDate = '${selectedDate['day']}-${selectedDate['date']}';
+
+    // Set all validated data
+    bookingProvider.setSelectedDate(formattedDate);
+    bookingProvider.setSelectedTime(selectedTime);
+    bookingProvider.setSelectedFamilyMember(familyMemberId);
+    bookingProvider.setSelectedServiceType(serviceType);
+
+    if (widget.diagnosticId != null) {
+      bookingProvider.setSelectedDiagnostic(widget.diagnosticId!);
+    }
+    if (widget.packageId != null) {
+      bookingProvider.setSelectedPackage(widget.packageId);
+    }
+
+    // Clear any previous error messages
+    bookingProvider.clearMessages();
+
+    print('✅ BookingProvider updated with validated data');
   }
-  
-  // Clear any previous error messages
-  bookingProvider.clearMessages();
-  
-  print('✅ BookingProvider updated with validated data');
-}
 
   Widget _buildProfileDataItem() {
     if (_profileData == null) return const SizedBox.shrink();
 
-    final name = _profileData!['name'] ?? _profileData!['fullName'] ?? 'Your Profile';
+    final name =
+        _profileData!['name'] ?? _profileData!['fullName'] ?? 'Your Profile';
     final email = _profileData!['email'] ?? '';
     final isSelected = _useProfileData && selectedFamilyMember == null;
 
@@ -2388,82 +2499,244 @@ void _updateBookingProviderWithValidatedData({
                 Container(
                   width: double.infinity,
                   padding: const EdgeInsets.all(16),
-                  decoration: BoxDecoration(
-                    border: Border.all(color: Colors.blue, width: 1),
-                    borderRadius: BorderRadius.circular(12),
+                  decoration: const BoxDecoration(
+                    border: Border(
+                      top: BorderSide(
+                          color: Colors.blue, width: 1), // Top border only
+                    ),
+                    borderRadius: BorderRadius.vertical(
+                      top: Radius.circular(12), // Only top corners are curved
+                    ),
                   ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text(
-                        'Choose Date',
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black,
-                        ),
-                      ),
-                      const SizedBox(height: 16),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: dates.asMap().entries.map((entry) {
-                          int index = entry.key;
-                          Map<String, dynamic> date = entry.value;
-                          bool isSelected = selectedDateIndex == index;
 
-                          return GestureDetector(
-                            onTap: () {
-                              setState(() {
-                                selectedDateIndex = index;
-                              });
-                            },
-                            child: Column(
-                              children: [
-                                if (isSelected)
-                                  Container(
-                                    width: 20,
-                                    height: 20,
-                                    decoration: const BoxDecoration(
-                                      color: Colors.green,
-                                      shape: BoxShape.circle,
-                                    ),
-                                    child: const Icon(
-                                      Icons.check,
-                                      color: Colors.white,
-                                      size: 14,
-                                    ),
-                                  )
-                                else
-                                  const SizedBox(height: 20),
-                                const SizedBox(height: 8),
-                                Text(
-                                  date['day'],
-                                  style: TextStyle(
-                                    fontSize: 14,
-                                    color: isSelected
-                                        ? Colors.black
-                                        : Colors.grey,
-                                    fontWeight: isSelected
-                                        ? FontWeight.w600
-                                        : FontWeight.normal,
-                                  ),
+                      Consumer<BookingSlotProvider>(
+                        builder: (context, slotProvider, child) {
+                          if(slotProvider.slots.isNotEmpty){
+                             final slots = slotProvider.slots ?? [];
+                             customSlot = slots[0].timeSlot;
+                          }
+                          return Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Text(
+                                'Choose Date',
+                                style: TextStyle(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black,
                                 ),
-                                const SizedBox(height: 4),
-                                Text(
-                                  date['date'].toString(),
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    color: isSelected
-                                        ? Colors.black
-                                        : Colors.grey,
-                                    fontWeight: FontWeight.w600,
-                                  ),
+                              ),
+                              const SizedBox(height: 16),
+
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: dates.asMap().entries.map((entry) {
+                                  int index = entry.key;
+                                  Map<String, dynamic> date = entry.value;
+                                  bool isSelected = selectedDateIndex == index;
+
+                                  return GestureDetector(
+                                    onTap: () async {
+                                      if (index == dates.length - 1) {
+                                        // Last date: open date picker
+                                        DateTime? pickedDate =
+                                            await showDatePicker(
+                                          context: context,
+                                          initialDate: DateTime.now(),
+                                          firstDate: DateTime.now(),
+                                          lastDate: DateTime.now()
+                                              .add(const Duration(days: 365)),
+                                        );
+
+                                        if (pickedDate != null) {
+                                          print("hhhhhhhhhhhhhhhhhhhhhhhhhh$pickedDate");
+                                          final customDate = {
+                                            'day': DateFormat('EEE')
+                                                .format(pickedDate),
+                                            'dayNumber':
+                                                pickedDate.day.toString(),
+                                            'date': DateFormat('dd/MM/yyyy')
+                                                .format(pickedDate),
+                                            'fullDate': pickedDate,
+                                          };
+
+                                          setState(() {
+                                            dates[dates.length - 1] =
+                                                customDate;
+                                            selectedDateIndex = index;
+                                            selectedTimeIndex = -1;
+                                            dateCustom = DateFormat('yyyy/MM/dd')
+                                                .format(pickedDate);
+                                          });
+
+                                          print("oooooooooooooooooooooooooo$dateCustom");
+
+                                          context
+                                              .read<BookingSlotProvider>()
+                                              .fetchSlots(
+                                                widget.diagnosticId.toString(),
+                                                customDate['date'].toString(),
+                                              );
+                                        }
+                                      } else {
+                                             DateTime? pickedDate =
+                                            await showDatePicker(
+                                          context: context,
+                                          initialDate: DateTime.now(),
+                                          firstDate: DateTime.now(),
+                                          lastDate: DateTime.now()
+                                              .add(const Duration(days: 365)),
+                                        );
+                                        setState(() {
+                                          selectedDateIndex = index;
+                                          selectedTimeIndex = -1;
+                                          dateCustom = DateFormat('yyyy/MM/dd')
+                                                .format(pickedDate!);
+                                        });
+
+                                        context
+                                            .read<BookingSlotProvider>()
+                                            .fetchSlots(
+                                              widget.diagnosticId.toString(),
+                                              date[
+                                                  'date'], // Already in 'dd/MM/yyyy' format
+                                            );
+                                      }
+                                    },
+                                    child: Column(
+                                      children: [
+                                        if (isSelected)
+                                          Container(
+                                            width: 20,
+                                            height: 20,
+                                            decoration: const BoxDecoration(
+                                              color: Colors.green,
+                                              shape: BoxShape.circle,
+                                            ),
+                                            child: const Icon(Icons.check,
+                                                color: Colors.white, size: 14),
+                                          )
+                                        else
+                                          const SizedBox(height: 20),
+                                        const SizedBox(height: 8),
+                                        Text(
+                                          date['day'],
+                                          style: TextStyle(
+                                            fontSize: 14,
+                                            color: isSelected
+                                                ? Colors.black
+                                                : Colors.grey,
+                                            fontWeight: isSelected
+                                                ? FontWeight.w600
+                                                : FontWeight.normal,
+                                          ),
+                                        ),
+                                        const SizedBox(height: 4),
+                                        Text(
+                                          date[
+                                              'dayNumber'], // Display day number like '23'
+                                          style: TextStyle(
+                                            fontSize: 16,
+                                            color: isSelected
+                                                ? Colors.black
+                                                : Colors.grey,
+                                            fontWeight: FontWeight.w600,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  );
+                                }).toList(),
+                              ),
+
+                              const SizedBox(height: 24),
+                              const Text(
+                                'Choose Time',
+                                style: TextStyle(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black,
                                 ),
-                              ],
-                            ),
+                              ),
+                              const SizedBox(height: 16),
+
+                              // Time Slot Loader or Display
+                              if (slotProvider.isLoading)
+                                const Center(child: CircularProgressIndicator())
+                              else if (slotProvider.error != null)
+                                Text('Error: ${slotProvider.error}')
+                              else if (slotProvider.slots.isEmpty)
+                                const Text('No time slots available')
+                              else
+                                GridView.builder(
+                                  shrinkWrap: true,
+                                  physics: const NeverScrollableScrollPhysics(),
+                                  gridDelegate:
+                                      const SliverGridDelegateWithFixedCrossAxisCount(
+                                    crossAxisCount: 2,
+                                    childAspectRatio: 3,
+                                    crossAxisSpacing: 12,
+                                    mainAxisSpacing: 12,
+                                  ),
+                                  itemCount: slotProvider.slots.length,
+                                  itemBuilder: (context, index) {
+                                    bool isSelected =
+                                        selectedTimeIndex == index;
+                                    final slot = slotProvider.slots[index];
+
+                                    return GestureDetector(
+                                      onTap: () {
+                                        setState(() {
+                                          selectedTimeIndex = index;
+                                          customSlot = slot.timeSlot;
+                                        });
+                                      },
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                          color: Colors.grey[100],
+                                          borderRadius:
+                                              BorderRadius.circular(13),
+                                          border: isSelected
+                                              ? Border.all(
+                                                  color: Colors.green, width: 2)
+                                              : null,
+                                        ),
+                                        child: Stack(
+                                          children: [
+                                            Center(
+                                              child: Text(
+                                                slot.timeSlot,
+                                                style: const TextStyle(
+                                                  fontSize: 14,
+                                                  fontWeight: FontWeight.w500,
+                                                  color: Colors.black,
+                                                ),
+                                              ),
+                                            ),
+                                            if (isSelected)
+                                              const Positioned(
+                                                top: 4,
+                                                right: 4,
+                                                child: Icon(
+                                                  Icons.check_circle,
+                                                  color: Colors.green,
+                                                  size: 20,
+                                                ),
+                                              ),
+                                          ],
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                ),
+                            ],
                           );
-                        }).toList(),
-                      ),
+                        },
+                      )
                     ],
                   ),
                 ),
@@ -2471,71 +2744,71 @@ void _updateBookingProviderWithValidatedData({
                 const SizedBox(height: 24),
 
                 // Choose Time Section
-                const Text(
-                  'Choose Time',
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black,
-                  ),
-                ),
-                const SizedBox(height: 16),
+                // const Text(
+                //   'Choose Time',
+                //   style: TextStyle(
+                //     fontSize: 20,
+                //     fontWeight: FontWeight.bold,
+                //     color: Colors.black,
+                //   ),
+                // ),
+                // const SizedBox(height: 16),
 
-                // Time Slots Grid
-                GridView.builder(
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    childAspectRatio: 3,
-                    crossAxisSpacing: 12,
-                    mainAxisSpacing: 12,
-                  ),
-                  itemCount: timeSlots.length,
-                  itemBuilder: (context, index) {
-                    bool isSelected = selectedTimeIndex == index;
-                    return GestureDetector(
-                      onTap: () {
-                        setState(() {
-                          selectedTimeIndex = index;
-                        });
-                      },
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: Colors.grey[100],
-                          borderRadius: BorderRadius.circular(13),
-                          border: isSelected
-                              ? Border.all(color: Colors.green, width: 2)
-                              : null,
-                        ),
-                        child: Stack(
-                          children: [
-                            Center(
-                              child: Text(
-                                timeSlots[index],
-                                style: const TextStyle(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w500,
-                                  color: Colors.black,
-                                ),
-                              ),
-                            ),
-                            if (isSelected)
-                              const Positioned(
-                                top: 4,
-                                right: 4,
-                                child: Icon(
-                                  Icons.check_circle,
-                                  color: Colors.green,
-                                  size: 20,
-                                ),
-                              ),
-                          ],
-                        ),
-                      ),
-                    );
-                  },
-                ),
+                // // Time Slots Grid
+                // GridView.builder(
+                //   shrinkWrap: true,
+                //   physics: const NeverScrollableScrollPhysics(),
+                //   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                //     crossAxisCount: 2,
+                //     childAspectRatio: 3,
+                //     crossAxisSpacing: 12,
+                //     mainAxisSpacing: 12,
+                //   ),
+                //   itemCount: timeSlots.length,
+                //   itemBuilder: (context, index) {
+                //     bool isSelected = selectedTimeIndex == index;
+                //     return GestureDetector(
+                //       onTap: () {
+                //         setState(() {
+                //           selectedTimeIndex = index;
+                //         });
+                //       },
+                //       child: Container(
+                //         decoration: BoxDecoration(
+                //           color: Colors.grey[100],
+                //           borderRadius: BorderRadius.circular(13),
+                //           border: isSelected
+                //               ? Border.all(color: Colors.green, width: 2)
+                //               : null,
+                //         ),
+                //         child: Stack(
+                //           children: [
+                //             Center(
+                //               child: Text(
+                //                 timeSlots[index],
+                //                 style: const TextStyle(
+                //                   fontSize: 14,
+                //                   fontWeight: FontWeight.w500,
+                //                   color: Colors.black,
+                //                 ),
+                //               ),
+                //             ),
+                //             if (isSelected)
+                //               const Positioned(
+                //                 top: 4,
+                //                 right: 4,
+                //                 child: Icon(
+                //                   Icons.check_circle,
+                //                   color: Colors.green,
+                //                   size: 20,
+                //                 ),
+                //               ),
+                //           ],
+                //         ),
+                //       ),
+                //     );
+                //   },
+                // ),
 
                 const SizedBox(height: 24),
 
@@ -2621,21 +2894,23 @@ void _updateBookingProviderWithValidatedData({
                         children: [
                           // Profile Data Item (always shown first)
                           _buildProfileDataItem(),
-                          
+
                           // Family Members
                           ...familyProvider.familyMembers.map((member) {
-                            final isSelected = selectedFamilyMember?.id == member.id;
+                            final isSelected =
+                                selectedFamilyMember?.id == member.id;
                             return GestureDetector(
                               onTap: () {
                                 setState(() {
-                                  selectedFamilyMember = isSelected ? null : member;
+                                  selectedFamilyMember =
+                                      isSelected ? null : member;
                                   _useProfileData = false;
                                 });
                               },
                               child: _buildFamilyMemberItem(member, isSelected),
                             );
                           }).toList(),
-                          
+
                           // Show message if no family members
                           if (familyProvider.familyMembers.isEmpty)
                             Container(

@@ -44,6 +44,8 @@ class HraQuestionsServices {
       final encodedCategory = Uri.encodeComponent(hraCategoryName);
       url += '?hraCategoryName=$encodedCategory';
     }
+         print('hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh$url');
+
 
     final response = await http.get(
       Uri.parse(url),
@@ -51,7 +53,7 @@ class HraQuestionsServices {
         'Content-Type': 'application/json',
       },
     );
-
+     print('hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh${response.statusCode}');
     if (response.statusCode == 200) {
       final Map<String, dynamic> data = json.decode(response.body);
       return HraQuestionsResponse.fromJson(data);

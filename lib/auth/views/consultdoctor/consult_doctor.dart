@@ -1319,7 +1319,7 @@ class ConsultDoctor extends StatefulWidget {
   final String bookingId;
   final String? staffId;
   final String? name;
-  final String? title;
+  final String? type;
   final String? serviceType;
 
   const ConsultDoctor(
@@ -1327,7 +1327,7 @@ class ConsultDoctor extends StatefulWidget {
       required this.bookingId,
       this.staffId,
       this.name,
-      this.title,
+      this.type,
       this.serviceType});
 
   @override
@@ -1516,14 +1516,33 @@ class _ConsultDoctorState extends State<ConsultDoctor> {
           icon: const Icon(Icons.arrow_back, color: Colors.black),
           onPressed: () => Navigator.pop(context),
         ),
+        // title: Text(
+        //   widget.type != null
+        //       ? widget.type!.toLowerCase() == 'online'
+        //           ? 'Online Consultation'
+        //           : widget.type!.toLowerCase() == 'offline'
+        //               ? 'Clinic Visit'
+        //               : widget.type!
+        //       : (widget.serviceType ?? ''),
+        //   style: const TextStyle(
+        //     color: Colors.black,
+        //     fontSize: 20,
+        //     fontWeight: FontWeight.bold,
+        //   ),
+        // ),
         title: Text(
-          widget.title ?? 'Consult Doctor',
+          widget.type?.toLowerCase() == 'online'
+              ? 'Online Consultation'
+              : widget.type?.toLowerCase() == 'offline'
+                  ? 'Clinic Visit'
+                  : widget.serviceType ?? 'Service Type',
           style: const TextStyle(
             color: Colors.black,
             fontSize: 20,
             fontWeight: FontWeight.bold,
           ),
         ),
+
         centerTitle: true,
       ),
       body: Consumer<GetAllBookingProvider>(
@@ -1634,55 +1653,205 @@ class _ConsultDoctorState extends State<ConsultDoctor> {
                           ),
                           const SizedBox(height: 20),
 
+                          // _buildDetailRow(
+                          //     'Service Type', booking.serviceType, ''),
+                          // const Divider(),
+                          // const SizedBox(height: 20),
+                          // _buildDetailRow('Booking ID', booking.id, ''),
+                          // const Divider(),
+                          // const SizedBox(height: 20),
+                          // _buildDetailRow(
+                          //     'Date & Time',
+                          //     _formatDateTime(booking.date, booking.timeSlot),
+                          //     ''),
+                          // const Divider(),
+                          // const SizedBox(height: 20),
+                          // _buildDetailRow('Family Member',
+                          //     booking.familyMember?.fullName ?? 'N/A', ''),
+
+                          // const Divider(),
+                          // const SizedBox(height: 20),
+                          // _buildDetailRow(
+                          //     'Doctor name', booking.doctorName, ''),
+                          // const Divider(),
+                          // const SizedBox(height: 20),
+                          // _buildDetailRow(
+                          //     'Qualification', booking.doctorQualification, ''),
+                          // const Divider(),
+                          // const SizedBox(height: 20),
+                          // _buildDetailRow('Specialization',
+                          //     booking.doctorSpecialization, ''),
+                          // //  _buildDetailRow('Specialization', booking.doctorSpecialization, ''),
+                          // const Divider(),
+                          // const SizedBox(height: 20),
+                          // _buildDetailRow(
+                          //     'Payment',
+                          //     '₹${booking.payableAmount.toStringAsFixed(2)}',
+                          //     booking.discount > 0
+                          //         ? 'Original: ₹${booking.totalPrice.toStringAsFixed(2)} | Discount: ₹${booking.discount.toStringAsFixed(2)}'
+                          //         : ''),
+                          // const Divider(),
+
+                          // _buildDetailRow(
+                          //     'Service Type',
+                          //     booking.type.isNotEmpty &&
+                          //             booking.type.toLowerCase() != 'unknown'
+                          //         ? booking.type
+                          //         : booking.serviceType,
+                          //     ''),
+                          // _buildDetailRow(
+                          //   'Service Type',
+                          //   booking.type.isNotEmpty &&
+                          //           booking.type.toLowerCase() != 'unknown'
+                          //       ? (booking.type.toLowerCase() == 'clinic'
+                          //           ? 'Book Clinic Visit'
+                          //           : booking.type.toLowerCase() == 'online'
+                          //               ? 'Online Consultation'
+                          //               : booking.type)
+                          //       : (booking.serviceType ?? ''),
+                          //   '',
+                          // ),
                           _buildDetailRow(
-                              'Service Type', booking.serviceType, ''),
+                            'Service Type',
+                            booking.type.isNotEmpty &&
+                                    booking.type.toLowerCase() != 'unknown'
+                                ? (booking.type.toLowerCase() == 'offline'
+                                    ? 'Clinic Visit'
+                                    : booking.type.toLowerCase() == 'online'
+                                        ? 'Online Consultation'
+                                        : booking.type)
+                                : (booking.serviceType ?? ''),
+                            '',
+                          ),
+
                           const Divider(),
                           const SizedBox(height: 20),
-
                           _buildDetailRow('Booking ID', booking.id, ''),
                           const Divider(),
                           const SizedBox(height: 20),
-
                           _buildDetailRow(
-                            'Date & Time',
-                            _formatDateTime(booking.date, booking.timeSlot),
-                            '',
-                          ),
+                              'Date & Time',
+                              _formatDateTime(booking.date, booking.timeSlot),
+                              ''),
                           const Divider(),
                           const SizedBox(height: 20),
+                          _buildDetailRow('Family Member',
+                              booking.familyMember?.fullName ?? 'N/A', ''),
+                          // const Divider(),
+                          // const SizedBox(height: 20),
+                          if (booking.type.toLowerCase() != 'online') ...[
+                            const Divider(),
+                            // const SizedBox(height: 20),
+                            // _buildDetailRow(
+                            //   'Diagnostic name',
+                            //   booking.diagnosticId != null &&
+                            //           booking.diagnosticId!.name.isNotEmpty &&
+                            //           booking.diagnosticId!.name
+                            //                   .toLowerCase() !=
+                            //               'unknown'
+                            //       ? booking.diagnosticId!.name
+                            //       : '',
+                            //   '',
+                            // ),
+                            if (booking.type.toLowerCase() != 'online' &&
+                                booking.type.toLowerCase() != 'offline') ...[
+                              // const Divider(),
+                              // const SizedBox(height: ),
+                              _buildDetailRow(
+                                'Diagnostic name',
+                                booking.diagnosticId != null &&
+                                        booking.diagnosticId!.name.isNotEmpty &&
+                                        booking.diagnosticId!.name
+                                                .toLowerCase() !=
+                                            'unknown'
+                                    ? booking.diagnosticId!.name
+                                    : '',
+                                '',
+                              ),
+                            ],
+                          ],
 
-                          _buildDetailRow(
-                            'Family Member',
-                            booking.familyMember?.fullName ?? 'N/A',
-                            '',
-                          ),
-                          const Divider(),
-                          const SizedBox(height: 20),
+// Conditional doctor fields - only show for online bookings
+                          // if (booking.type == 'Online') ...[
+                          //   const Divider(),
+                          //   const SizedBox(height: 20),
+                          //   _buildDetailRow(
+                          //       'Doctor name', booking.doctorName, ''),
+                          //   const Divider(),
+                          //   const SizedBox(height: 20),
+                          //   _buildDetailRow('Qualification',
+                          //       booking.doctorQualification, ''),
+                          //   const Divider(),
+                          //   const SizedBox(height: 20),
+                          //   _buildDetailRow('Specialization',
+                          //       booking.doctorSpecialization, ''),
+                          // ],
 
-// Conditionally show only if serviceType is Doctor Consultation
-                          if (booking.serviceType == 'Doctor Consultation') ...[
+                          if (booking.type.toLowerCase() == 'online') ...[
+                            const Divider(),
+                            const SizedBox(height: 20),
                             _buildDetailRow(
                                 'Doctor name', booking.doctorName, ''),
                             const Divider(),
                             const SizedBox(height: 20),
                             _buildDetailRow('Qualification',
                                 booking.doctorQualification, ''),
+                                 const Divider(),
+                            const SizedBox(height: 20),
+                               _buildDetailRow('Venue', booking.doctorId?.address ?? 'N/A', ''),
+
                             const Divider(),
                             const SizedBox(height: 20),
                             _buildDetailRow('Specialization',
                                 booking.doctorSpecialization, ''),
-                            const Divider(),
-                            const SizedBox(height: 20),
+                            if (booking.meetingLink != null &&
+                                booking.meetingLink!.isNotEmpty) ...[
+                              const Divider(),
+                              const SizedBox(height: 20),
+                              SizedBox(
+                                width: double.infinity,
+                                child: ElevatedButton.icon(
+                                  icon: const Icon(Icons.video_call),
+                                  label: const Text('Join Meeting'),
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: Colors.green,
+                                    foregroundColor: Colors.white,
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 14),
+                                    textStyle: const TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  onPressed: () async {
+                                    final url = Uri.parse(booking.meetingLink!);
+                                    if (await canLaunchUrl(url)) {
+                                      await launchUrl(url,
+                                          mode: LaunchMode.externalApplication);
+                                    } else {
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
+                                        const SnackBar(
+                                          content: Text(
+                                              'Could not launch meeting link'),
+                                          backgroundColor: Colors.red,
+                                        ),
+                                      );
+                                    }
+                                  },
+                                ),
+                              ),
+                            ],
                           ],
 
-                          _buildDetailRow(
-                            'Payment',
-                            '₹${booking.payableAmount.toStringAsFixed(2)}',
-                            booking.discount > 0
-                                ? 'Original: ₹${booking.totalPrice.toStringAsFixed(2)} | Discount: ₹${booking.discount.toStringAsFixed(2)}'
-                                : '',
-                          ),
                           const Divider(),
+                          const SizedBox(height: 20),
+                          _buildDetailRow(
+                              'Payment',
+                              '₹${booking.payableAmount.toStringAsFixed(2)}',
+                              booking.discount > 0
+                                  ? 'Original: ₹${booking.totalPrice.toStringAsFixed(2)} | Discount: ₹${booking.discount.toStringAsFixed(2)}'
+                                  : ''),
+                          // const Divider(),
                         ],
                       ),
                     ),

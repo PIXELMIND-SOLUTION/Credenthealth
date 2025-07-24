@@ -2703,13 +2703,13 @@ class _StepTrackerScreenState extends State<StepTrackerScreen>
                                     ),
                                   ),
                                   const SizedBox(height: 8),
-                                  const Text(
-                                    'Goal: 10,000',
-                                    style: TextStyle(
-                                      fontSize: 14,
-                                      color: Colors.grey,
-                                    ),
-                                  ),
+                                  // const Text(
+                                  //   'Goal: 10,000',
+                                  //   style: TextStyle(
+                                  //     fontSize: 14,
+                                  //     color: Colors.grey,
+                                  //   ),
+                                  // ),
                                 ],
                               ),
                             ],

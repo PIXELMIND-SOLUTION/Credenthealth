@@ -1112,19 +1112,33 @@ Future<void> _downloadPdfReport(String bookingId) async {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            booking.primaryServiceName.isNotEmpty 
-                ? booking.primaryServiceName 
-                : booking.serviceType,
-            style: const TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.w600,
-              color: Colors.black,
-            ),
-          ),
+ Text(
+  booking.type.toLowerCase() == 'online'
+      ? 'Online Consultation'
+      : booking.type.toLowerCase() == 'offline'
+          ? 'Clinic Visit'
+          : booking.type.isNotEmpty
+              ? booking.type
+              : (booking.serviceType ?? ''),
+  style: const TextStyle(
+    fontWeight: FontWeight.bold,
+    fontSize: 16,
+  ),
+),
+          
+          // Text(
+          //   booking.primaryServiceName.isNotEmpty 
+          //       ? booking.primaryServiceName 
+          //       : booking.serviceType,
+          //   style: const TextStyle(
+          //     fontSize: 16,
+          //     fontWeight: FontWeight.w600,
+          //     color: Colors.black,
+          //   ),
+          // ),
           const SizedBox(height: 12),
           Text(
-            'Booking ID : ${booking}',
+            'Booking ID : ${booking.id}',
             style: const TextStyle(
               fontSize: 15,
               color: Colors.black,
@@ -1261,8 +1275,8 @@ Future<void> _downloadPdfReport(String bookingId) async {
             ),
             const SizedBox(height: 20),
             _buildDetailRow('Booking ID', booking.id),
-            _buildDetailRow('Service Type', booking.serviceType),
-            _buildDetailRow('Test Name', booking.primaryServiceName),
+            // _buildDetailRow('Service Type', booking.serviceType),
+            // _buildDetailRow('Test Name', booking.primaryServiceName),
             _buildDetailRow(
                 'Date', _formatDateTime(booking.date, booking.timeSlot)),
             _buildDetailRow('Status', booking.status),
@@ -1272,8 +1286,12 @@ Future<void> _downloadPdfReport(String bookingId) async {
                 'Discount', '₹${booking.discount.toStringAsFixed(2)}'),
             _buildDetailRow('Payable Amount',
                 '₹${booking.payableAmount.toStringAsFixed(2)}'),
-            _buildDetailRow('Family Member ID', booking.familyMemberId),
-            _buildDetailRow('Created At', _formatCreatedDate(booking.createdAt)),
+                    _buildDetailRow(
+              'Service Type',
+              booking.type == 'Online' ? 'Online' : booking.serviceType ?? '',
+            ),
+            // _buildDetailRow('Family Member ID', booking.familyMemberId),
+            // _buildDetailRow('Created At', _formatCreatedDate(booking.createdAt)),
             const SizedBox(height: 20),
             // SizedBox(
             //   width: double.infinity,

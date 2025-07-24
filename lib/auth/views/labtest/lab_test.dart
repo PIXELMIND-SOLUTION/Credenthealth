@@ -644,16 +644,6 @@
 //   }
 // }
 
-
-
-
-
-
-
-
-
-
-
 // import 'package:consultation_app/auth/views/cart/cart_screen.dart';
 // import 'package:consultation_app/auth/views/provider/popular_test_provider.dart';
 // import 'package:consultation_app/auth/views/provider/cart_provider.dart';
@@ -1224,11 +1214,6 @@
 //   }
 // }
 
-
-
-
-
-
 // import 'package:consultation_app/auth/views/Xray/xray_screen.dart';
 // import 'package:consultation_app/auth/views/cart/cart_screen.dart';
 // import 'package:consultation_app/auth/views/packages/packages_screen.dart';
@@ -1263,7 +1248,6 @@
 //     });
 //   }
 
-
 //    void _selectOption(String option) {
 //     setState(() {
 //       // _selectedOption = option;
@@ -1273,7 +1257,6 @@
 //     // Handle navigation based on selected option
 //     _handleOptionSelection(option);
 //   }
-
 
 //  void _handleOptionSelection(String option) {
 //     switch (option) {
@@ -1287,7 +1270,6 @@
 //         break;
 //     }
 //   }
-  
 
 //   @override
 //   void initState() {
@@ -1313,7 +1295,7 @@
 //   void _onSearchChanged() {
 //     final query = _searchController.text.toLowerCase().trim();
 //     final provider = context.read<PopularTestProvider>();
-    
+
 //     setState(() {
 //       _isSearching = query.isNotEmpty;
 //       if (_isSearching) {
@@ -1366,7 +1348,7 @@
 //         //     ),
 //         //   ],
 //         // ),
-       
+
 //        title: GestureDetector(
 //           onTap: _toggleDropdown,
 //           child: Row(
@@ -1467,8 +1449,6 @@
 //               ),
 //             ),
 //           ),
-          
-          
 
 //           // Search Results or Popular Tests Section
 //           Expanded(
@@ -1505,8 +1485,6 @@
 //                     child: Text('No tests available'),
 //                   );
 //                 }
-
-                
 
 //                 // Determine which tests to show
 //                 final testsToShow = _isSearching ? _filteredTests : provider.tests;
@@ -1548,11 +1526,7 @@
 //                     ),
 //                   );
 
-                  
-                  
 //                 }
-
-                
 
 //                 return SingleChildScrollView(
 //                   child: Column(
@@ -1564,7 +1538,7 @@
 //                         child: Row(
 //                           children: [
 //                             Text(
-//                               _isSearching 
+//                               _isSearching
 //                                   ? 'Search Results (${testsToShow.length})'
 //                                   : 'Popular Tests',
 //                               style: const TextStyle(
@@ -1604,7 +1578,7 @@
 //               },
 //             ),
 //           ),
-          
+
 //         ],
 //       ),
 //     );
@@ -2029,25 +2003,25 @@
 
 //     final query = searchQuery.toLowerCase();
 //     final textLower = text.toLowerCase();
-    
+
 //     if (!textLower.contains(query)) {
 //       return Text(text, style: style);
 //     }
 
 //     final spans = <TextSpan>[];
 //     int start = 0;
-    
+
 //     while (start < text.length) {
 //       final index = textLower.indexOf(query, start);
 //       if (index == -1) {
 //         spans.add(TextSpan(text: text.substring(start), style: style));
 //         break;
 //       }
-      
+
 //       if (index > start) {
 //         spans.add(TextSpan(text: text.substring(start, index), style: style));
 //       }
-      
+
 //       spans.add(TextSpan(
 //         text: text.substring(index, index + query.length),
 //         style: style.copyWith(
@@ -2055,7 +2029,7 @@
 //           fontWeight: FontWeight.bold,
 //         ),
 //       ));
-      
+
 //       start = index + query.length;
 //     }
 
@@ -2064,11 +2038,6 @@
 //     );
 //   }
 // }
-
-
-
-
-
 
 // import 'package:consultation_app/auth/views/Xray/xray_screen.dart';
 // import 'package:consultation_app/auth/views/cart/cart_screen.dart';
@@ -2143,7 +2112,7 @@
 //   void _onSearchChanged() {
 //     final query = _searchController.text.toLowerCase().trim();
 //     final provider = context.read<PopularTestProvider>();
-    
+
 //     setState(() {
 //       _isSearching = query.isNotEmpty;
 //       if (_isSearching) {
@@ -2362,7 +2331,7 @@
 //                             child: Row(
 //                               children: [
 //                                 Text(
-//                                   _isSearching 
+//                                   _isSearching
 //                                       ? 'Search Results (${testsToShow.length})'
 //                                       : 'Popular Tests',
 //                                   style: const TextStyle(
@@ -2402,7 +2371,7 @@
 //               ),
 //             ],
 //           ),
-          
+
 //           // Dropdown Container
 //           if (_isDropdownVisible)
 //             Positioned(
@@ -2477,7 +2446,7 @@
 //                                   ],
 //                                 ),
 //                               ),
-                              
+
 //                               // Options
 //                               ..._dropdownOptions.map((option) => InkWell(
 //                                 onTap: () => _selectOption(option),
@@ -2913,25 +2882,25 @@
 
 //     final query = searchQuery.toLowerCase();
 //     final textLower = text.toLowerCase();
-    
+
 //     if (!textLower.contains(query)) {
 //       return Text(text, style: style);
 //     }
 
 //     final spans = <TextSpan>[];
 //     int start = 0;
-    
+
 //     while (start < text.length) {
 //       final index = textLower.indexOf(query, start);
 //       if (index == -1) {
 //         spans.add(TextSpan(text: text.substring(start), style: style));
 //         break;
 //       }
-      
+
 //       if (index > start) {
 //         spans.add(TextSpan(text: text.substring(start, index), style: style));
 //       }
-      
+
 //       spans.add(TextSpan(
 //         text: text.substring(index, index + query.length),
 //         style: style.copyWith(
@@ -2939,7 +2908,7 @@
 //           fontWeight: FontWeight.bold,
 //         ),
 //       ));
-      
+
 //       start = index + query.length;
 //     }
 
@@ -2948,19 +2917,6 @@
 //     );
 //   }
 // }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 import 'package:consultation_app/auth/views/Xray/xray_screen.dart';
 import 'package:consultation_app/auth/views/cart/cart_screen.dart';
@@ -3036,14 +2992,14 @@ class _LabTestState extends State<LabTest> {
   void _onSearchChanged() {
     final query = _searchController.text.toLowerCase().trim();
     final provider = context.read<PopularTestProvider>();
-    
+
     setState(() {
       _isSearching = query.isNotEmpty;
       if (_isSearching) {
         _filteredTests = provider.tests.where((test) {
           return test.name.toLowerCase().contains(query) ||
-                 test.description.toLowerCase().contains(query) ||
-                 test.category.toLowerCase().contains(query);
+              test.description.toLowerCase().contains(query) ||
+              test.category.toLowerCase().contains(query);
         }).toList();
       } else {
         _filteredTests = [];
@@ -3165,8 +3121,8 @@ class _LabTestState extends State<LabTest> {
                           )
                         : null,
                     border: InputBorder.none,
-                    contentPadding:
-                        const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                    contentPadding: const EdgeInsets.symmetric(
+                        horizontal: 16, vertical: 12),
                   ),
                 ),
               ),
@@ -3207,7 +3163,8 @@ class _LabTestState extends State<LabTest> {
                       );
                     }
 
-                    final testsToShow = _isSearching ? _filteredTests : provider.tests;
+                    final testsToShow =
+                        _isSearching ? _filteredTests : provider.tests;
 
                     if (_isSearching && _filteredTests.isEmpty) {
                       return Center(
@@ -3251,11 +3208,12 @@ class _LabTestState extends State<LabTest> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 16, vertical: 8),
                             child: Row(
                               children: [
                                 Text(
-                                  _isSearching 
+                                  _isSearching
                                       ? 'Search Results (${testsToShow.length})'
                                       : 'Popular Tests',
                                   style: const TextStyle(
@@ -3269,7 +3227,8 @@ class _LabTestState extends State<LabTest> {
                                   TextButton(
                                     onPressed: _clearSearch,
                                     style: TextButton.styleFrom(
-                                      padding: const EdgeInsets.symmetric(horizontal: 8),
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 8),
                                     ),
                                     child: const Text(
                                       'Clear',
@@ -3284,7 +3243,9 @@ class _LabTestState extends State<LabTest> {
                               .map((test) => _buildTestCard(
                                     context: context,
                                     test: test,
-                                    searchQuery: _isSearching ? _searchController.text : null,
+                                    searchQuery: _isSearching
+                                        ? _searchController.text
+                                        : null,
                                   ))
                               .toList(),
                         ],
@@ -3295,7 +3256,7 @@ class _LabTestState extends State<LabTest> {
               ),
             ],
           ),
-          
+
           // Dropdown Container
           if (_isDropdownVisible)
             Positioned(
@@ -3370,47 +3331,50 @@ class _LabTestState extends State<LabTest> {
                                   ],
                                 ),
                               ),
-                              
+
                               // Options
-                              ..._dropdownOptions.map((option) => InkWell(
-                                onTap: () => _selectOption(option),
-                                child: Container(
-                                  width: double.infinity,
-                                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                                  decoration: BoxDecoration(
-                                    border: Border(
-                                      bottom: BorderSide(
-                                        color: Colors.grey[200]!,
-                                        width: 1,
-                                      ),
-                                    ),
-                                  ),
-                                  child: Row(
-                                    children: [
-                                      Icon(
-                                        _getIconForOption(option),
-                                        size: 20,
-                                        color: Colors.blue[600],
-                                      ),
-                                      const SizedBox(width: 12),
-                                      Text(
-                                        option,
-                                        style: const TextStyle(
-                                          fontSize: 14,
-                                          color: Colors.black87,
-                                          fontWeight: FontWeight.w500,
+                              ..._dropdownOptions
+                                  .map((option) => InkWell(
+                                        onTap: () => _selectOption(option),
+                                        child: Container(
+                                          width: double.infinity,
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 16, vertical: 12),
+                                          decoration: BoxDecoration(
+                                            border: Border(
+                                              bottom: BorderSide(
+                                                color: Colors.grey[200]!,
+                                                width: 1,
+                                              ),
+                                            ),
+                                          ),
+                                          child: Row(
+                                            children: [
+                                              Icon(
+                                                _getIconForOption(option),
+                                                size: 20,
+                                                color: Colors.blue[600],
+                                              ),
+                                              const SizedBox(width: 12),
+                                              Text(
+                                                option,
+                                                style: const TextStyle(
+                                                  fontSize: 14,
+                                                  color: Colors.black87,
+                                                  fontWeight: FontWeight.w500,
+                                                ),
+                                              ),
+                                              const Spacer(),
+                                              Icon(
+                                                Icons.arrow_forward_ios,
+                                                size: 14,
+                                                color: Colors.grey[400],
+                                              ),
+                                            ],
+                                          ),
                                         ),
-                                      ),
-                                      const Spacer(),
-                                      Icon(
-                                        Icons.arrow_forward_ios,
-                                        size: 14,
-                                        color: Colors.grey[400],
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              )).toList(),
+                                      ))
+                                  .toList(),
                             ],
                           ),
                         ),
@@ -3470,17 +3434,40 @@ class _LabTestState extends State<LabTest> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  // Expanded(
+                  //   child: _buildHighlightedText(
+                  //     text: test.name,
+                  //     searchQuery: searchQuery,
+                  //     style: const TextStyle(
+                  //       fontSize: 16,
+                  //       fontWeight: FontWeight.w600,
+                  //       color: Colors.black,
+                  //     ),
+                  //   ),
+                  // ),
                   Expanded(
-                    child: _buildHighlightedText(
-                      text: test.name,
-                      searchQuery: searchQuery,
-                      style: const TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.black,
-                      ),
-                    ),
-                  ),
+  child: Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      _buildHighlightedText(
+        text: test.name,
+        searchQuery: searchQuery,
+        style: const TextStyle(
+          fontSize: 16,
+          fontWeight: FontWeight.w600,
+          color: Colors.black,
+        ),
+      ),
+      const SizedBox(height: 4),
+      Container(
+        width: 120,
+        height: 3,
+        color: Color(0xFF2E67F6), // Blue line color from your previous message
+      ),
+    ],
+  ),
+),
+
                   Text(
                     '₹ ${test.price}',
                     style: const TextStyle(
@@ -3489,6 +3476,7 @@ class _LabTestState extends State<LabTest> {
                       color: Colors.black,
                     ),
                   ),
+                  
                 ],
               ),
               const SizedBox(height: 4),
@@ -3524,119 +3512,89 @@ class _LabTestState extends State<LabTest> {
                 ),
               ],
               const SizedBox(height: 8),
+              // if (test.homeCollectionAvailable)
+              //   const Row(
+              //     children: [
+              //       Icon(
+              //         Icons.check_circle,
+              //         color: Colors.green,
+              //         size: 16,
+              //       ),
+              //       SizedBox(width: 4),
+              //       Text(
+              //         'Home Collection Available',
+              //         style: TextStyle(
+              //           fontSize: 12,
+              //           color: Colors.green,
+              //           fontWeight: FontWeight.w500,
+              //         ),
+              //       ),
+              //     ],
+              //   ),
               if (test.homeCollectionAvailable)
-                const Row(
-                  children: [
-                    Icon(
-                      Icons.check_circle,
-                      color: Colors.green,
-                      size: 16,
-                    ),
-                    SizedBox(width: 4),
-                    Text(
-                      'Home Collection Available',
-                      style: TextStyle(
-                        fontSize: 12,
-                        color: Colors.green,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                  ],
-                ),
+  Container(
+    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+    decoration: BoxDecoration(
+      color: Color(0xFFE6F4EA), // Light green background
+      borderRadius: BorderRadius.circular(16), // Rounded corners
+    ),
+    child: const Row(
+      mainAxisSize: MainAxisSize.min, // Wrap content
+      children: [
+        Icon(
+          Icons.check_circle,
+          color: Colors.green,
+          size: 16,
+        ),
+        SizedBox(width: 4),
+        Text(
+          'Home Collection Available',
+          style: TextStyle(
+            fontSize: 12,
+            color: Colors.green,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+      ],
+    ),
+  ),
+
               const SizedBox(height: 12),
               Row(
                 children: [
-                  // TextButton(
-                  //   onPressed: () {
-                  //     showDialog(
-                  //       context: context,
-                  //       builder: (context) => AlertDialog(
-                  //         title: Text(test.name),
-                  //         content: Column(
-                  //           mainAxisSize: MainAxisSize.min,
-                  //           crossAxisAlignment: CrossAxisAlignment.start,
-                  //           children: [
-                  //             Text(test.description),
-                  //             const SizedBox(height: 16),
-                  //             Text('Category: ${test.category}'),
-                  //             Text('Price: ₹${test.price}'),
-                  //             if (test.fastingRequired)
-                  //               const Text('⚠️ Fasting Required'),
-                  //             if (test.homeCollectionAvailable)
-                  //               const Text('🏠 Home Collection Available'),
-                  //             if (test.reportIn24Hrs)
-                  //               const Text('⏰ Reports in 24 Hours'),
-                  //           ],
-                  //         ),
-                  //         actions: [
-                  //           TextButton(
-                  //             onPressed: () => Navigator.pop(context),
-                  //             child: const Text('Close'),
-                  //           ),
-                  //         ],
-                  //       ),
-                  //     );
-                  //   },
-                  //   style: TextButton.styleFrom(
-                  //     padding: EdgeInsets.zero,
-                  //     minimumSize: Size.zero,
-                  //     tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                  //   ),
-                  //   child: Row(
-                  //     mainAxisSize: MainAxisSize.min,
-                  //     children: [
-                  //       Icon(
-                  //         Icons.keyboard_arrow_down,
-                  //         color: Colors.grey[600],
-                  //         size: 18,
-                  //       ),
-                  //       const SizedBox(width: 4),
-                  //       Text(
-                  //         'More info',
-                  //         style: TextStyle(
-                  //           fontSize: 12,
-                  //           color: Colors.grey[600],
-                  //         ),
-                  //       ),
-                  //     ],
-                  //   ),
-                  // ),
-
-                  // Replace the TextButton section in your _buildTestCard method with this:
-
-TextButton(
-  onPressed: () {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => TestDetailScreen(test: test),
-      ),
-    );
-  },
-  style: TextButton.styleFrom(
-    padding: EdgeInsets.zero,
-    minimumSize: Size.zero,
-    tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-  ),
-  child: Row(
-    mainAxisSize: MainAxisSize.min,
-    children: [
-      Icon(
-        Icons.keyboard_arrow_down,
-        color: Colors.grey[600],
-        size: 18,
-      ),
-      const SizedBox(width: 4),
-      Text(
-        'More info',
-        style: TextStyle(
-          fontSize: 12,
-          color: Colors.grey[600],
-        ),
-      ),
-    ],
-  ),
-),
+                  TextButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => TestDetailScreen(test: test),
+                        ),
+                      );
+                    },
+                    style: TextButton.styleFrom(
+                      padding: EdgeInsets.zero,
+                      minimumSize: Size.zero,
+                      tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                    ),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Icon(
+                          Icons.keyboard_arrow_down,
+                          color: Colors.grey[600],
+                          size: 18,
+                        ),
+                        const SizedBox(width: 4),
+                        Text(
+                          'More info',
+                          style: TextStyle(
+                            fontSize: 12,
+                            color: Colors.grey[600],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
                   const Spacer(),
                   // Fixed the cart button logic
                   if (isInCart && cartItem != null) ...[
@@ -3714,7 +3672,8 @@ TextButton(
                                 price: test.price.toDouble(),
                                 description: test.description,
                                 fastingRequired: test.fastingRequired,
-                                homeCollectionAvailable: test.homeCollectionAvailable,
+                                homeCollectionAvailable:
+                                    test.homeCollectionAvailable,
                               );
 
                               if (success) {
@@ -3728,9 +3687,10 @@ TextButton(
                               } else {
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   SnackBar(
-                                    content: Text(cartProvider.errorMessage.isNotEmpty
-                                        ? cartProvider.errorMessage
-                                        : 'Failed to add item to cart'),
+                                    content: Text(
+                                        cartProvider.errorMessage.isNotEmpty
+                                            ? cartProvider.errorMessage
+                                            : 'Failed to add item to cart'),
                                     backgroundColor: Colors.red,
                                   ),
                                 );
@@ -3775,13 +3735,15 @@ TextButton(
                                   price: test.price.toDouble(),
                                   description: test.description,
                                   fastingRequired: test.fastingRequired,
-                                  homeCollectionAvailable: test.homeCollectionAvailable,
+                                  homeCollectionAvailable:
+                                      test.homeCollectionAvailable,
                                 );
 
                                 if (success) {
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     SnackBar(
-                                      content: Text('${test.name} added to cart'),
+                                      content:
+                                          Text('${test.name} added to cart'),
                                       backgroundColor: Colors.green,
                                       duration: const Duration(seconds: 2),
                                     ),
@@ -3789,9 +3751,10 @@ TextButton(
                                 } else {
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     SnackBar(
-                                      content: Text(cartProvider.errorMessage.isNotEmpty
-                                          ? cartProvider.errorMessage
-                                          : 'Failed to add item to cart'),
+                                      content: Text(
+                                          cartProvider.errorMessage.isNotEmpty
+                                              ? cartProvider.errorMessage
+                                              : 'Failed to add item to cart'),
                                       backgroundColor: Colors.red,
                                     ),
                                   );
@@ -3846,25 +3809,25 @@ TextButton(
 
     final query = searchQuery.toLowerCase();
     final textLower = text.toLowerCase();
-    
+
     if (!textLower.contains(query)) {
       return Text(text, style: style);
     }
 
     final spans = <TextSpan>[];
     int start = 0;
-    
+
     while (start < text.length) {
       final index = textLower.indexOf(query, start);
       if (index == -1) {
         spans.add(TextSpan(text: text.substring(start), style: style));
         break;
       }
-      
+
       if (index > start) {
         spans.add(TextSpan(text: text.substring(start, index), style: style));
       }
-      
+
       spans.add(TextSpan(
         text: text.substring(index, index + query.length),
         style: style.copyWith(
@@ -3872,7 +3835,7 @@ TextButton(
           fontWeight: FontWeight.bold,
         ),
       ));
-      
+
       start = index + query.length;
     }
 

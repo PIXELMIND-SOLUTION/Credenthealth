@@ -45,6 +45,7 @@ class ConsultationBookingProvider extends ChangeNotifier {
     notifyListeners();
 
     try {
+      print("kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk");
       final result = await _service.bookConsultation(
         staffId: staffId,
         doctorId: doctorId,

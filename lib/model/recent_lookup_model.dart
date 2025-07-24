@@ -1,3 +1,383 @@
+// class TimeSlot {
+//   final String time;
+//   final String id;
+
+//   TimeSlot({
+//     required this.time,
+//     required this.id,
+//   });
+
+//   factory TimeSlot.fromJson(Map<String, dynamic> json) {
+//     return TimeSlot(
+//       time: json['time'] ?? '',
+//       id: json['_id'] ?? '',
+//     );
+//   }
+
+//   Map<String, dynamic> toJson() {
+//     return {
+//       'time': time,
+//       '_id': id,
+//     };
+//   }
+// }
+
+// class Schedule {
+//   final String day;
+//   final String date;
+//   final List<TimeSlot> timeSlots;
+//   final String id;
+
+//   Schedule({
+//     required this.day,
+//     required this.date,
+//     required this.timeSlots,
+//     required this.id,
+//   });
+
+//   factory Schedule.fromJson(Map<String, dynamic> json) {
+//     return Schedule(
+//       day: json['day'] ?? '',
+//       date: json['date'] ?? '',
+//       timeSlots: (json['time_slots'] as List<dynamic>?)
+//           ?.map((slot) => TimeSlot.fromJson(slot))
+//           .toList() ?? [],
+//       id: json['_id'] ?? '',
+//     );
+//   }
+
+//   Map<String, dynamic> toJson() {
+//     return {
+//       'day': day,
+//       'date': date,
+//       'time_slots': timeSlots.map((slot) => slot.toJson()).toList(),
+//       '_id': id,
+//     };
+//   }
+// }
+
+// class DoctorLookups {
+//   final String id;
+//   final String name;
+//   final String email;
+//   final String password;
+//   final String specialization;
+//   final String qualification;
+//   final String description;
+//   final int consultationFee;
+//   final String address;
+//   final String image;
+//   final String category;
+//   final String consultationType;
+//   final List<Schedule> schedule;
+//   final List<dynamic> myBlogs;
+//   final DateTime createdAt;
+//   final DateTime updatedAt;
+//   final int version;
+
+//   DoctorLookups({
+//     required this.id,
+//     required this.name,
+//     required this.email,
+//     required this.password,
+//     required this.specialization,
+//     required this.qualification,
+//     required this.description,
+//     required this.consultationFee,
+//     required this.address,
+//     required this.image,
+//     required this.category,
+//     required this.consultationType,
+//     required this.schedule,
+//     required this.myBlogs,
+//     required this.createdAt,
+//     required this.updatedAt,
+//     required this.version,
+//   });
+
+//   factory DoctorLookups.fromJson(Map<String, dynamic> json) {
+//     return DoctorLookups(
+//       id: json['_id'] ?? '',
+//       name: json['name'] ?? '',
+//       email: json['email'] ?? '',
+//       password: json['password'] ?? '',
+//       specialization: json['specialization'] ?? '',
+//       qualification: json['qualification'] ?? '',
+//       description: json['description'] ?? '',
+//       consultationFee: json['consultation_fee'] ?? 0,
+//       address: json['address'] ?? '',
+//       image: json['image'] ?? '',
+//       category: json['category'] ?? '',
+//       consultationType: json['consultation_type'] ?? '',
+//       schedule: (json['schedule'] as List<dynamic>?)
+//           ?.map((schedule) => Schedule.fromJson(schedule))
+//           .toList() ?? [],
+//       myBlogs: json['myBlogs'] ?? [],
+//       createdAt: DateTime.parse(json['createdAt'] ?? DateTime.now().toIso8601String()),
+//       updatedAt: DateTime.parse(json['updatedAt'] ?? DateTime.now().toIso8601String()),
+//       version: json['__v'] ?? 0,
+//     );
+//   }
+
+//   Map<String, dynamic> toJson() {
+//     return {
+//       '_id': id,
+//       'name': name,
+//       'email': email,
+//       'password': password,
+//       'specialization': specialization,
+//       'qualification': qualification,
+//       'description': description,
+//       'consultation_fee': consultationFee,
+//       'address': address,
+//       'image': image,
+//       'category': category,
+//       'consultation_type': consultationType,
+//       'schedule': schedule.map((s) => s.toJson()).toList(),
+//       'myBlogs': myBlogs,
+//       'createdAt': createdAt.toIso8601String(),
+//       'updatedAt': updatedAt.toIso8601String(),
+//       '__v': version,
+//     };
+//   }
+// }
+
+
+
+
+
+
+
+
+
+
+// Model classes for recent lookup based on API response
+
+class BookedSlot {
+  final String day;
+  final String date;
+  final String timeSlot;
+
+  BookedSlot({
+    required this.day,
+    required this.date,
+    required this.timeSlot,
+  });
+
+  factory BookedSlot.fromJson(Map<String, dynamic> json) {
+    return BookedSlot(
+      day: json['day'] ?? '',
+      date: json['date'] ?? '',
+      timeSlot: json['timeSlot'] ?? '',
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'day': day,
+      'date': date,
+      'timeSlot': timeSlot,
+    };
+  }
+}
+
+class StaffInfo {
+  final String id;
+  final String name;
+  final String email;
+  final String contactNumber;
+
+  StaffInfo({
+    required this.id,
+    required this.name,
+    required this.email,
+    required this.contactNumber,
+  });
+
+  factory StaffInfo.fromJson(Map<String, dynamic> json) {
+    return StaffInfo(
+      id: json['_id'] ?? '',
+      name: json['name'] ?? '',
+      email: json['email'] ?? '',
+      contactNumber: json['contact_number'] ?? '',
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      '_id': id,
+      'name': name,
+      'email': email,
+      'contact_number': contactNumber,
+    };
+  }
+}
+
+class DoctorInfo {
+  final String id;
+  final String name;
+  final String specialization;
+  final String qualification;
+  final String image;
+
+  DoctorInfo({
+    required this.id,
+    required this.name,
+    required this.specialization,
+    required this.qualification,
+    required this.image,
+  });
+
+  factory DoctorInfo.fromJson(Map<String, dynamic> json) {
+    return DoctorInfo(
+      id: json['_id'] ?? '',
+      name: json['name'] ?? '',
+      specialization: json['specialization'] ?? '',
+      qualification: json['qualification'] ?? '',
+      image: json['image'] ?? '',
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      '_id': id,
+      'name': name,
+      'specialization': specialization,
+      'qualification': qualification,
+      'image': image,
+    };
+  }
+}
+
+class RecentBooking {
+  final BookedSlot bookedSlot;
+  final String id;
+  final StaffInfo staffId;
+  final String familyMemberId;
+  final dynamic reportFile;
+  final dynamic diagPrescription;
+  final List<dynamic> doctorReports;
+  final List<dynamic> doctorPrescriptions;
+  final DoctorInfo doctorId;
+  final bool isBooked;
+  final int totalPrice;
+  final String type;
+  final String meetingLink;
+  final int discount;
+  final int payableAmount;
+  final String status;
+  final String date;
+  final String timeSlot;
+  final DateTime createdAt;
+  final DateTime updatedAt;
+  final int version;
+
+  RecentBooking({
+    required this.bookedSlot,
+    required this.id,
+    required this.staffId,
+    required this.familyMemberId,
+    this.reportFile,
+    this.diagPrescription,
+    required this.doctorReports,
+    required this.doctorPrescriptions,
+    required this.doctorId,
+    required this.isBooked,
+    required this.totalPrice,
+    required this.type,
+    required this.meetingLink,
+    required this.discount,
+    required this.payableAmount,
+    required this.status,
+    required this.date,
+    required this.timeSlot,
+    required this.createdAt,
+    required this.updatedAt,
+    required this.version,
+  });
+
+  factory RecentBooking.fromJson(Map<String, dynamic> json) {
+    return RecentBooking(
+      bookedSlot: BookedSlot.fromJson(json['bookedSlot'] ?? {}),
+      id: json['_id'] ?? '',
+      staffId: StaffInfo.fromJson(json['staffId'] ?? {}),
+      familyMemberId: json['familyMemberId'] ?? '',
+      reportFile: json['report_file'],
+      diagPrescription: json['diagPrescription'],
+      doctorReports: json['doctorReports'] ?? [],
+      doctorPrescriptions: json['doctorPrescriptions'] ?? [],
+      doctorId: DoctorInfo.fromJson(json['doctorId'] ?? {}),
+      isBooked: json['isBooked'] ?? false,
+      totalPrice: json['totalPrice'] ?? 0,
+      type: json['type'] ?? '',
+      meetingLink: json['meetingLink'] ?? '',
+      discount: json['discount'] ?? 0,
+      payableAmount: json['payableAmount'] ?? 0,
+      status: json['status'] ?? '',
+      date: json['date'] ?? '',
+      timeSlot: json['timeSlot'] ?? '',
+      createdAt: DateTime.parse(json['createdAt'] ?? DateTime.now().toIso8601String()),
+      updatedAt: DateTime.parse(json['updatedAt'] ?? DateTime.now().toIso8601String()),
+      version: json['__v'] ?? 0,
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'bookedSlot': bookedSlot.toJson(),
+      '_id': id,
+      'staffId': staffId.toJson(),
+      'familyMemberId': familyMemberId,
+      'report_file': reportFile,
+      'diagPrescription': diagPrescription,
+      'doctorReports': doctorReports,
+      'doctorPrescriptions': doctorPrescriptions,
+      'doctorId': doctorId.toJson(),
+      'isBooked': isBooked,
+      'totalPrice': totalPrice,
+      'type': type,
+      'meetingLink': meetingLink,
+      'discount': discount,
+      'payableAmount': payableAmount,
+      'status': status,
+      'date': date,
+      'timeSlot': timeSlot,
+      'createdAt': createdAt.toIso8601String(),
+      'updatedAt': updatedAt.toIso8601String(),
+      '__v': version,
+    };
+  }
+}
+
+class RecentLookupResponse {
+  final String message;
+  final StaffInfo staff;
+  final RecentBooking booking;
+
+  RecentLookupResponse({
+    required this.message,
+    required this.staff,
+    required this.booking,
+  });
+
+  factory RecentLookupResponse.fromJson(Map<String, dynamic> json) {
+    return RecentLookupResponse(
+      message: json['message'] ?? '',
+      staff: StaffInfo.fromJson(json['staff'] ?? {}),
+      booking: RecentBooking.fromJson(json['booking'] ?? {}),
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'message': message,
+      'staff': staff.toJson(),
+      'booking': booking.toJson(),
+    };
+  }
+}
+
+// Keep the original classes for backward compatibility if needed elsewhere
 class TimeSlot {
   final String time;
   final String id;

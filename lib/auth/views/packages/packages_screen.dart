@@ -2110,16 +2110,39 @@ class _PackagesScreenState extends State<PackagesScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  // Expanded(
+                  //   child: Text(
+                  //     package.name,
+                  //     style: const TextStyle(
+                  //       fontSize: 16,
+                  //       fontWeight: FontWeight.w600,
+                  //       color: Colors.black,
+                  //     ),
+                  //   ),
+                  // ),
                   Expanded(
-                    child: Text(
-                      package.name,
-                      style: const TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.black,
-                      ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          package.name,
+                          style: const TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                            color: Colors.black,
+                          ),
+                        ),
+                        const SizedBox(height: 4),
+                        Container(
+                          width: 80,
+                          height: 2.5,
+                          color: Color(0xFF2E67F6)
+, // Blue underline
+                        ),
+                      ],
                     ),
                   ),
+
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
@@ -2152,7 +2175,7 @@ class _PackagesScreenState extends State<PackagesScreen> {
                     : package.doctorInfo,
                 style: TextStyle(
                   fontSize: 14,
-                  color: Colors.grey[700],
+                  color: const Color.fromARGB(255, 0, 0, 0),
                   height: 1.3,
                 ),
               ),
@@ -2190,8 +2213,8 @@ class _PackagesScreenState extends State<PackagesScreen> {
                         Text(
                           '» ',
                           style: TextStyle(
-                            fontSize: 14,
-                            color: Colors.grey[600],
+                            fontSize: 15,
+                            color: const Color.fromARGB(255, 0, 0, 0),
                             fontWeight: FontWeight.bold,
                           ),
                         ),
@@ -2200,7 +2223,7 @@ class _PackagesScreenState extends State<PackagesScreen> {
                             test.name,
                             style: TextStyle(
                               fontSize: 14,
-                              color: Colors.grey[700],
+                              color: const Color.fromARGB(255, 0, 0, 0),
                             ),
                           ),
                         ),
@@ -2227,7 +2250,7 @@ class _PackagesScreenState extends State<PackagesScreen> {
                           Icon(
                             Icons.keyboard_arrow_down,
                             color: Colors.grey[600],
-                            size: 16,
+                            size: 19,
                           ),
                           const SizedBox(width: 4),
                           Text(
@@ -2251,10 +2274,12 @@ class _PackagesScreenState extends State<PackagesScreen> {
                           MaterialPageRoute(
                               builder: (context) => DiagnosticsScreen(
                                     packageId: package.id,
+                                    amount: package.price.toString(),
                                   )));
                     },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color.fromARGB(255, 33, 86, 243),
+                      backgroundColor: const Color(0xFF2E67F6),
+
                       foregroundColor: Colors.white,
                       padding: const EdgeInsets.symmetric(
                           horizontal: 30, vertical: 8),
@@ -2433,16 +2458,16 @@ class _PackagesScreenState extends State<PackagesScreen> {
   // }
 
   void _showAllTests(BuildContext context, PackageModel package) {
-  Navigator.push(
-    context,
-    MaterialPageRoute(
-      builder: (context) => PackageDetailsScreen(
-        packageId: package.id,
-        packageName: package.name,
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => PackageDetailsScreen(
+          packageId: package.id,
+          packageName: package.name,
+        ),
       ),
-    ),
-  );
-}
+    );
+  }
 
   Future<void> _addToCart(
       PackageModel package, CartProvider cartProvider) async {

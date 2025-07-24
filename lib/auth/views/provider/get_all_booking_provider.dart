@@ -674,6 +674,8 @@ class GetAllBookingProvider extends ChangeNotifier {
       diagnosticId: original.diagnosticId,
       doctorId: original.doctorId,
       serviceType: original.serviceType,
+      type: original.type,
+      meetingLink: original.meetingLink,
       cartId: original.cartId,
       isBooked: original.isBooked,
       totalPrice: original.totalPrice,
