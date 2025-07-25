@@ -295,10 +295,16 @@ class HraAnswerProvider extends ChangeNotifier {
       if (response.success) {
         _isSubmissionComplete = true;
         
+
+          _totalPoints = response.data?['totalPoints'] ?? 0;
+      _riskLevel = response.data?['riskLevel'] ?? 'Moderate';
+      _riskMessage = response.data?['riskMessage'] ?? 
+                     response.data?['message'] ?? 
+                     'Assessment completed successfully.';
         // Extract result data from response (adjust these keys based on your API response)
-        _totalPoints = response.data?['totalPoints'] ?? response.data?['total_points'] ?? 0;
-        _riskLevel = response.data?['riskLevel'] ?? response.data?['risk_level'] ?? 'Moderate';
-        _riskMessage = response.data?['riskMessage'] ?? response.data?['risk_message'] ?? 'Assessment completed successfully.';
+        // _totalPoints = response.data?['totalPoints'] ?? response.data?['total_points'] ?? 0;
+        // _riskLevel = response.data?['riskLevel'] ?? response.data?['risk_level'] ?? 'Moderate';
+        // _riskMessage = response.data?['riskMessage'] ?? response.data?['risk_message'] ?? 'Assessment completed successfully.';
         
         print('✅ HRA answers submitted successfully!');
         print('Total Points: $_totalPoints');

@@ -27,16 +27,35 @@ class SubmitHraAnswersService {
         body: jsonEncode(requestBody),
       );
 
-      print('✅ Response Status: ${response.statusCode}');
+        print('✅ Response Status: ${response.statusCode}');
       print('✅ Response Body: ${response.body}');
 
-      if (response.statusCode == 200 || response.statusCode == 201) {
-        print('kkkkkkkkk');
-        final Map<String, dynamic> responseData = jsonDecode(response.body);
-        return SubmitHraResponse.fromJson(responseData);
-      } else {
-        throw Exception('Failed to submit HRA answers: ${response.statusCode}');
-      }
+if (response.statusCode == 200 || response.statusCode == 201) {
+      final Map<String, dynamic> responseData = jsonDecode(response.body);
+      
+      // Ensure the response data is properly formatted
+      return SubmitHraResponse(
+        message: responseData['message'] ?? '',
+        success: true,
+        data: {
+          'totalPoints': responseData['totalPoints'] ?? 0,
+          'riskLevel': responseData['riskLevel'] ?? 'Moderate',
+          'riskMessage': responseData['riskMessage'] ?? responseData['message'] ?? '',
+        },
+      );
+    } else {
+      throw Exception('Failed to submit HRA answers: ${response.statusCode}');
+    }
+      // print('✅ Response Status: ${response.statusCode}');
+      // print('✅ Response Body: ${response.body}');
+
+      // if (response.statusCode == 200 || response.statusCode == 201) {
+      //   print('kkkkkkkkk');
+      //   final Map<String, dynamic> responseData = jsonDecode(response.body);
+      //   return SubmitHraResponse.fromJson(responseData);
+      // } else {
+      //   throw Exception('Failed to submit HRA answers: ${response.statusCode}');
+      // }
     } catch (e) {
       print('❌ Error submitting HRA answers: $e');
       throw Exception('Error submitting HRA answers: $e');

@@ -570,7 +570,7 @@ class _DiagnosticsScreenState extends State<DiagnosticsScreen> {
                                 ),
                                 const SizedBox(width: 8),
                                 Text(
-                                  diagnostic.distance,
+                                  "15Km",
                                   style: TextStyle(
                                     fontSize: 12,
                                     color: Colors.blue.shade600,
@@ -581,7 +581,7 @@ class _DiagnosticsScreenState extends State<DiagnosticsScreen> {
                             ),
                             const SizedBox(height: 4),
                             Text(
-                              diagnostic.description,
+                              diagnostic.gstNumber,
                               style: const TextStyle(
                                 fontSize: 12,
                                 color: Colors.grey,
@@ -593,7 +593,7 @@ class _DiagnosticsScreenState extends State<DiagnosticsScreen> {
                             const SizedBox(height: 12),
                             Row(
                               children: [
-                                if (diagnostic.homeCollection) const Spacer(),
+                                if (diagnostic.homeCollectionSlots.isNotEmpty) const Spacer(),
 
                                 // Book Now Button
                                 SizedBox(
@@ -706,38 +706,38 @@ class _DiagnosticsScreenState extends State<DiagnosticsScreen> {
               const SizedBox(height: 20),
 
               // Available slots indicator
-              if (diagnostic.slots.isNotEmpty)
-                Container(
-                  margin: const EdgeInsets.symmetric(horizontal: 20),
-                  padding: const EdgeInsets.all(12),
-                  decoration: BoxDecoration(
-                    color: Colors.green.shade50,
-                    borderRadius: BorderRadius.circular(8),
-                    border: Border.all(color: Colors.green.shade200),
-                  ),
-                  child: Row(
-                    children: [
-                      Icon(
-                        Icons.check_circle,
-                        color: Colors.green.shade600,
-                        size: 20,
-                      ),
-                      const SizedBox(width: 8),
-                      Text(
-                        '${diagnostic.slots.length} slots available',
-                        style: TextStyle(
-                          color: Colors.green.shade700,
-                          fontWeight: FontWeight.w500,
-                          fontSize: 14,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
+              // if (diagnostic.slots.isNotEmpty)
+              //   Container(
+              //     margin: const EdgeInsets.symmetric(horizontal: 20),
+              //     padding: const EdgeInsets.all(12),
+              //     decoration: BoxDecoration(
+              //       color: Colors.green.shade50,
+              //       borderRadius: BorderRadius.circular(8),
+              //       border: Border.all(color: Colors.green.shade200),
+              //     ),
+              //     child: Row(
+              //       children: [
+              //         Icon(
+              //           Icons.check_circle,
+              //           color: Colors.green.shade600,
+              //           size: 20,
+              //         ),
+              //         const SizedBox(width: 8),
+              //         Text(
+              //           '${diagnostic.slots.length} slots available',
+              //           style: TextStyle(
+              //             color: Colors.green.shade700,
+              //             fontWeight: FontWeight.w500,
+              //             fontSize: 14,
+              //           ),
+              //         ),
+              //       ],
+              //     ),
+              //   ),
               const SizedBox(height: 16),
 
               // Home Collection Option (only show if available)
-              if (diagnostic.homeCollection)
+              if (diagnostic.homeCollectionSlots.isNotEmpty)
                 Container(
                   margin:
                       const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
@@ -827,7 +827,7 @@ class _DiagnosticsScreenState extends State<DiagnosticsScreen> {
                 ),
 
               // Center Visit Option (only show if available)
-              if (diagnostic.centerVisit)
+              if (diagnostic.centerVisitSlots.isNotEmpty)
                 Container(
                   margin:
                       const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
@@ -917,7 +917,7 @@ class _DiagnosticsScreenState extends State<DiagnosticsScreen> {
                 ),
 
               // Show message if no booking options available
-              if (!diagnostic.homeCollection && !diagnostic.centerVisit)
+              if (diagnostic.homeCollectionSlots.isEmpty && diagnostic.centerVisitSlots.isEmpty)
                 Container(
                   margin:
                       const EdgeInsets.symmetric(horizontal: 20, vertical: 16),

@@ -120,7 +120,7 @@ class _ConsultationDetailsScreenState extends State<OnlineScreen> {
       final formattedDate = _formatDateForApi(selectedDate.toString());
 
       // Replace `yourDoctorId` with actual doctor ID
-      doctorSlotProvider.getDoctorSlots(widget.doctorId!, formattedDate);
+      doctorSlotProvider.getDoctorSlots(doctorId: widget.doctorId!,date: formattedDate,type: selectedConsultationType);
     });
   }
 
@@ -682,7 +682,7 @@ class _ConsultationDetailsScreenState extends State<OnlineScreen> {
       print(
           'ggggggggggggggggggggggggggggggggggggggg${DateFormat('yyyy/MM/dd').format(date)}');
       // Format it to a more readable form (e.g., "Thu, 24 Jul 2025")
-      return DateFormat('dd/MM/yyy').format(date);
+      return DateFormat('yyy/MM/dd').format(date);
     } catch (e) {
       // Return original string if parsing fails
       return dateString;
@@ -1778,7 +1778,8 @@ Future<void> _confirmBookingWithTransactionId(
                                       Provider.of<DoctorSlotProvider>(context,
                                           listen: false);
                                   slotProvider.getDoctorSlots(
-                                      widget.doctorId!, formattedDate);
+                                    doctorId: widget.doctorId!,date: formattedDate,type: selectedConsultationType
+                                    );
                                 }
                               } else {
                                 setState(() {
@@ -1795,7 +1796,8 @@ Future<void> _confirmBookingWithTransactionId(
                                     Provider.of<DoctorSlotProvider>(context,
                                         listen: false);
                                 slotProvider.getDoctorSlots(
-                                    widget.doctorId!, formattedDate);
+                                  doctorId: widget.doctorId!,date: formattedDate,type: selectedConsultationType
+                                    );
                               }
                             },
                             child: Container(
@@ -1992,7 +1994,7 @@ Future<void> _confirmBookingWithTransactionId(
                                 'No slots are available for the selected date'));
                       }
 
-                      final slots = slotProvider.doctorSlot?.timeSlots ?? [];
+                      final slots = slotProvider.doctorSlot?.slots ?? [];
 
                       if (slots.isEmpty) {
                         return const Center(

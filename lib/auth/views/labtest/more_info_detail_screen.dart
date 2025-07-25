@@ -108,51 +108,51 @@ class _TestDetailScreenState extends State<TestDetailScreen> {
                     //   ),
                     // ),
                     const SizedBox(height: 12),
-                    Container(
-                      padding: const EdgeInsets.all(16),
-                      decoration: BoxDecoration(
-                        color: Colors.orange[50],
-                        borderRadius: BorderRadius.circular(8),
-                        border: Border.all(color: Colors.orange[200]!),
-                      ),
-                      child: const Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            children: [
-                              Icon(Icons.warning, color: Colors.orange, size: 20),
-                              SizedBox(width: 8),
-                              // Text(
-                              //   'Important Instructions',
-                              //   style: TextStyle(
-                              //     fontSize: 16,
-                              //     fontWeight: FontWeight.w600,
-                              //     color: Colors.orange,
-                              //   ),
-                              // ),
-                            ],
-                          ),
-                          SizedBox(height: 8),
-                          // Text(
-                          //   'Maintain 10-12 hours of fasting before sample collection',
-                          //   style: TextStyle(
-                          //     fontSize: 14,
-                          //     color: Colors.black87,
-                          //     height: 1.5,
-                          //   ),
-                          // ),
-                          SizedBox(height: 8),
-                          // Text(
-                          //   '• Do not eat or drink anything except water\n• Avoid smoking and alcohol\n• Take medications as prescribed by your doctor\n• Inform the lab about any medications you are taking',
-                          //   style: TextStyle(
-                          //     fontSize: 14,
-                          //     color: Colors.black87,
-                          //     height: 1.5,
-                          //   ),
-                          // ),
-                        ],
-                      ),
-                    ),
+                    // Container(
+                    //   padding: const EdgeInsets.all(16),
+                    //   decoration: BoxDecoration(
+                    //     color: Colors.orange[50],
+                    //     borderRadius: BorderRadius.circular(8),
+                    //     border: Border.all(color: Colors.orange[200]!),
+                    //   ),
+                    //   child: const Column(
+                    //     crossAxisAlignment: CrossAxisAlignment.start,
+                    //     children: [
+                    //       Row(
+                    //         children: [
+                    //           Icon(Icons.warning, color: Colors.orange, size: 20),
+                    //           SizedBox(width: 8),
+                    //           // Text(
+                    //           //   'Important Instructions',
+                    //           //   style: TextStyle(
+                    //           //     fontSize: 16,
+                    //           //     fontWeight: FontWeight.w600,
+                    //           //     color: Colors.orange,
+                    //           //   ),
+                    //           // ),
+                    //         ],
+                    //       ),
+                    //       SizedBox(height: 8),
+                    //       // Text(
+                    //       //   'Maintain 10-12 hours of fasting before sample collection',
+                    //       //   style: TextStyle(
+                    //       //     fontSize: 14,
+                    //       //     color: Colors.black87,
+                    //       //     height: 1.5,
+                    //       //   ),
+                    //       // ),
+                    //       SizedBox(height: 8),
+                    //       // Text(
+                    //       //   '• Do not eat or drink anything except water\n• Avoid smoking and alcohol\n• Take medications as prescribed by your doctor\n• Inform the lab about any medications you are taking',
+                    //       //   style: TextStyle(
+                    //       //     fontSize: 14,
+                    //       //     color: Colors.black87,
+                    //       //     height: 1.5,
+                    //       //   ),
+                    //       // ),
+                    //     ],
+                    //   ),
+                    // ),
                   ],
                   
                   const SizedBox(height: 100), // Space for bottom button

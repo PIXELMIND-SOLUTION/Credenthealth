@@ -326,7 +326,7 @@ class _ResultScreenState extends State<ResultScreen> {
           if (riskLevel.toLowerCase().contains('high')) {
             riskColor = Colors.red;
           } else if (riskLevel.toLowerCase().contains('moderate')) {
-            riskColor = Colors.orange;
+            riskColor = Colors.blue;
           } else {
             riskColor = Colors.green;
           }

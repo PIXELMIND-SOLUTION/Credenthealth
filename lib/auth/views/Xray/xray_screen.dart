@@ -2347,13 +2347,20 @@ Row(
                 ),
               ),
               const SizedBox(height: 4),
-              Text(
-                xray.getSubtitle(),
-                style: TextStyle(
-                  fontSize: 14,
-                  color: Colors.grey[600],
-                ),
-              ),
+              // Text(
+              //   xray.getSubtitle(),
+              //   style: TextStyle(
+              //     fontSize: 14,
+              //     color: Colors.grey[600],
+              //   ),
+              // ),
+               Text(
+  'Report time:${xray.reportTime}',
+  style: TextStyle(
+    fontSize: 14,
+    color: Colors.grey[600],
+  ),
+),
               const SizedBox(height: 12),
             ],
           ),

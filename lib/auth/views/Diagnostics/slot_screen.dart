@@ -1345,10 +1345,6 @@
 //   }
 // }
 
-
-
-
-
 import 'package:consultation_app/auth/views/Diagnostics/confirm_booking_screen.dart';
 import 'package:consultation_app/auth/views/family/list_family_members.dart';
 import 'package:consultation_app/auth/views/provider/booking_slot_provider.dart';
@@ -1420,7 +1416,7 @@ class _SlotScreenState extends State<SlotScreen> {
   bool _isLoadingStaffId = true;
   double? wallet;
   late Razorpay _razorpay;
-String? dateCustom = DateFormat('yyyy/MM/dd').format(DateTime.now());
+  String? dateCustom = DateFormat('yyyy/MM/dd').format(DateTime.now());
   String? customSlot;
 
   // Profile data for automatic selection
@@ -1446,11 +1442,21 @@ String? dateCustom = DateFormat('yyyy/MM/dd').format(DateTime.now());
     _loadProfileData();
     //  Provider.of<BookingSlotProvider>(context, listen: false);
 
+    // if (dates.isNotEmpty) {
+    //   final initialDate = dates[0]['date']; // format: 'dd/MM/yyyy'
+    //   Provider.of<BookingSlotProvider>(context, listen: false)
+    //       .fetchSlots(widget.diagnosticId.toString(), initialDate);
+    // }
+
     if (dates.isNotEmpty) {
       final initialDate = dates[0]['date']; // format: 'dd/MM/yyyy'
-      Provider.of<BookingSlotProvider>(context, listen: false)
-          .fetchSlots(widget.diagnosticId.toString(), initialDate);
+      Provider.of<BookingSlotProvider>(context, listen: false).fetchSlots(
+        widget.diagnosticId.toString(),
+        initialDate,
+        widget.bookingType.toString(),
+      );
     }
+
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _initializeWalletData();
     });
@@ -1514,10 +1520,9 @@ String? dateCustom = DateFormat('yyyy/MM/dd').format(DateTime.now());
     dates = List.generate(5, (index) {
       DateTime date = now.add(Duration(days: index));
       return {
-        'day': dayNames[date.weekday % 7], 
-        'dayNumber': date.day.toString(), 
-        'date':
-            DateFormat('dd/MM/yyyy').format(date),
+        'day': dayNames[date.weekday % 7],
+        'dayNumber': date.day.toString(),
+        'date': DateFormat('dd/MM/yyyy').format(date),
         'fullDate': date,
       };
     });
@@ -1640,8 +1645,7 @@ String? dateCustom = DateFormat('yyyy/MM/dd').format(DateTime.now());
   }
 
   void handlePaymentSuccessResponse(PaymentSuccessResponse responsee) async {
-
- _updateBookingProviderData();
+    _updateBookingProviderData();
 
     final bookingProvider =
         Provider.of<BookingProvider>(context, listen: false);
@@ -1657,7 +1661,7 @@ String? dateCustom = DateFormat('yyyy/MM/dd').format(DateTime.now());
 
     final selectedDate = dates[selectedDateIndex];
 
-  final response = await bookingProvider.createBooking(
+    final response = await bookingProvider.createBooking(
         selectedDay: selectedDate['day'],
         selectedDate: dateCustom.toString(),
         selectedTime: customSlot.toString(),
@@ -1665,44 +1669,42 @@ String? dateCustom = DateFormat('yyyy/MM/dd').format(DateTime.now());
         packageId: widget.packageId,
         familyMemberId: selectedFamilyMember?.id.toString(),
         serviceType: widget.bookingType,
-        transactionId: responsee.paymentId.toString()
+        transactionId: responsee.paymentId.toString());
+
+    // Hide loading dialog
+    if (mounted) {
+      Navigator.of(context).pop();
+    }
+
+    if (response['success']) {
+      print(
+          "gggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggrrrrr");
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Consultation booked successfully!'),
+          backgroundColor: Colors.green,
+        ),
       );
 
-      // Hide loading dialog
-      if (mounted) {
-        Navigator.of(context).pop();
-      }
-
-
-
-      if (response['success']) {
-        print("gggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggrrrrr");
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Consultation booked successfully!'),
-            backgroundColor: Colors.green,
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => ConfirmBookingScreen(
+            selectedDate: dateCustom,
+            selectedTime: customSlot,
+            selectedDay: dates[selectedDateIndex]['day'],
           ),
-        );
-
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            builder: (context) => ConfirmBookingScreen(
-              selectedDate: dateCustom,
-              selectedTime: customSlot,
-              selectedDay: dates[selectedDateIndex]['day'],
-            ),
-          ),
-        );
-      } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(response['error'] ?? 'Failed to book consultation'),
-            backgroundColor: Colors.red,
-          ),
-        );
-      }
-    } 
+        ),
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(response['error'] ?? 'Failed to book consultation'),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
+  }
 
   void handleExternalWalletSelected(ExternalWalletResponse response) {
     showAlertDialog(
@@ -1713,89 +1715,117 @@ String? dateCustom = DateFormat('yyyy/MM/dd').format(DateTime.now());
     failed(mesg: "failed", context: context);
   }
 
-Future<void> _completeBookingAfterPayment() async {
-  showLoading();
-  try {
-    final bookingProvider = Provider.of<BookingProvider>(context, listen: false);
-    
-    // Determine family member ID to use (optional)
-    String? familyMemberIdToUse;
-    if (selectedFamilyMember != null) {
-      familyMemberIdToUse = selectedFamilyMember!.id.toString();
-      print('✅ Using selected family member: ${selectedFamilyMember!.fullName} (ID: $familyMemberIdToUse)');
-    } else if (_useProfileData && _currentStaffId != null) {
-      familyMemberIdToUse = _currentStaffId!;
-      print('✅ Using profile data for current user (ID: $familyMemberIdToUse)');
-    } else {
-      // No family member selected - use current user as default
-      familyMemberIdToUse = _currentStaffId;
-      print('✅ No family member selected, using current user as default (ID: $familyMemberIdToUse)');
-    }
-    
-    // Create booking with dynamic date
-    final selectedDate = dates[selectedDateIndex];
-    print('📅 Creating booking with date: ${selectedDate['day']}, ${selectedDate['date']}');
-    
-    final response = await bookingProvider.createBooking(
-      selectedDay: selectedDate['day'],
-      selectedDate: selectedDate['date'].toString(),
-      selectedTime: timeSlots[selectedTimeIndex],
-      diagnosticId: widget.diagnosticId,
-      packageId: widget.packageId,
-      familyMemberId: familyMemberIdToUse,
-      serviceType: widget.bookingType ?? 'Home Collection',
-    );
-    
-    EasyLoading.dismiss();
-    
-    // First check if the response itself is successful
-    if (response['success'] == true) {
-      print('✅ Booking created successfully');
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (context) => ConfirmBookingScreen(
-            selectedDate: selectedDate['date'].toString(),
-            selectedTime: timeSlots[selectedTimeIndex],
-            selectedDay: selectedDate['day'],
-          ),
-        ),
-      );
-    } 
-    // Then check if we have a payment requirement in the data
-    else if (response['data']['isSuccessfull'] == false) {
-      final requiredOnlineAmount = response['data']['requiredOnline']?.toDouble() ?? 0.0;
-      final walletAvailable = response['data']['walletAvailable']?.toDouble() ?? 0.0;
-      final message = response['data']['message'] ?? 'Insufficient wallet balance';
-      
-      print('💰 Payment required: $message');
-      print('💵 Wallet available: $walletAvailable');
-      print('💳 Required online payment amount: $requiredOnlineAmount');
-      
-      if (requiredOnlineAmount > 0) {
-        await _initiateRazorpayPayment(requiredOnlineAmount.toInt());
+  Future<void> _completeBookingAfterPayment() async {
+    showLoading();
+    try {
+      final bookingProvider =
+          Provider.of<BookingProvider>(context, listen: false);
+
+      // Determine family member ID to use (optional)
+      String? familyMemberIdToUse;
+      if (selectedFamilyMember != null) {
+        familyMemberIdToUse = selectedFamilyMember!.id.toString();
+        print(
+            '✅ Using selected family member: ${selectedFamilyMember!.fullName} (ID: $familyMemberIdToUse)');
+      } else if (_useProfileData && _currentStaffId != null) {
+        familyMemberIdToUse = _currentStaffId!;
+        print(
+            '✅ Using profile data for current user (ID: $familyMemberIdToUse)');
       } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(message),
-            backgroundColor: Colors.red,
+        // No family member selected - use current user as default
+        familyMemberIdToUse = _currentStaffId;
+        print(
+            '✅ No family member selected, using current user as default (ID: $familyMemberIdToUse)');
+      }
+
+      // Create booking with dynamic date
+      final selectedDate = dates[selectedDateIndex];
+      print(
+          '📅 Creating booking with date: ${selectedDate['day']}, ${selectedDate['date']}');
+
+      final response = await bookingProvider.createBooking(
+        selectedDay: selectedDate['day'],
+        selectedDate: selectedDate['date'].toString(),
+        selectedTime: timeSlots[selectedTimeIndex],
+        diagnosticId: widget.diagnosticId,
+        packageId: widget.packageId,
+        familyMemberId: familyMemberIdToUse,
+        serviceType: widget.bookingType ?? 'Home Collection',
+      );
+
+      EasyLoading.dismiss();
+
+      // First check if the response itself is successful
+      if (response['success'] == true) {
+        print('✅ Booking created successfully');
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => ConfirmBookingScreen(
+              selectedDate: selectedDate['date'].toString(),
+              selectedTime: timeSlots[selectedTimeIndex],
+              selectedDay: selectedDate['day'],
+            ),
           ),
         );
       }
-    }
-    // Handle other error cases
-    else {
-      final errorMessage = response['error'] ?? 
-                          response['message'] ?? 
-                          'Failed to create booking';
-      print('❌ Booking creation failed: $errorMessage');
+      // Then check if we have a payment requirement in the data
+      else if (response['data']['isSuccessfull'] == false) {
+        final requiredOnlineAmount =
+            response['data']['requiredOnline']?.toDouble() ?? 0.0;
+        final walletAvailable =
+            response['data']['walletAvailable']?.toDouble() ?? 0.0;
+        final message =
+            response['data']['message'] ?? 'Insufficient wallet balance';
+
+        print('💰 Payment required: $message');
+        print('💵 Wallet available: $walletAvailable');
+        print('💳 Required online payment amount: $requiredOnlineAmount');
+
+        if (requiredOnlineAmount > 0) {
+          await _initiateRazorpayPayment(requiredOnlineAmount.toInt());
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(message),
+              backgroundColor: Colors.red,
+            ),
+          );
+        }
+      }
+      // Handle other error cases
+      else {
+        final errorMessage = response['error'] ??
+            response['message'] ??
+            'Failed to create booking';
+        print('❌ Booking creation failed: $errorMessage');
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Row(
+              children: [
+                const Icon(Icons.error_outline, color: Colors.white),
+                const SizedBox(width: 8),
+                Expanded(child: Text(errorMessage)),
+              ],
+            ),
+            backgroundColor: Colors.red,
+            behavior: SnackBarBehavior.floating,
+            duration: const Duration(seconds: 4),
+          ),
+        );
+      }
+    } catch (e) {
+      EasyLoading.dismiss();
+      print('❌ Exception during booking creation: $e');
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Row(
             children: [
               const Icon(Icons.error_outline, color: Colors.white),
               const SizedBox(width: 8),
-              Expanded(child: Text(errorMessage)),
+              Expanded(
+                child: Text('An error occurred: ${e.toString()}'),
+              ),
             ],
           ),
           backgroundColor: Colors.red,
@@ -1804,29 +1834,7 @@ Future<void> _completeBookingAfterPayment() async {
         ),
       );
     }
-  } catch (e) {
-    EasyLoading.dismiss();
-    print('❌ Exception during booking creation: $e');
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Row(
-          children: [
-            const Icon(Icons.error_outline, color: Colors.white),
-            const SizedBox(width: 8),
-            Expanded(
-              child: Text('An error occurred: ${e.toString()}'),
-            ),
-          ],
-        ),
-        backgroundColor: Colors.red,
-        behavior: SnackBarBehavior.floating,
-        duration: const Duration(seconds: 4),
-      ),
-    );
   }
-}
-
-
 
   Future<void> _initiateRazorpayPayment(int amount) async {
     try {
@@ -1863,8 +1871,7 @@ Future<void> _completeBookingAfterPayment() async {
       razorpay.on(Razorpay.EVENT_PAYMENT_ERROR, handlePaymentErrorResponse);
       razorpay.on(Razorpay.EVENT_PAYMENT_SUCCESS, handlePaymentSuccessResponse);
       razorpay.on(Razorpay.EVENT_EXTERNAL_WALLET, handleExternalWalletSelected);
-            razorpay.open(options);
-
+      razorpay.open(options);
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -2045,8 +2052,7 @@ Future<void> _completeBookingAfterPayment() async {
     );
 
     // Proceed with payment
-      await _completeBookingAfterPayment();
-
+    await _completeBookingAfterPayment();
   }
 
   void _showValidationError(String message) {
@@ -2511,12 +2517,11 @@ Future<void> _completeBookingAfterPayment() async {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-
                       Consumer<BookingSlotProvider>(
                         builder: (context, slotProvider, child) {
-                          if(slotProvider.slots.isNotEmpty){
-                             final slots = slotProvider.slots ?? [];
-                             customSlot = slots[0].timeSlot;
+                          if (slotProvider.slots.isNotEmpty) {
+                            final slots = slotProvider.slots ?? [];
+                            customSlot = slots[0].timeSlot;
                           }
                           return Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -2553,7 +2558,8 @@ Future<void> _completeBookingAfterPayment() async {
                                         );
 
                                         if (pickedDate != null) {
-                                          print("hhhhhhhhhhhhhhhhhhhhhhhhhh$pickedDate");
+                                          print(
+                                              "hhhhhhhhhhhhhhhhhhhhhhhhhh$pickedDate");
                                           final customDate = {
                                             'day': DateFormat('EEE')
                                                 .format(pickedDate),
@@ -2569,21 +2575,32 @@ Future<void> _completeBookingAfterPayment() async {
                                                 customDate;
                                             selectedDateIndex = index;
                                             selectedTimeIndex = -1;
-                                            dateCustom = DateFormat('yyyy/MM/dd')
-                                                .format(pickedDate);
+                                            dateCustom =
+                                                DateFormat('yyyy/MM/dd')
+                                                    .format(pickedDate);
                                           });
 
-                                          print("oooooooooooooooooooooooooo$dateCustom");
+                                          print(
+                                              "oooooooooooooooooooooooooo$dateCustom");
 
+                                          // context
+                                          //     .read<BookingSlotProvider>()
+                                          //     .fetchSlots(
+                                          //       widget.diagnosticId.toString(),
+                                          //       customDate['date'].toString()
+
+                                          //     );
                                           context
                                               .read<BookingSlotProvider>()
                                               .fetchSlots(
                                                 widget.diagnosticId.toString(),
-                                                customDate['date'].toString(),
+                                                dateCustom.toString(),
+                                                widget.bookingType
+                                                    .toString(), // 👈 Pass the required type here
                                               );
                                         }
                                       } else {
-                                             DateTime? pickedDate =
+                                        DateTime? pickedDate =
                                             await showDatePicker(
                                           context: context,
                                           initialDate: DateTime.now(),
@@ -2595,7 +2612,8 @@ Future<void> _completeBookingAfterPayment() async {
                                           selectedDateIndex = index;
                                           selectedTimeIndex = -1;
                                           dateCustom = DateFormat('yyyy/MM/dd')
-                                                .format(pickedDate!);
+                                              .format(pickedDate!);
+                                              print("hhhhttttttttttttttttttttttt$dateCustom");
                                         });
 
                                         context
@@ -2603,7 +2621,8 @@ Future<void> _completeBookingAfterPayment() async {
                                             .fetchSlots(
                                               widget.diagnosticId.toString(),
                                               date[
-                                                  'date'], // Already in 'dd/MM/yyyy' format
+                                                  'date'], // Assuming this is already in 'dd/MM/yyyy' format
+                                              widget.bookingType.toString(), // 👈 Add this line to pass the type
                                             );
                                       }
                                     },

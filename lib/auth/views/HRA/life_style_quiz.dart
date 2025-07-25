@@ -2393,13 +2393,24 @@ Future<void> _submitAllAnswersAndNavigate() async {
 
     if (resultData != null) {
       // Navigate to results screen with the returned data
-      Navigator.pushAndRemoveUntil(
+      // Navigator.pushAndRemoveUntil(
+      //   context,
+      //   MaterialPageRoute(
+      //     builder: (context) => ResultScreen(
+      //       totalPoints: resultData['point'] ?? 0,
+      //       riskLevel: resultData['riskLevel'] ?? 'Moderate',
+      //       riskMessage: resultData['text'] ?? 'Assessment completed successfully.',
+      //     ),
+      //   ),
+      //   (Route<dynamic> route) => false,
+      // );
+       Navigator.pushAndRemoveUntil(
         context,
         MaterialPageRoute(
           builder: (context) => ResultScreen(
-            totalPoints: resultData['point'] ?? 0,
-            riskLevel: resultData['riskLevel'] ?? 'Moderate',
-            riskMessage: resultData['text'] ?? 'Assessment completed successfully.',
+            totalPoints: resultData['totalPoints'],
+            riskLevel: resultData['riskLevel'],
+            riskMessage: resultData['riskMessage'],
           ),
         ),
         (Route<dynamic> route) => false,
