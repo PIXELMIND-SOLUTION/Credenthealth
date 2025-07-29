@@ -527,7 +527,7 @@ class DoctorProvider extends ChangeNotifier {
   List<Doctor> _allDoctors = [];
   List<Doctor> _onlineDoctors = [];
   List<Doctor> _offlineDoctors = [];
-  List<Doctor> _bothTypeDoctors = []; // For doctors with "Both" consultation type
+  List<Doctor> _bothTypeDoctors = []; 
   bool _isLoading = false;
   String? _errorMessage;
 

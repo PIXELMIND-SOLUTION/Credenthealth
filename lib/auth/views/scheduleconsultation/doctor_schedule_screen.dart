@@ -1862,6 +1862,7 @@ class _DoctorScheduleScreenState extends State<DoctorScheduleScreen> {
     final isBooked=doctor['isBooked']==true;
     final timeSlot=doctor['time_slots']?.toString();
     final type=doctor['consultation_type']?.toString();
+    //  final images=doctor['image']?.toString();
 
 
 
@@ -1898,16 +1899,42 @@ class _DoctorScheduleScreenState extends State<DoctorScheduleScreen> {
               // Doctor Avatar
               GestureDetector(
                 onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => ConsultationDetailsScreen(
-                        // doctorId: doctorId,
-                        doctorId: doctorId,
-                        doctorName: name,
-                      ),
-                    ),
-                  );
+                  if (type == 'Offline' || type == 'Online') {
+  // Optional: handle differently if needed
+  if (type == 'Offline') {
+    print("Proceeding with Offline consultation");
+  } else {
+    print("Proceeding with Online consultation");
+  }
+
+  Navigator.push(
+    context,
+    MaterialPageRoute(
+      builder: (context) => ConsultationDetailsScreen(
+        doctorId: doctorId,
+        doctorName: name,
+        image: image,
+        consultationType: type,
+      ),
+    ),
+  );
+} else {
+  // Handle invalid or null type
+  print("Invalid consultation type selected.");
+}
+
+                  // Navigator.push(
+                  //   context,
+                  //   MaterialPageRoute(
+                  //     builder: (context) => ConsultationDetailsScreen(
+                  //       // doctorId: doctorId,
+                  //       doctorId: doctorId,
+                  //       doctorName: name,
+                  //       image: images,
+                  //       consultationType: type,
+                  //     ),
+                  //   ),
+                  // );
                 },
                 child: Container(
                   width: 60,
@@ -2054,6 +2081,7 @@ class _DoctorScheduleScreenState extends State<DoctorScheduleScreen> {
                       ratings: rating,
                       description: description,
                       isBooked: isBooked,
+                      image: image,
                       // type: type,
                  
                     ),

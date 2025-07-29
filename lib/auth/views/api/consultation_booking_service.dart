@@ -112,6 +112,8 @@ class ConsultationBookingService {
     String? transactionId
   }) async {
     try {
+
+      print("yyyyyyyyyyyyyyyyyyyyyttttttttttttttttttttttt$date");
       final url = Uri.parse('$baseUrl/api/staff/consultationbooking/$staffId');
       
       final response = await http.post(

@@ -132,9 +132,9 @@ class NewRecentPackageProvider extends ChangeNotifier {
         throw Exception('No package data received from server');
       }
       
-      print('📦 Package data: ${response.package.name}');
-      print('📦 Package ID: ${response.package.id}');
-      print('📦 Package price: ${response.package.price}');
+      // print('📦 Package data: ${response.package.name}');
+      // print('📦 Package ID: ${response.package.id}');
+      // print('📦 Package price: ${response.package.price}');
       
       // Update state with success
       _package = response.package;

@@ -1033,8 +1033,8 @@ Future<void> _downloadPdfReport(String bookingId) async {
     bookings = List.from(bookings)
       ..sort((a, b) {
         try {
-          final dateA = DateTime.parse(a.createdAt);
-          final dateB = DateTime.parse(b.createdAt);
+          final dateA = DateTime.parse(a.date);
+          final dateB = DateTime.parse(b.date);
           return dateB.compareTo(dateA); // Descending order (newest first)
         } catch (e) {
           // If date parsing fails, maintain original order
@@ -1286,9 +1286,13 @@ Future<void> _downloadPdfReport(String bookingId) async {
                 'Discount', '₹${booking.discount.toStringAsFixed(2)}'),
             _buildDetailRow('Payable Amount',
                 '₹${booking.payableAmount.toStringAsFixed(2)}'),
-                    _buildDetailRow(
+          _buildDetailRow(
               'Service Type',
-              booking.type == 'Online' ? 'Online' : booking.serviceType ?? '',
+              booking.type.toLowerCase() == 'online'
+                  ? 'Online Consultation'
+                  : booking.type.toLowerCase() == 'offline'
+                      ? 'Clinic Visit'
+                      : booking.serviceType ?? '',
             ),
             // _buildDetailRow('Family Member ID', booking.familyMemberId),
             // _buildDetailRow('Created At', _formatCreatedDate(booking.createdAt)),

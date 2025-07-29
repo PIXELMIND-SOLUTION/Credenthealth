@@ -577,14 +577,15 @@ class _DiagnosticsScreenState extends State<DiagnosticsScreen> {
                                     fontWeight: FontWeight.w500,
                                   ),
                                 ),
+
                               ],
                             ),
                             const SizedBox(height: 4),
                             Text(
-                              diagnostic.gstNumber,
+                              diagnostic.city,
                               style: const TextStyle(
                                 fontSize: 12,
-                                color: Colors.grey,
+                                color: Colors.black,
                                 height: 1.3,
                               ),
                               maxLines: 2,
@@ -593,7 +594,7 @@ class _DiagnosticsScreenState extends State<DiagnosticsScreen> {
                             const SizedBox(height: 12),
                             Row(
                               children: [
-                                if (diagnostic.homeCollectionSlots.isNotEmpty) const Spacer(),
+                                if (diagnostic.homeCollectionSlots.isNotEmpty && diagnostic.centerVisitSlots.isNotEmpty) const Spacer(),
 
                                 // Book Now Button
                                 SizedBox(

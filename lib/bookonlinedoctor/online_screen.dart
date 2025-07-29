@@ -55,6 +55,7 @@ class OnlineScreen extends StatefulWidget {
   final String? description;
   final bool? isBooked;
   final String?type;
+  final String?image;
 
   const OnlineScreen(
       {super.key,
@@ -66,7 +67,8 @@ class OnlineScreen extends StatefulWidget {
       this.experience,
       this.description,
       this.isBooked,
-      this.type
+      this.type,
+      this.image
       });
 
   @override
@@ -1464,11 +1466,25 @@ Future<void> _confirmBookingWithTransactionId(
                           height: 60,
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(10),
-                            image: const DecorationImage(
-                              image: AssetImage(
-                                  'lib/assets/35f9dd905ad125952da7241c0e76c4d2af61a49d.png'),
+                            image: DecorationImage(
+                              image: widget.image != null &&
+                                      widget.image!.isNotEmpty
+                                  ? NetworkImage(
+                                      widget.image!.startsWith('http')
+                                          ? widget.image!
+                                          : 'http://31.97.206.144:4051${widget.image!}',
+                                    )
+                                  :  NetworkImage(
+                                          'http://31.97.206.144:4051${widget.image!}')
+                                      as ImageProvider,
                               fit: BoxFit.cover,
                             ),
+
+                            // image: const DecorationImage(
+                            //   image: AssetImage(
+                            //       'lib/assets/35f9dd905ad125952da7241c0e76c4d2af61a49d.png'),
+                            //   fit: BoxFit.cover,
+                            // ),
                           ),
                         ),
                         const SizedBox(width: 12),

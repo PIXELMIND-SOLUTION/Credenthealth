@@ -165,19 +165,49 @@ class IncludedTest {
   }
 }
 
+// class RecentPackageResponse {
+//   final String message;
+//   final RecentPackage package;
+
+//   RecentPackageResponse({
+//     required this.message,
+//     required this.package,
+//   });
+
+//   factory RecentPackageResponse.fromJson(Map<String, dynamic> json) {
+//     return RecentPackageResponse(
+//       message: json['message'] ?? '',
+//       package: RecentPackage.fromJson(json['package']),
+//     );
+//   }
+// }
+
+
+
+
+
+
+
+
+
+
+
+
 class RecentPackageResponse {
   final String message;
-  final RecentPackage package;
+  final RecentPackage? package; // Make package nullable
 
   RecentPackageResponse({
     required this.message,
-    required this.package,
+    this.package, // Remove required since it can be null
   });
 
   factory RecentPackageResponse.fromJson(Map<String, dynamic> json) {
     return RecentPackageResponse(
       message: json['message'] ?? '',
-      package: RecentPackage.fromJson(json['package']),
+      package: json['package'] != null 
+          ? RecentPackage.fromJson(json['package']) 
+          : null,
     );
   }
 }

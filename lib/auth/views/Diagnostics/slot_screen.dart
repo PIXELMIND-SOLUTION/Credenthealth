@@ -1718,6 +1718,9 @@ class _SlotScreenState extends State<SlotScreen> {
   Future<void> _completeBookingAfterPayment() async {
     showLoading();
     try {
+      print(
+          '✅ hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh created successfully$dateCustom');
+      print('✅ Booking created successfully$customSlot');
       final bookingProvider =
           Provider.of<BookingProvider>(context, listen: false);
 
@@ -1745,8 +1748,8 @@ class _SlotScreenState extends State<SlotScreen> {
 
       final response = await bookingProvider.createBooking(
         selectedDay: selectedDate['day'],
-        selectedDate: selectedDate['date'].toString(),
-        selectedTime: timeSlots[selectedTimeIndex],
+        selectedDate: dateCustom.toString(),
+        selectedTime: customSlot.toString(),
         diagnosticId: widget.diagnosticId,
         packageId: widget.packageId,
         familyMemberId: familyMemberIdToUse,
@@ -1757,13 +1760,14 @@ class _SlotScreenState extends State<SlotScreen> {
 
       // First check if the response itself is successful
       if (response['success'] == true) {
-        print('✅ Booking created successfully');
+        print('✅ Booking created successfully$dateCustom');
+        print('✅ Booking created successfully$customSlot');
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
             builder: (context) => ConfirmBookingScreen(
-              selectedDate: selectedDate['date'].toString(),
-              selectedTime: timeSlots[selectedTimeIndex],
+              selectedDate: dateCustom,
+              selectedTime: customSlot,
               selectedDay: selectedDate['day'],
             ),
           ),
@@ -2020,8 +2024,8 @@ class _SlotScreenState extends State<SlotScreen> {
         "ooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo${widget.bookingType}");
 
     // 9. All validations passed - Show confirmation
-    final selectedDate = dates[selectedDateIndex];
-    final selectedTime = timeSlots[selectedTimeIndex];
+    final selectedDate = dateCustom;
+    final selectedTime = customSlot;
     final serviceType = widget.bookingType ?? 'Home Collection';
 
     // Create summary for confirmation
@@ -2032,24 +2036,18 @@ class _SlotScreenState extends State<SlotScreen> {
 
     print('✅ All validation checks passed:');
     // print('- Amount: ₹$amount');
-    print('- Service: $serviceName');
-    print('- Diagnostic ID: ${widget.diagnosticId}');
-    print('- Package ID: ${widget.packageId}');
-    print(
-        '- Date: ${selectedDate['day']}, ${selectedDate['date']}/${selectedDate['month']}/${selectedDate['year']}');
-    print('- Time: $selectedTime');
-    print('- Family Member: $selectedMemberName (ID: $familyMemberIdToUse)');
-    print('- Service Type: $serviceType');
-    print('- Staff ID: $_currentStaffId');
-    print('- Wallet Balance: ₹${wallet ?? 0}');
 
     // Update booking provider with validated data
-    _updateBookingProviderWithValidatedData(
-      selectedDate: selectedDate,
-      selectedTime: selectedTime,
-      familyMemberId: familyMemberIdToUse.toString(),
-      serviceType: serviceType,
-    );
+    // _updateBookingProviderWithValidatedData(
+    //   selectedDate: selectedDate,
+    //   selectedTime: selectedTime,
+    //   familyMemberId: familyMemberIdToUse.toString(),
+    //   serviceType: serviceType,
+    // );
+
+    print(
+        '✅ hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh created successfully$dateCustom');
+    print('✅ Booking created successfully$customSlot');
 
     // Proceed with payment
     await _completeBookingAfterPayment();
@@ -2613,7 +2611,8 @@ class _SlotScreenState extends State<SlotScreen> {
                                           selectedTimeIndex = -1;
                                           dateCustom = DateFormat('yyyy/MM/dd')
                                               .format(pickedDate!);
-                                              print("hhhhttttttttttttttttttttttt$dateCustom");
+                                          print(
+                                              "hhhhttttttttttttttttttttttt$dateCustom");
                                         });
 
                                         context
@@ -2622,7 +2621,8 @@ class _SlotScreenState extends State<SlotScreen> {
                                               widget.diagnosticId.toString(),
                                               date[
                                                   'date'], // Assuming this is already in 'dd/MM/yyyy' format
-                                              widget.bookingType.toString(), // 👈 Add this line to pass the type
+                                              widget.bookingType
+                                                  .toString(), // 👈 Add this line to pass the type
                                             );
                                       }
                                     },
@@ -2708,10 +2708,19 @@ class _SlotScreenState extends State<SlotScreen> {
                                     final slot = slotProvider.slots[index];
 
                                     return GestureDetector(
-                                      onTap: () {
+                                      onTap: () async {
+                                        if (customSlot != slot.timeSlot) {
+                                          print(
+                                              "customSlot updated from $customSlot to ${slot.timeSlot}");
+                                        }
                                         setState(() {
                                           selectedTimeIndex = index;
                                           customSlot = slot.timeSlot;
+                                        });
+
+                                        Future.delayed(Duration.zero, () {
+                                          print(
+                                              "Updated customSlot: $customSlot");
                                         });
                                       },
                                       child: Container(

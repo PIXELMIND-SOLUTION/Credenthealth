@@ -55,6 +55,8 @@ class ConsultationDetailsScreen extends StatefulWidget {
   final String? description;
   final bool? isBooked;
   final String? type;
+  final String? image;
+  final String? consultationType;
 
   const ConsultationDetailsScreen(
       {super.key,
@@ -66,7 +68,9 @@ class ConsultationDetailsScreen extends StatefulWidget {
       this.experience,
       this.description,
       this.isBooked,
-      this.type});
+      this.type,
+      this.image,
+      this.consultationType});
 
   @override
   State<ConsultationDetailsScreen> createState() =>
@@ -107,6 +111,8 @@ class _ConsultationDetailsScreenState extends State<ConsultationDetailsScreen> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _initializeWalletData();
 
+
+print('uuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuu${widget.image}');
       // ✅ Call DoctorSlotProvider after widget is mounted
       final doctorSlotProvider =
           Provider.of<DoctorSlotProvider>(context, listen: false);
@@ -119,7 +125,10 @@ class _ConsultationDetailsScreenState extends State<ConsultationDetailsScreen> {
       final formattedDate = _formatDateForApi(selectedDate.toString());
 
       // Replace `yourDoctorId` with actual doctor ID
-      doctorSlotProvider.getDoctorSlots(doctorId: widget.doctorId!,date: formattedDate,type: selectedConsultationType);
+      doctorSlotProvider.getDoctorSlots(
+          doctorId: widget.doctorId!,
+          date: formattedDate,
+          type: selectedConsultationType);
     });
   }
 
@@ -443,14 +452,16 @@ class _ConsultationDetailsScreenState extends State<ConsultationDetailsScreen> {
         type = selectedConsultationType;
       });
 
+      print('ggggggggggggggggggggggggggggggggggggggggg$Date');
+
       // Validate booking data
-      final validation = bookingProvider.validateBookingData(
-        doctorId: widget.doctorId ??
-            '68645a56f1cde0b197534b26', // Default doctor ID from your curl example
-        day: formattedDate,
-        timeSlot: selectedTime,
-        familyMemberId: familyMemberIdToUse,
-      );
+      // final validation = bookingProvider.validateBookingData(
+      //   doctorId: widget.doctorId ??
+      //       '68645a56f1cde0b197534b26', // Default doctor ID from your curl example
+      //   day: formattedDate,
+      //   timeSlot: selectedTime,
+      //   familyMemberId: familyMemberIdToUse,
+      // );
 
       Navigator.pop(context); // Close loading dialog
 
@@ -471,7 +482,7 @@ class _ConsultationDetailsScreenState extends State<ConsultationDetailsScreen> {
       Razorpay razorpay = Razorpay();
       var options = {
         'key': 'rzp_test_BxtRNvflG06PTV', // test keys
-        'amount': amount * 100 , // Use actual consultation fee
+        'amount': amount * 100, // Use actual consultation fee
         'name': 'CredentHealth',
         'description': 'Consultation with Dr. ${widget.doctorName}',
         'retry': {'enabled': true, 'max_count': 1},
@@ -537,12 +548,12 @@ class _ConsultationDetailsScreenState extends State<ConsultationDetailsScreen> {
     try {
       print("hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh$dateString");
       // Parse the date string
-      DateTime date = DateTime.parse(dateString.split(' GMT')[0]);
+      DateTime date = DateTime.parse(dateString.split('GMT')[0]);
 
       print(
-          'ggggggggggggggggggggggggggggggggggggggg${DateFormat('yyyy/MM/dd').format(date)}');
+          'jfjutjuuuykykukuyky${DateFormat('yyyy/MM/dd').format(date)}');
       // Format it to a more readable form (e.g., "Thu, 24 Jul 2025")
-      return DateFormat('yyy/MM/dd').format(date);
+      return DateFormat('yyyy/MM/dd').format(date);
     } catch (e) {
       // Return original string if parsing fails
       return dateString;
@@ -618,139 +629,139 @@ class _ConsultationDetailsScreenState extends State<ConsultationDetailsScreen> {
   }
 
   Future<void> _proceedToBooking() async {
-  final bookingProvider =
-      Provider.of<ConsultationBookingProvider>(context, listen: false);
+    final bookingProvider =
+        Provider.of<ConsultationBookingProvider>(context, listen: false);
 
-  // Check if we should use profile data automatically
-  if (selectedFamilyMember == null) {
-    if (_profileData != null) {
-      setState(() {
-        _useProfileData = true;
-      });
-    } else {
+    // Check if we should use profile data automatically
+    if (selectedFamilyMember == null) {
+      if (_profileData != null) {
+        setState(() {
+          _useProfileData = true;
+        });
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text(
+                'Please select a family member or ensure profile data is available'),
+            backgroundColor: Colors.orange,
+          ),
+        );
+        return;
+      }
+    }
+
+    if (_currentStaffId == null || _currentStaffId!.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text(
-              'Please select a family member or ensure profile data is available'),
-          backgroundColor: Colors.orange,
+          content: Text('User information not available'),
+          backgroundColor: Colors.red,
         ),
       );
       return;
     }
-  }
 
-  if (_currentStaffId == null || _currentStaffId!.isEmpty) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('User information not available'),
-        backgroundColor: Colors.red,
+    // Debug information
+    print('🔍 Debug - selectedFamilyMember ID: ${selectedFamilyMember?.id}');
+    print('🔍 Debug - useProfileData: $_useProfileData');
+    print('🔍 Debug - currentStaffId: $_currentStaffId');
+
+    // Show loading dialog
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => const AlertDialog(
+        content: Row(
+          children: [
+            CircularProgressIndicator(),
+            SizedBox(width: 16),
+            Text('Booking consultation...'),
+          ],
+        ),
       ),
     );
-    return;
-  }
 
-  // Debug information
-  print('🔍 Debug - selectedFamilyMember ID: ${selectedFamilyMember?.id}');
-  print('🔍 Debug - useProfileData: $_useProfileData');
-  print('🔍 Debug - currentStaffId: $_currentStaffId');
+    try {
+      // Get selected date from the dynamic dates
+      final selectedDate = dates[selectedDateIndex]['fullDate'] as DateTime;
+      final formattedDate = _formatDayForApi(selectedDate);
+      final dateFormat = _formatDateForApi(selectedDate.toString());
 
-  // Show loading dialog
-  showDialog(
-    context: context,
-    barrierDismissible: false,
-    builder: (context) => const AlertDialog(
-      content: Row(
-        children: [
-          CircularProgressIndicator(),
-          SizedBox(width: 16),
-          Text('Booking consultation...'),
-        ],
-      ),
-    ),
-  );
-
-  try {
-    // Get selected date from the dynamic dates
-    final selectedDate = dates[selectedDateIndex]['fullDate'] as DateTime;
-    final formattedDate = _formatDayForApi(selectedDate);
-    final dateFormat = _formatDateForApi(selectedDate.toString());
-
-    // Determine family member ID to use
-    String familyMemberIdToUse;
-    if (selectedFamilyMember != null) {
-      familyMemberIdToUse = selectedFamilyMember!.id.toString();
-    } else if (_useProfileData && _currentStaffId != null) {
-      familyMemberIdToUse = _currentStaffId!;
-    } else {
-      throw Exception(
-          'No family member selected and no profile data available');
-    }
-
-    // Book consultation
-    final result = await bookingProvider.bookConsultation(
-      staffId: _currentStaffId!,
-      doctorId: widget.doctorId ?? '68645a56f1cde0b197534b26',
-      day: formattedDate,
-      date: dateFormat,
-      timeSlot: selectedTime,
-      familyMemberId: familyMemberIdToUse,
-      type: selectedConsultationType,
-    );
-
-    Navigator.pop(context); // Close loading dialog
-
-    if (result['success']) {
-      // Check if payment is required
-      final paymentRequired = result['paymentRequired'] ?? false;
-      
-      if (!paymentRequired) {
-        // Booking confirmed - wallet had sufficient balance
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Consultation booked successfully!'),
-            backgroundColor: Colors.green,
-          ),
-        );
-
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            builder: (context) => ConfirmBookingScreen(
-              selectedDate: formattedDate,
-              selectedTime: selectedTime,
-              selectedDay: dates[selectedDateIndex]['day'],
-            ),
-          ),
-        );
+      // Determine family member ID to use
+      String familyMemberIdToUse;
+      if (selectedFamilyMember != null) {
+        familyMemberIdToUse = selectedFamilyMember!.id.toString();
+      } else if (_useProfileData && _currentStaffId != null) {
+        familyMemberIdToUse = _currentStaffId!;
       } else {
-        // Insufficient wallet balance - need online payment
-        final requiredAmount = result['requiredAmount'] ?? 0;
-        final walletAvailable = result['walletAvailable'] ?? 0;
-        
-        print('💰 Required online payment: $requiredAmount');
-        print('💰 Wallet available: $walletAvailable');
-        
-        // Show payment dialog or call Razorpay
-        await submitBooking(requiredAmount);
+        throw Exception(
+            'No family member selected and no profile data available');
       }
-    } else {
+
+      // Book consultation
+      final result = await bookingProvider.bookConsultation(
+        staffId: _currentStaffId!,
+        doctorId: widget.doctorId ?? '68645a56f1cde0b197534b26',
+        day: formattedDate,
+        date: dateFormat,
+        timeSlot: selectedTime,
+        familyMemberId: familyMemberIdToUse,
+        type: selectedConsultationType,
+      );
+
+      Navigator.pop(context); // Close loading dialog
+
+      if (result['success']) {
+        // Check if payment is required
+        final paymentRequired = result['paymentRequired'] ?? false;
+
+        if (!paymentRequired) {
+          // Booking confirmed - wallet had sufficient balance
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Consultation booked successfully!'),
+              backgroundColor: Colors.green,
+            ),
+          );
+
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => ConfirmBookingScreen(
+                selectedDate: formattedDate,
+                selectedTime: selectedTime,
+                selectedDay: dates[selectedDateIndex]['day'],
+              ),
+            ),
+          );
+        } else {
+          // Insufficient wallet balance - need online payment
+          final requiredAmount = result['requiredAmount'] ?? 0;
+          final walletAvailable = result['walletAvailable'] ?? 0;
+
+          print('💰 Required online payment: $requiredAmount');
+          print('💰 Wallet available: $walletAvailable');
+
+          // Show payment dialog or call Razorpay
+          await submitBooking(requiredAmount);
+        }
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(result['error'] ?? 'Failed to book consultation'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    } catch (e) {
+      Navigator.pop(context);
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text(result['error'] ?? 'Failed to book consultation'),
+          content: Text('Unexpected error: ${e.toString()}'),
           backgroundColor: Colors.red,
         ),
       );
     }
-  } catch (e) {
-    Navigator.pop(context);
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('Unexpected error: ${e.toString()}'),
-        backgroundColor: Colors.red,
-      ),
-    );
   }
-}
 
 // Add this new function to handle online payment
 // Future<void> _initiateOnlinePayment(
@@ -793,16 +804,16 @@ class _ConsultationDetailsScreenState extends State<ConsultationDetailsScreen> {
 // }
 
 // Add this function to handle Razorpay payment
-Future<void> _startRazorpayPayment(
-    int amount, Map<String, String> bookingData) async {
-  try {
-    // Initialize Razorpay here
-    // Replace this with your actual Razorpay implementation
-    
-    print('🏦 Starting Razorpay payment for amount: ₹$amount');
-    
-    // Example Razorpay options (adjust according to your implementation)
-    /*
+  Future<void> _startRazorpayPayment(
+      int amount, Map<String, String> bookingData) async {
+    try {
+      // Initialize Razorpay here
+      // Replace this with your actual Razorpay implementation
+
+      print('🏦 Starting Razorpay payment for amount: ₹$amount');
+
+      // Example Razorpay options (adjust according to your implementation)
+      /*
     var options = {
       'key': 'your_razorpay_key',
       'amount': amount * 100, // Razorpay expects amount in paise
@@ -816,101 +827,101 @@ Future<void> _startRazorpayPayment(
     
     _razorpay.open(options);
     */
-    
-    // For now, showing a placeholder
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('Razorpay payment initiated for ₹$amount'),
-        backgroundColor: Colors.blue,
-      ),
-    );
-    
-    // After successful payment, you'll get a transaction ID
-    // Then call the booking API again with the transaction ID
-    // await _confirmBookingWithTransactionId(transactionId, bookingData);
-    
-  } catch (e) {
-    print('❌ Razorpay payment error: $e');
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('Payment failed: ${e.toString()}'),
-        backgroundColor: Colors.red,
-      ),
-    );
-  }
-}
 
-// Add this function to confirm booking after successful payment
-Future<void> _confirmBookingWithTransactionId(
-    String transactionId, Map<String, String> bookingData) async {
-  final bookingProvider =
-      Provider.of<ConsultationBookingProvider>(context, listen: false);
-
-  try {
-    // Show loading dialog
-    showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (context) => const AlertDialog(
-        content: Row(
-          children: [
-            CircularProgressIndicator(),
-            SizedBox(width: 16),
-            Text('Confirming booking...'),
-          ],
-        ),
-      ),
-    );
-
-    final result = await bookingProvider.bookConsultation(
-      staffId: bookingData['staffId']!,
-      doctorId: bookingData['doctorId']!,
-      day: bookingData['day']!,
-      date: bookingData['date']!,
-      timeSlot: bookingData['timeSlot']!,
-      familyMemberId: bookingData['familyMemberId']!,
-      type: bookingData['type']!,
-      transactionId: transactionId, // Pass the transaction ID
-    );
-
-    Navigator.pop(context); // Close loading dialog
-
-    if (result['success']) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Consultation booked successfully with payment!'),
-          backgroundColor: Colors.green,
-        ),
-      );
-
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (context) => ConfirmBookingScreen(
-            selectedDate: bookingData['day']!,
-            selectedTime: bookingData['timeSlot']!,
-            selectedDay: dates[selectedDateIndex]['day'],
-          ),
-        ),
-      );
-    } else {
+      // For now, showing a placeholder
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text(result['error'] ?? 'Failed to confirm booking'),
+          content: Text('Razorpay payment initiated for ₹$amount'),
+          backgroundColor: Colors.blue,
+        ),
+      );
+
+      // After successful payment, you'll get a transaction ID
+      // Then call the booking API again with the transaction ID
+      // await _confirmBookingWithTransactionId(transactionId, bookingData);
+    } catch (e) {
+      print('❌ Razorpay payment error: $e');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Payment failed: ${e.toString()}'),
           backgroundColor: Colors.red,
         ),
       );
     }
-  } catch (e) {
-    Navigator.pop(context);
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('Error confirming booking: ${e.toString()}'),
-        backgroundColor: Colors.red,
-      ),
-    );
   }
-}
+
+// Add this function to confirm booking after successful payment
+  Future<void> _confirmBookingWithTransactionId(
+      String transactionId, Map<String, String> bookingData) async {
+    final bookingProvider =
+        Provider.of<ConsultationBookingProvider>(context, listen: false);
+
+    try {
+      // Show loading dialog
+      showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (context) => const AlertDialog(
+          content: Row(
+            children: [
+              CircularProgressIndicator(),
+              SizedBox(width: 16),
+              Text('Confirming booking...'),
+            ],
+          ),
+        ),
+      );
+
+      final result = await bookingProvider.bookConsultation(
+        staffId: bookingData['staffId']!,
+        doctorId: bookingData['doctorId']!,
+        day: bookingData['day']!,
+        date: bookingData['date']!,
+        timeSlot: bookingData['timeSlot']!,
+        familyMemberId: bookingData['familyMemberId']!,
+        type: bookingData['type']!,
+        transactionId: transactionId, // Pass the transaction ID
+      );
+
+      Navigator.pop(context); // Close loading dialog
+
+      if (result['success']) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Consultation booked successfully with payment!'),
+            backgroundColor: Colors.green,
+          ),
+        );
+
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => ConfirmBookingScreen(
+              selectedDate: bookingData['day']!,
+              selectedTime: bookingData['timeSlot']!,
+              selectedDay: dates[selectedDateIndex]['day'],
+            ),
+          ),
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(result['error'] ?? 'Failed to confirm booking'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    } catch (e) {
+      Navigator.pop(context);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Error confirming booking: ${e.toString()}'),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
+  }
+
   Widget _buildProfileDataItem() {
     print('ttttttttttttttttttttttttttttttttt$type');
     // print('rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr$');
@@ -1050,7 +1061,7 @@ Future<void> _confirmBookingWithTransactionId(
             radius: 20,
             backgroundColor: Colors.grey[300],
             child: ClipOval(
-              child: Image.network(
+              child: Image.asset(
                 'https://t3.ftcdn.net/jpg/02/43/12/34/360_F_243123463_zTooub557xEWABDLk0jJklDyLSGl2jrr.jpg',
                 width: 40,
                 height: 40,
@@ -1223,11 +1234,25 @@ Future<void> _confirmBookingWithTransactionId(
                           height: 60,
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(10),
-                            image: const DecorationImage(
-                              image: AssetImage(
-                                  'lib/assets/35f9dd905ad125952da7241c0e76c4d2af61a49d.png'),
+                            image: DecorationImage(
+                              image: widget.image != null &&
+                                      widget.image!.isNotEmpty
+                                  ? NetworkImage(
+                                      widget.image!.startsWith('http')
+                                          ? widget.image!
+                                          : 'http://31.97.206.144:4051${widget.image!}',
+                                    )
+                                  :  NetworkImage(
+                                          'http://31.97.206.144:4051${widget.image!}')
+                                      as ImageProvider,
                               fit: BoxFit.cover,
                             ),
+
+                            // image: const DecorationImage(
+                            //   image: AssetImage(
+                            //       'lib/assets/35f9dd905ad125952da7241c0e76c4d2af61a49d.png'),
+                            //   fit: BoxFit.cover, 
+                            // ),
                           ),
                         ),
                         const SizedBox(width: 12),
@@ -1533,16 +1558,16 @@ Future<void> _confirmBookingWithTransactionId(
                                   // ✅ Fetch doctor slots using DoctorSlotProvider
                                   final formattedDate =
                                       _formatDateForApi(picked.toString());
-                                      // final dateFormat =
-                                      // _formatDateForApi(picked.toString());
+                                  // final dateFormat =
+                                  // _formatDateForApi(picked.toString());
                                   final slotProvider =
                                       Provider.of<DoctorSlotProvider>(context,
                                           listen: false);
                                   slotProvider.getDoctorSlots(
                                     type: selectedConsultationType,
                                     date: formattedDate,
-                                    doctorId: widget.doctorId!
-                                      , );
+                                    doctorId: widget.doctorId!,
+                                  );
                                 }
                               } else {
                                 setState(() {
@@ -1559,10 +1584,9 @@ Future<void> _confirmBookingWithTransactionId(
                                     Provider.of<DoctorSlotProvider>(context,
                                         listen: false);
                                 slotProvider.getDoctorSlots(
-                                  doctorId:widget.doctorId! ,
-                                  date: formattedDate,
-                                  type: selectedConsultationType
-                                   );
+                                    doctorId: widget.doctorId!,
+                                    date: formattedDate,
+                                    type: selectedConsultationType);
                               }
                             },
                             child: Container(
@@ -1759,8 +1783,7 @@ Future<void> _confirmBookingWithTransactionId(
                                 'No slots are available for the selected date'));
                       }
 
-            final slots = slotProvider.doctorSlot?.slots ?? [];
-
+                      final slots = slotProvider.doctorSlot?.slots ?? [];
 
                       if (slots.isEmpty) {
                         return const Center(

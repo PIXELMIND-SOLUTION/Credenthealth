@@ -1768,6 +1768,8 @@ class _ConsultDoctorState extends State<ConsultDoctor> {
                                     : '',
                                 '',
                               ),
+                                const SizedBox(height: 20),
+                               _buildDetailRow('Venue', booking.doctorId?.address ?? 'N/A', ''),
                             ],
                           ],
 

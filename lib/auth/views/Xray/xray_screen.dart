@@ -2291,223 +2291,231 @@ class _XrayScreenState extends State<XrayScreen> {
           ),
           child: Column(
             children: [
-Row(
-  crossAxisAlignment: CrossAxisAlignment.start,
-  children: [
-    Expanded(
-      child: Row(
-        children: [
-          CircleAvatar(
-            radius: 26,
-            backgroundColor: Colors.grey[200],
-            child: ClipOval(
-              child: Image.network(
-                xray.getImageUrl(),
-                width: 48,
-                height: 48,
-                fit: BoxFit.cover,
-                errorBuilder: (context, error, stackTrace) {
-                  return Icon(
-                    Icons.medical_services,
-                    color: Colors.grey[600],
-                    size: 24,
-                  );
-                },
-                loadingBuilder: (context, child, loadingProgress) {
-                  if (loadingProgress == null) return child;
-                  return Container(
-                    width: 48,
-                    height: 48,
-                    decoration: BoxDecoration(
-                      color: Colors.grey[300],
-                      shape: BoxShape.circle,
-                    ),
-                    child: const Center(
-                      child: SizedBox(
-                        width: 20,
-                        height: 20,
-                        child: CircularProgressIndicator(strokeWidth: 2),
-                      ),
-                    ),
-                  );
-                },
-              ),
-            ),
-          ),
-          const SizedBox(width: 12),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                xray.title,
-                style: const TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w600,
-                  color: Colors.black,
-                ),
-              ),
-              const SizedBox(height: 4),
-              // Text(
-              //   xray.getSubtitle(),
-              //   style: TextStyle(
-              //     fontSize: 14,
-              //     color: Colors.grey[600],
-              //   ),
-              // ),
-               Text(
-  'Report time:${xray.reportTime}',
-  style: TextStyle(
-    fontSize: 14,
-    color: Colors.grey[600],
-  ),
-),
-              const SizedBox(height: 12),
-            ],
-          ),
-        ],
-      ),
-    ),
-    Column(
-      crossAxisAlignment: CrossAxisAlignment.end,
-      children: [
-        Text(
-          '₹ ${xray.price.toInt()}',
-          style: const TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.w600,
-            color: Colors.black,
-          ),
-        ),
-        Text(
-          'Onwards',
-          style: TextStyle(
-            fontSize: 12,
-            color: Colors.grey[600],
-          ),
-        ),
-      ],
-    ),
-  ],
-),
-
-       Row(
-  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-  crossAxisAlignment: CrossAxisAlignment.center,
-  children: [
-    // Left: More Info
-    TextButton(
-      onPressed: () => {
-        Navigator.push(context, MaterialPageRoute(builder: (context)=>XrayDetailScreen(xrayId: xray.id)))
-      },
-      style: TextButton.styleFrom(
-        padding: EdgeInsets.zero,
-        minimumSize: Size.zero,
-        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(
-            Icons.keyboard_arrow_down,
-            color: Colors.grey[600],
-            size: 16,
-          ),
-          const SizedBox(width: 4),
-          Text(
-            'More Info',
-            style: TextStyle(
-              fontSize: 12,
-              color: Colors.grey[600],
-            ),
-          ),
-        ],
-      ),
-    ),
-
-    // Right: Book Now + CircleAvatar
-    Row(
-      children: [
-        ElevatedButton(
-          onPressed: () {
-            _addToCart(xray);
-          },
-          style: ElevatedButton.styleFrom(
-            backgroundColor: const Color.fromARGB(255, 54, 40, 244),
-            foregroundColor: Colors.white,
-            padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 8),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(6),
-            ),
-            elevation: 0,
-            minimumSize: const Size(0, 32),
-          ),
-          child: const Text(
-            'Book Now',
-            style: TextStyle(
-              fontSize: 14,
-              fontWeight: FontWeight.w500,
-            ),
-          ),
-        ),
-        const SizedBox(width: 8),
-        CircleAvatar(
-          backgroundColor: isInCart
-              ? Colors.green.withOpacity(0.1)
-              : const Color.fromARGB(255, 237, 243, 248),
-          child: IconButton(
-            onPressed: isAddingToCart
-                ? null
-                : () {
-                    if (isInCart) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text('${xray.title} is already in your cart'),
-                          duration: const Duration(seconds: 2),
-                          backgroundColor: Colors.orange,
-                          action: SnackBarAction(
-                            label: 'View Cart',
-                            textColor: Colors.white,
-                            onPressed: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => const CartScreen(),
-                                ),
-                              );
-                            },
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Expanded(
+                    child: Row(
+                      children: [
+                        CircleAvatar(
+                          radius: 26,
+                          backgroundColor: Colors.grey[200],
+                          child: ClipOval(
+                            child: Image.network(
+                              xray.getImageUrl(),
+                              width: 48,
+                              height: 48,
+                              fit: BoxFit.cover,
+                              errorBuilder: (context, error, stackTrace) {
+                                return Icon(
+                                  Icons.medical_services,
+                                  color: Colors.grey[600],
+                                  size: 24,
+                                );
+                              },
+                              loadingBuilder:
+                                  (context, child, loadingProgress) {
+                                if (loadingProgress == null) return child;
+                                return Container(
+                                  width: 48,
+                                  height: 48,
+                                  decoration: BoxDecoration(
+                                    color: Colors.grey[300],
+                                    shape: BoxShape.circle,
+                                  ),
+                                  child: const Center(
+                                    child: SizedBox(
+                                      width: 20,
+                                      height: 20,
+                                      child: CircularProgressIndicator(
+                                          strokeWidth: 2),
+                                    ),
+                                  ),
+                                );
+                              },
+                            ),
                           ),
                         ),
-                      );
-                    } else {
-                      _addToCart(xray);
-                    }
-                  },
-            padding: EdgeInsets.zero,
-            icon: isAddingToCart
-                ? const SizedBox(
-                    width: 18,
-                    height: 18,
-                    child: CircularProgressIndicator(
-                      strokeWidth: 2,
-                      valueColor: AlwaysStoppedAnimation<Color>(
-                        Color.fromARGB(255, 47, 33, 198),
-                      ),
+                        const SizedBox(width: 12),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              xray.title,
+                              style: const TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w600,
+                                color: Colors.black,
+                              ),
+                            ),
+                            const SizedBox(height: 4),
+                            // Text(
+                            //   xray.getSubtitle(),
+                            //   style: TextStyle(
+                            //     fontSize: 14,
+                            //     color: Colors.grey[600],
+                            //   ),
+                            // ),
+                            Text(
+                              'Report time:${xray.reportTime}',
+                              style: TextStyle(
+                                fontSize: 14,
+                                color: Colors.grey[600],
+                              ),
+                            ),
+                            const SizedBox(height: 12),
+                          ],
+                        ),
+                      ],
                     ),
-                  )
-                : Icon(
-                    isInCart ? Icons.check : Icons.add,
-                    color: isInCart
-                        ? Colors.green
-                        : const Color.fromARGB(255, 47, 33, 198),
-                    size: 18,
                   ),
-          ),
-        ),
-      ],
-    ),
-  ],
-)
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      Text(
+                        '₹ ${xray.price.toInt()}',
+                        style: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.black,
+                        ),
+                      ),
+                      Text(
+                        'Onwards',
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: Colors.grey[600],
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  // Left: More Info
+                  TextButton(
+                    onPressed: () => {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  XrayDetailScreen(xrayId: xray.id)))
+                    },
+                    style: TextButton.styleFrom(
+                      padding: EdgeInsets.zero,
+                      minimumSize: Size.zero,
+                      tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                    ),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Icon(
+                          Icons.keyboard_arrow_down,
+                          color: Colors.grey[600],
+                          size: 16,
+                        ),
+                        const SizedBox(width: 4),
+                        Text(
+                          'Show More',
+                          style: TextStyle(
+                            fontSize: 12,
+                            color: Colors.grey[600],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
 
+                  // Right: Book Now + CircleAvatar
+                  Row(
+                    children: [
+                      ElevatedButton(
+                        onPressed: () {
+                          _addToCart(xray);
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor:
+                              const Color.fromARGB(255, 54, 40, 244),
+                          foregroundColor: Colors.white,
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 28, vertical: 8),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(6),
+                          ),
+                          elevation: 0,
+                          minimumSize: const Size(0, 32),
+                        ),
+                        child: const Text(
+                          'Book Now',
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 8),
+                      CircleAvatar(
+                        backgroundColor: isInCart
+                            ? Colors.green.withOpacity(0.1)
+                            : const Color.fromARGB(255, 237, 243, 248),
+                        child: IconButton(
+                          onPressed: isAddingToCart
+                              ? null
+                              : () {
+                                  if (isInCart) {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        content: Text(
+                                            '${xray.title} is already in your cart'),
+                                        duration: const Duration(seconds: 2),
+                                        backgroundColor: Colors.orange,
+                                        action: SnackBarAction(
+                                          label: 'View Cart',
+                                          textColor: Colors.white,
+                                          onPressed: () {
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    const CartScreen(),
+                                              ),
+                                            );
+                                          },
+                                        ),
+                                      ),
+                                    );
+                                  } else {
+                                    _addToCart(xray);
+                                  }
+                                },
+                          padding: EdgeInsets.zero,
+                          icon: isAddingToCart
+                              ? const SizedBox(
+                                  width: 18,
+                                  height: 18,
+                                  child: CircularProgressIndicator(
+                                    strokeWidth: 2,
+                                    valueColor: AlwaysStoppedAnimation<Color>(
+                                      Color.fromARGB(255, 47, 33, 198),
+                                    ),
+                                  ),
+                                )
+                              : Icon(
+                                  isInCart ? Icons.check : Icons.add,
+                                  color: isInCart
+                                      ? Colors.green
+                                      : const Color.fromARGB(255, 47, 33, 198),
+                                  size: 18,
+                                ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              )
             ],
           ),
         );
