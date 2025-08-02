@@ -133,6 +133,9 @@ class BookingSlotServices {
     final String baseUrl = 'http://31.97.206.144:4051/api/staff/diagnosticslots';
     final String url = '$baseUrl/$diagnosticId?date=$date&type=${Uri.encodeComponent(type)}';
 
+        print("hhhhhhhhhhhhhhhhhhhhhhhhhhyyyyyyyyyyyyyyyyyyyyyyyyyyy$url");
+
+
     try {
       final response = await http.get(Uri.parse(url));
 

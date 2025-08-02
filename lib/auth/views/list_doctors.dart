@@ -1206,7 +1206,7 @@ class _DoctorsListScreenState extends State<DoctorsListScreen>
                   ),
                   const SizedBox(height: 24),
                   Text(
-                    'Something went wrong',
+                    'No doctors found',
                     style: TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.w600,
@@ -1214,32 +1214,32 @@ class _DoctorsListScreenState extends State<DoctorsListScreen>
                     ),
                   ),
                   const SizedBox(height: 8),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 32),
-                    child: Text(
-                      error,
-                      style: TextStyle(
-                        fontSize: 14,
-                        color: Colors.grey.shade600,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                  ),
-                  const SizedBox(height: 24),
-                  ElevatedButton(
-                    onPressed: () {
-                      Provider.of<ChatProvider>(context, listen: false).refreshDoctors();
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.blue.shade600,
-                      foregroundColor: Colors.white,
-                      padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 12),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                    ),
-                    child: const Text('Retry'),
-                  ),
+                  // Padding(
+                  //   padding: const EdgeInsets.symmetric(horizontal: 32),
+                  //   child: Text(
+                  //     error,
+                  //     style: TextStyle(
+                  //       fontSize: 14,
+                  //       color: Colors.grey.shade600,
+                  //     ),
+                  //     textAlign: TextAlign.center,
+                  //   ),
+                  // ),
+                  // const SizedBox(height: 24),
+                  // ElevatedButton(
+                  //   onPressed: () {
+                  //     Provider.of<ChatProvider>(context, listen: false).refreshDoctors();
+                  //   },
+                  //   style: ElevatedButton.styleFrom(
+                  //     backgroundColor: Colors.blue.shade600,
+                  //     foregroundColor: Colors.white,
+                  //     padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 12),
+                  //     shape: RoundedRectangleBorder(
+                  //       borderRadius: BorderRadius.circular(12),
+                  //     ),
+                  //   ),
+                  //   child: const Text('Retry'),
+                  // ),
                 ],
               ),
             ),

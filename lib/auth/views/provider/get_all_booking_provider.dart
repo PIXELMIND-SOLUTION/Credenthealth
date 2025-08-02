@@ -619,7 +619,7 @@ class GetAllBookingProvider extends ChangeNotifier {
         _bookings = response.data!.bookings;
 
         for (var booking in _bookings) {
-          print("lllllllllllllllllllllllllllllllllllllllllllllllllllllllgffksfsfhfjhfj;s");
+          print("lllllllllllllllllllllllllllllllllllllllllllllllllllllllgffksfsfhfjhfj;s${booking.reportFile}");
           print(booking.id);
         }
 
@@ -633,6 +633,8 @@ class GetAllBookingProvider extends ChangeNotifier {
         }
 
         print('✅ Successfully loaded ${_bookings.length} bookings');
+
+        notifyListeners();
       } else {
         _setError(response.error ?? 'Failed to fetch bookings');
       }
@@ -704,7 +706,9 @@ class GetAllBookingProvider extends ChangeNotifier {
       reportIn24Hrs: original.reportIn24Hrs,
       description: original.description,
       category: original.category,
-      image: original.image,
+      image: original.image, 
+      cartItems: [],
+      
     );
   }
 

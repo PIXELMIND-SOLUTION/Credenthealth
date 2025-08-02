@@ -115,6 +115,18 @@ class ConsultationBookingService {
 
       print("yyyyyyyyyyyyyyyyyyyyyttttttttttttttttttttttt$date");
       final url = Uri.parse('$baseUrl/api/staff/consultationbooking/$staffId');
+
+      final payload = {
+          'doctorId': doctorId,
+          'day': day,
+          'date': date,
+          'timeSlot': timeSlot,
+          'familyMemberId': familyMemberId,
+          'type': type,
+          'transactionId': transactionId
+        };
+
+        print("Payloadddddd;   ${payload}");
       
       final response = await http.post(
         url,

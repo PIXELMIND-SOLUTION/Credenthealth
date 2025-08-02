@@ -56,8 +56,10 @@ import 'package:consultation_app/auth/views/provider/logout_provider.dart';
 import 'package:consultation_app/auth/views/provider/new_recent_package_provider.dart';
 import 'package:consultation_app/auth/views/provider/popular_test_provider.dart';
 import 'package:consultation_app/auth/views/provider/profile_image_provider.dart';
+import 'package:consultation_app/auth/views/provider/profile_provider.dart' hide ProfileProvider;
 import 'package:consultation_app/auth/views/provider/recent_lookup_provider.dart';
 import 'package:consultation_app/auth/views/provider/recent_package_provider.dart';
+import 'package:consultation_app/auth/views/provider/special_category_provider.dart';
 import 'package:consultation_app/auth/views/provider/staff_issues_provider.dart';
 import 'package:consultation_app/auth/views/provider/theme_provider.dart';
 import 'package:consultation_app/auth/views/provider/tracker_provider.dart';
@@ -153,7 +155,10 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_)=>ChatProvider()),
         ChangeNotifierProvider(create: (_)=>NewRecentPackageProvider()),
         ChangeNotifierProvider(create: (_)=>DoctorSlotProvider()),
-        ChangeNotifierProvider(create: (_)=>BookingSlotProvider())
+        ChangeNotifierProvider(create: (_)=>BookingSlotProvider()),
+        ChangeNotifierProvider(create: (_)=>ProfileProvider()),
+                ChangeNotifierProvider(create: (_)=>ProfileUpdateProvider()),
+                ChangeNotifierProvider(create: (_)=>SpecialCategoryProvider())
       ],
       child: Consumer<ThemeProvider>(
         builder: (context, themeProvider, child) {

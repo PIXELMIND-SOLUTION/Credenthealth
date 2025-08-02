@@ -1949,17 +1949,6 @@ class _XrayScreenState extends State<XrayScreen> {
                             ),
                             const SizedBox(height: 24),
 
-                            // Popular Scans & X-ray's Section
-                            const Text(
-                              'Popular Scans & X-ray\'s',
-                              style: TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.w600,
-                                color: Colors.black,
-                              ),
-                            ),
-                            const SizedBox(height: 16),
-
                             // Content based on state
                             if (xrayProvider.isLoading)
                               _buildLoadingState()
@@ -1969,6 +1958,14 @@ class _XrayScreenState extends State<XrayScreen> {
                             else if (xrayProvider.filteredXrays.isEmpty)
                               _buildEmptyState()
                             else
+                                                        const Text(
+                              'Popular Scans & X-ray\'s',
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.w600,
+                                color: Colors.black,
+                              ),
+                            ),
                               _buildXraysList(xrayProvider.filteredXrays),
                           ],
                         ),

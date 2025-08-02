@@ -66,13 +66,16 @@ class IncludedTest {
   });
 
   factory IncludedTest.fromJson(Map<String, dynamic> json) {
-    return IncludedTest(
-      name: json['name'] ?? '',
-      subTestCount: json['subTestCount'] ?? 0,
-      subTests: List<String>.from(json['subTests'] ?? []),
-      id: json['_id'] ?? '',
-    );
-  }
+  return IncludedTest(
+    name: json['name'] ?? '',
+    subTestCount: json['subTestCount'] ?? 0,
+    subTests: (json['subTests'] as List<dynamic>?)
+        ?.map((item) => item?.toString() ?? '') // Handle null values
+        .where((item) => item.isNotEmpty) // Filter out empty strings if needed
+        .toList() ?? [],
+    id: json['_id'] ?? '',
+  );
+}
 
   Map<String, dynamic> toJson() {
     return {

@@ -1309,6 +1309,11 @@
 //   }
 // }
 
+
+
+
+import 'package:consultation_app/auth/views/provider/get_all_daignostics_provider.dart';
+import 'package:consultation_app/model/diagnostic_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -1321,14 +1326,19 @@ class ConsultDoctor extends StatefulWidget {
   final String? name;
   final String? type;
   final String? serviceType;
+  // String?address;
+  // final String? address;
 
-  const ConsultDoctor(
-      {super.key,
-      required this.bookingId,
-      this.staffId,
-      this.name,
-      this.type,
-      this.serviceType});
+  const ConsultDoctor({
+    super.key,
+    required this.bookingId,
+    this.staffId,
+    this.name,
+    this.type,
+    this.serviceType,
+    // this.address,
+    // this.address
+  });
 
   @override
   State<ConsultDoctor> createState() => _ConsultDoctorState();
@@ -1336,6 +1346,7 @@ class ConsultDoctor extends StatefulWidget {
 
 class _ConsultDoctorState extends State<ConsultDoctor> {
   late GetAllBookingProvider _bookingProvider;
+    late GetAllDiagnosticsProvider _diagnosticsProvider;
   bool _isLoading = true;
   String? _errorMessage;
 
@@ -1346,6 +1357,17 @@ class _ConsultDoctorState extends State<ConsultDoctor> {
         Provider.of<GetAllBookingProvider>(context, listen: false);
     _fetchBookingDetails();
   }
+
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _diagnosticsProvider = Provider.of<GetAllDiagnosticsProvider>(context);
+    if (!_diagnosticsProvider.isLoading && _diagnosticsProvider.diagnostics.isEmpty) {
+      _diagnosticsProvider.fetchDiagnostics();
+    }
+  }
+
 
   Future<void> _fetchBookingDetails() async {
     try {
@@ -1505,6 +1527,8 @@ class _ConsultDoctorState extends State<ConsultDoctor> {
 
   @override
   Widget build(BuildContext context) {
+
+
     print(
         'sssssssssssssssssssssssssssssssssssssssssssssssssssssss${widget.bookingId}');
     return Scaffold(
@@ -1583,13 +1607,37 @@ class _ConsultDoctorState extends State<ConsultDoctor> {
           }
 
           final Booking? booking = provider.selectedBooking;
+          // final Diagnostic?bookings=provider.geta
           if (booking == null) {
+
+
+
+        
+
+
             return const Center(
               child: Text(
                 'Booking not found',
                 style: TextStyle(fontSize: 16),
               ),
             );
+          }
+
+
+           String diagnosticAddress = 'N/A';
+          if (booking.diagnosticId != null) {
+            final matched = _diagnosticsProvider.diagnostics.firstWhere(
+              (d) => d.id == booking.diagnosticId!.id,
+              orElse: () => Diagnostic(
+                id: '', name: '', email: '', phone: '', address: '',
+                image: '', centerType: '', methodology: '', pathologyAccredited: '',
+                gstNumber: '', centerStrength: '', country: '', state: '', city: '',
+                pincode: '', visitType: '',
+                homeCollectionSlots: [], centerVisitSlots: [],
+                contactPersons: [], tests: [], packages: [], scans: [], version: 0,
+              ),
+            );
+            diagnosticAddress = matched.address;
           }
 
           return SingleChildScrollView(
@@ -1724,6 +1772,10 @@ class _ConsultDoctorState extends State<ConsultDoctor> {
                             '',
                           ),
 
+                          // const Divider(),
+                          //     const SizedBox(height: 20),
+                          //    _buildDetailRow('Venue', booking.doctorId?.address ?? 'N/A', ''),
+
                           const Divider(),
                           const SizedBox(height: 20),
                           _buildDetailRow('Booking ID', booking.id, ''),
@@ -1737,10 +1789,10 @@ class _ConsultDoctorState extends State<ConsultDoctor> {
                           const SizedBox(height: 20),
                           _buildDetailRow('Family Member',
                               booking.familyMember?.fullName ?? 'N/A', ''),
-                          // const Divider(),
+                          const Divider(),
                           // const SizedBox(height: 20),
                           if (booking.type.toLowerCase() != 'online') ...[
-                            const Divider(),
+                            // const Divider(),
                             // const SizedBox(height: 20),
                             // _buildDetailRow(
                             //   'Diagnostic name',
@@ -1768,12 +1820,15 @@ class _ConsultDoctorState extends State<ConsultDoctor> {
                                     : '',
                                 '',
                               ),
-                                const SizedBox(height: 20),
-                               _buildDetailRow('Venue', booking.doctorId?.address ?? 'N/A', ''),
+                              
+                              const Divider(),
+                              const SizedBox(height: 20),
+                              _buildDetailRow('Venue',
+                                  diagnosticAddress,''),
                             ],
                           ],
 
-// Conditional doctor fields - only show for online bookings
+                          // Conditional doctor fields - only show for online bookings
                           // if (booking.type == 'Online') ...[
                           //   const Divider(),
                           //   const SizedBox(height: 20),
@@ -1798,9 +1853,10 @@ class _ConsultDoctorState extends State<ConsultDoctor> {
                             const SizedBox(height: 20),
                             _buildDetailRow('Qualification',
                                 booking.doctorQualification, ''),
-                                 const Divider(),
+                            //      const Divider(),
                             const SizedBox(height: 20),
-                               _buildDetailRow('Venue', booking.doctorId?.address ?? 'N/A', ''),
+                            _buildDetailRow('Venue',
+                                booking.doctorId?.address ?? 'N/A', ''),
 
                             const Divider(),
                             const SizedBox(height: 20),

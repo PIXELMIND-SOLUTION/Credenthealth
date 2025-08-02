@@ -998,7 +998,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               context,
                               MaterialPageRoute(
                                 builder: (context) =>
-                                 const   ScheduleConsultationScreen(
+                                    const ScheduleConsultationScreen(
                                   id: 'Book Clinic Visit',
                                 ),
                               ),
@@ -1233,7 +1233,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 Expanded(
                   child: Text(
                     getGreeting(),
-                    style: const TextStyle(fontWeight: FontWeight.w800,fontSize: 18),
+                    style: const TextStyle(
+                        fontWeight: FontWeight.w800, fontSize: 18),
                   ),
                 ),
                 GestureDetector(
@@ -2506,479 +2507,530 @@ class _HomeScreenState extends State<HomeScreen> {
             //   },
             // ),
 
+            SizedBox(
+              height: 10,
+            ),
+            const Padding(
+              padding: EdgeInsets.all(8.0),
+              child: Text("Recent Lookups",
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+            ),
+            Consumer<RecentLookupProvider>(
+              builder: (context, recentLookupProvider, child) {
+                // Initialize provider if needed
+                if (recentLookupProvider.currentStaffId.isEmpty &&
+                    !recentLookupProvider.isLoading) {
+                  WidgetsBinding.instance.addPostFrameCallback((_) {
+                    recentLookupProvider.initialize().then((_) {
+                      // Use the new method to fetch recent doctor booking
+                      recentLookupProvider.fetchRecentDoctorBooking();
+                    });
+                  });
+                }
 
-SizedBox(
-  height: 10,
-),
-const Padding(
-  padding: EdgeInsets.all(8.0),
-  child: Text("Recent Lookups",
-      style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-),
-Consumer<RecentLookupProvider>(
-  builder: (context, recentLookupProvider, child) {
-    // Initialize provider if needed
-    if (recentLookupProvider.currentStaffId.isEmpty &&
-        !recentLookupProvider.isLoading) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        recentLookupProvider.initialize().then((_) {
-          // Use the new method to fetch recent doctor booking
-          recentLookupProvider.fetchRecentDoctorBooking();
-        });
-      });
-    }
-
-    if (recentLookupProvider.isLoading) {
-      return const SizedBox(
-        height: 150,
-        child: Center(
-          child: CircularProgressIndicator(),
-        ),
-      );
-    }
-
-    // Handle error state
-    if (recentLookupProvider.hasError) {
-      return SizedBox(
-        height: 150,
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              // Icon(Icons.error_outline, size: 48, color: Colors.red),
-              SizedBox(height: 8),
-              Text(
-                'No Recently added doctors',
-                style: TextStyle(fontSize: 14, color: Colors.black),
-              ),
-              SizedBox(height: 4),
-              // ElevatedButton(
-              //   onPressed: () {
-              //     recentLookupProvider.clearError();
-              //     recentLookupProvider.fetchRecentDoctorBooking();
-              //   },
-              //   child: Text('Retry'),
-              // ),
-            ],
-          ),
-        ),
-      );
-    }
-
-    // Check if we have the new response structure first
-    if (recentLookupProvider.recentLookupResponse != null) {
-      final booking = recentLookupProvider.recentLookupResponse!.booking;
-      final doctor = booking.doctorId;
-
-      return RefreshIndicator(
-        onRefresh: () async {
-          await recentLookupProvider.refreshRecentData();
-        },
-        child: Column(
-          children: [
-            Card(
-              color: Colors.white,
-              margin: const EdgeInsets.only(bottom: 12),
-              child: Padding(
-                padding: const EdgeInsets.all(12.0),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    // Doctor Image
-                    GestureDetector(
-                      onTap: () {
-                        // Navigate to booking details
-                        // Navigator.push(
-                        //   context,
-                        //   MaterialPageRoute(
-                        //     builder: (context) => BookingDetailsScreen(
-                        //       bookingId: booking.id,
-                        //     ),
-                        //   ),
-                        // );
-                      },
-                      child: Container(
-                        width: 90,
-                        height: 90,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          color: Colors.grey.shade200,
-                        ),
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(10),
-                          child: doctor.image.isNotEmpty
-                              ? Image.network(
-                                  doctor.image.startsWith('http')
-                                      ? doctor.image
-                                      : 'http://31.97.206.144:4051${doctor.image}',
-                                  width: 90,
-                                  height: 90,
-                                  fit: BoxFit.cover,
-                                  loadingBuilder: (context, child, loadingProgress) {
-                                    if (loadingProgress == null) return child;
-                                    return Center(
-                                      child: CircularProgressIndicator(
-                                        value: loadingProgress.expectedTotalBytes != null
-                                            ? loadingProgress.cumulativeBytesLoaded /
-                                                loadingProgress.expectedTotalBytes!
-                                            : null,
-                                      ),
-                                    );
-                                  },
-                                  errorBuilder: (context, error, stackTrace) {
-                                    return Container(
-                                      width: 90,
-                                      height: 90,
-                                      color: Colors.grey.shade200,
-                                      child: const Icon(
-                                        Icons.person,
-                                        size: 40,
-                                        color: Colors.grey,
-                                      ),
-                                    );
-                                  },
-                                )
-                              : Container(
-                                  width: 90,
-                                  height: 90,
-                                  color: Colors.grey.shade200,
-                                  child: const Icon(
-                                    Icons.person,
-                                    size: 40,
-                                    color: Colors.grey,
-                                  ),
-                                ),
-                        ),
-                      ),
+                if (recentLookupProvider.isLoading) {
+                  return const SizedBox(
+                    height: 150,
+                    child: Center(
+                      child: CircularProgressIndicator(),
                     ),
-                    const SizedBox(width: 12),
+                  );
+                }
 
-                    // Booking Details
-                    Expanded(
+                // Handle error state
+                if (recentLookupProvider.hasError) {
+                  return SizedBox(
+                    height: 150,
+                    child: Center(
                       child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
+                          // Icon(Icons.error_outline, size: 48, color: Colors.red),
+                          SizedBox(height: 8),
                           Text(
-                            doctor.name.isNotEmpty ? doctor.name : "Dr. Melvin",
-                            style: const TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 16),
+                            'No Recently added doctors',
+                            style: TextStyle(fontSize: 14, color: Colors.black),
                           ),
-                          const SizedBox(height: 4),
-                          Text(
-                            doctor.specialization.isNotEmpty
-                                ? doctor.specialization
-                                : "General",
-                            style: const TextStyle(fontSize: 14),
-                          ),
-                          const SizedBox(height: 4),
-                          Text(
-                            doctor.qualification,
-                            style: const TextStyle(fontSize: 12, color: Colors.grey),
-                          ),
-                          const SizedBox(height: 6),
-                          
-                          // Booking Status and Type
-                          Row(
-                            children: [
-                              Container(
-                                padding: EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-                                decoration: BoxDecoration(
-                                 
-                                  borderRadius: BorderRadius.circular(12),
-                                ),
-                                child: Text(
-                                  booking.status,
-                                  style: TextStyle(
-                                    fontSize: 10,
-                                    
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                ),
-                              ),
-                              SizedBox(width: 8),
-                              Container(
-                                padding: EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-                                decoration: BoxDecoration(
-                                  color: Colors.blue.withOpacity(0.2),
-                                  borderRadius: BorderRadius.circular(12),
-                                ),
-                                child: Text(
-                                  booking.type,
-                                  style: TextStyle(
-                                    fontSize: 10,
-                                    color: Colors.blue,
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                          
-                          const SizedBox(height: 6),
-                          
-                          // Date and Time
-                          // Text(
-                          //   'Date: ${recentLookupProvider.formatAppointmentDate(booking.date)}',
-                          //   style: const TextStyle(fontSize: 12, color: Colors.grey),
+                          SizedBox(height: 4),
+                          // ElevatedButton(
+                          //   onPressed: () {
+                          //     recentLookupProvider.clearError();
+                          //     recentLookupProvider.fetchRecentDoctorBooking();
+                          //   },
+                          //   child: Text('Retry'),
                           // ),
-                          
-                          // Amount
-                          if (booking.payableAmount > 0)
-                            Padding(
-                              padding: const EdgeInsets.only(top: 4),
-                              // child: Text(
-                              //   '₹${booking.payableAmount}',
-                              //   style: const TextStyle(
-                              //     fontSize: 14,
-                              //     fontWeight: FontWeight.bold,
-                              //     color: Colors.green,
-                              //   ),
-                              // ),
-                            ),
                         ],
                       ),
                     ),
-                    
-                    // Action buttons
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  );
+                }
+
+                // Check if we have the new response structure first
+                if (recentLookupProvider.recentLookupResponse != null) {
+                  final booking =
+                      recentLookupProvider.recentLookupResponse!.booking;
+                  final doctor = booking.doctorId;
+
+                  return RefreshIndicator(
+                    onRefresh: () async {
+                      await recentLookupProvider.refreshRecentData();
+                    },
+                    child: Column(
                       children: [
-                        SizedBox(height: 20,),
-                        if (booking.meetingLink.isNotEmpty && booking.status.toLowerCase() == 'confirmed')
-                          IconButton(
-                            icon: const Icon(Icons.video_call, color: Colors.blue),
-                            tooltip: 'Join Meeting',
-                            onPressed: () async {
-                              final uri = Uri.parse(booking.meetingLink);
-                              if (await canLaunchUrl(uri)) {
-                                await launchUrl(uri,
-                                    mode: LaunchMode.externalApplication);
-                              } else {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                      content: Text('Could not launch meeting link')),
-                                );
-                              }
-                            },
-                          ),
-                        // GestureDetector(
-                        //   onTap: () {
-                        //     // Navigate to booking details
-                        //     // Navigator.push(
-                        //     //   context,
-                        //     //   MaterialPageRoute(
-                        //     //     builder: (context) => BookingDetailsScreen(
-                        //     //       bookingId: booking.id,
-                        //     //     ),
-                        //     //   ),
-                        //     // );
-                        //   },
-                        //   child: const Icon(Icons.arrow_forward_ios, size: 16),
-                        // ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ],
-        ),
-      );
-    }
-
-    // Fallback to old structure for backward compatibility
-    else if (recentLookupProvider.recentDoctors.isNotEmpty) {
-      return RefreshIndicator(
-        onRefresh: () async {
-          await recentLookupProvider.refreshRecentDoctors();
-        },
-        child: Column(
-          children: [
-            ...recentLookupProvider.recentDoctors.map((doctor) {
-              return Card(
-                color: Colors.white,
-                margin: const EdgeInsets.only(bottom: 12),
-                child: Padding(
-                  padding: const EdgeInsets.all(12.0),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      // Doctor Image
-                      GestureDetector(
-                        onTap: () {
-                          // Navigator.push(
-                          //   context,
-                          //   MaterialPageRoute(
-                          //     builder: (context) => ConsultationDetailsScreen(
-                          //       doctorId: doctor.id,
-                          //     ),
-                          //   ),
-                          // );
-                        },
-                        child: Container(
-                          width: 90,
-                          height: 90,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            color: Colors.grey.shade200,
-                          ),
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(10),
-                            child: doctor.image.isNotEmpty
-                                ? Image.network(
-                                    doctor.image.startsWith('http')
-                                        ? doctor.image
-                                        : 'http://31.97.206.144:4051${doctor.image}',
-                                    width: 90,
-                                    height: 90,
-                                    fit: BoxFit.cover,
-                                    loadingBuilder: (context, child, loadingProgress) {
-                                      if (loadingProgress == null) return child;
-                                      return Center(
-                                        child: CircularProgressIndicator(
-                                          value: loadingProgress.expectedTotalBytes != null
-                                              ? loadingProgress.cumulativeBytesLoaded /
-                                                  loadingProgress.expectedTotalBytes!
-                                              : null,
-                                        ),
-                                      );
-                                    },
-                                    errorBuilder: (context, error, stackTrace) {
-                                      return Container(
-                                        width: 90,
-                                        height: 90,
-                                        color: Colors.grey.shade200,
-                                        child: const Icon(
-                                          Icons.person,
-                                          size: 40,
-                                          color: Colors.grey,
-                                        ),
-                                      );
-                                    },
-                                  )
-                                : Container(
-                                    width: 90,
-                                    height: 90,
-                                    color: Colors.grey.shade200,
-                                    child: const Icon(
-                                      Icons.person,
-                                      size: 40,
-                                      color: Colors.grey,
-                                    ),
-                                  ),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(width: 12),
-
-                      // Doctor Details
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              doctor.name.isNotEmpty ? doctor.name : "Dr. Melvin",
-                              style: const TextStyle(
-                                  fontWeight: FontWeight.bold, fontSize: 16),
-                            ),
-                            const SizedBox(height: 4),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        Card(
+                          color: Colors.white,
+                          margin: const EdgeInsets.only(bottom: 12),
+                          child: Padding(
+                            padding: const EdgeInsets.all(12.0),
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Expanded(
-                                  child: Text(
-                                    doctor.specialization.isNotEmpty
-                                        ? doctor.specialization
-                                        : "General",
-                                    style: const TextStyle(fontSize: 14),
+                                // Doctor Image
+                                GestureDetector(
+                                  onTap: () {
+                                    // Navigate to booking details
+                                    // Navigator.push(
+                                    //   context,
+                                    //   MaterialPageRoute(
+                                    //     builder: (context) => BookingDetailsScreen(
+                                    //       bookingId: booking.id,
+                                    //     ),
+                                    //   ),
+                                    // );
+                                  },
+                                  child: Container(
+                                    width: 90,
+                                    height: 90,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(10),
+                                      color: Colors.grey.shade200,
+                                    ),
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(10),
+                                      child: doctor.image.isNotEmpty
+                                          ? Image.network(
+                                              doctor.image.startsWith('http')
+                                                  ? doctor.image
+                                                  : 'http://31.97.206.144:4051${doctor.image}',
+                                              width: 90,
+                                              height: 90,
+                                              fit: BoxFit.cover,
+                                              loadingBuilder: (context, child,
+                                                  loadingProgress) {
+                                                if (loadingProgress == null)
+                                                  return child;
+                                                return Center(
+                                                  child:
+                                                      CircularProgressIndicator(
+                                                    value: loadingProgress
+                                                                .expectedTotalBytes !=
+                                                            null
+                                                        ? loadingProgress
+                                                                .cumulativeBytesLoaded /
+                                                            loadingProgress
+                                                                .expectedTotalBytes!
+                                                        : null,
+                                                  ),
+                                                );
+                                              },
+                                              errorBuilder:
+                                                  (context, error, stackTrace) {
+                                                return Container(
+                                                  width: 90,
+                                                  height: 90,
+                                                  color: Colors.grey.shade200,
+                                                  child: const Icon(
+                                                    Icons.person,
+                                                    size: 40,
+                                                    color: Colors.grey,
+                                                  ),
+                                                );
+                                              },
+                                            )
+                                          : Container(
+                                              width: 90,
+                                              height: 90,
+                                              color: Colors.grey.shade200,
+                                              child: const Icon(
+                                                Icons.person,
+                                                size: 40,
+                                                color: Colors.grey,
+                                              ),
+                                            ),
+                                    ),
                                   ),
                                 ),
-                                Row(
-                                  children: [
-                                    IconButton(
-                                      icon: const Icon(Icons.video_call,
-                                          color: Colors.blue),
-                                      tooltip: 'Join Meet',
-                                      onPressed: () async {
-                                        const meetUrl = 'https://meet.google.com/kas-xfzh-irp';
-                                        final uri = Uri.parse(meetUrl);
-                                        if (await canLaunchUrl(uri)) {
-                                          await launchUrl(uri,
-                                              mode: LaunchMode.externalApplication);
-                                        } else {
-                                          ScaffoldMessenger.of(context).showSnackBar(
-                                            const SnackBar(
-                                                content: Text('Could not launch Meet link')),
-                                          );
-                                        }
-                                      },
-                                    ),
-                                    GestureDetector(
-                                      onTap: () {
-                                        // Navigator.push(
-                                        //   context,
-                                        //   MaterialPageRoute(
-                                        //     builder: (context) =>
-                                        //         ConsultationDetailsScreen(
-                                        //       doctorId: doctor.id,
-                                        //     ),
-                                        //   ),
-                                        // );
-                                      },
-                                      child: const Icon(Icons.arrow_forward_ios, size: 16),
-                                    ),
-                                  ],
-                                )
-                              ],
-                            ),
-                            const SizedBox(height: 4),
-                            Row(
-                              children: [
-                                Text(doctor.qualification)
-                              ],
-                            ),
-                            const SizedBox(height: 2),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              );
-            }).toList(),
-          ],
-        ),
-      );
-    }
+                                const SizedBox(width: 12),
 
-    // No data state
-    else {
-      return const SizedBox(
-        height: 150,
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(Icons.person_search, size: 48, color: Colors.grey),
-              SizedBox(height: 8),
-              Text(
-                'No recent bookings found',
-                style: TextStyle(fontSize: 14, color: Colors.grey),
-              ),
-              Text(
-                'Your recent consultations will appear here',
-                style: TextStyle(fontSize: 12, color: Colors.grey),
-              ),
-            ],
-          ),
-        ),
-      );
-    }
-  },
-),
+                                // Booking Details
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        doctor.name.isNotEmpty
+                                            ? doctor.name
+                                            : "Dr. Melvin",
+                                        style: const TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 16),
+                                      ),
+                                      const SizedBox(height: 4),
+                                      Text(
+                                        doctor.specialization.isNotEmpty
+                                            ? doctor.specialization
+                                            : "General",
+                                        style: const TextStyle(fontSize: 14),
+                                      ),
+                                      const SizedBox(height: 4),
+                                      Text(
+                                        doctor.qualification,
+                                        style: const TextStyle(
+                                            fontSize: 12, color: Colors.grey),
+                                      ),
+                                      const SizedBox(height: 6),
+
+                                      // Booking Status and Type
+                                      Row(
+                                        children: [
+                                          Container(
+                                            padding: EdgeInsets.symmetric(
+                                                horizontal: 8, vertical: 2),
+                                            decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(12),
+                                            ),
+                                            child: Text(
+                                              booking.status,
+                                              style: TextStyle(
+                                                fontSize: 10,
+                                                fontWeight: FontWeight.w500,
+                                              ),
+                                            ),
+                                          ),
+                                          SizedBox(width: 8),
+                                          Container(
+                                            padding: EdgeInsets.symmetric(
+                                                horizontal: 8, vertical: 2),
+                                            decoration: BoxDecoration(
+                                              color:
+                                                  Colors.blue.withOpacity(0.2),
+                                              borderRadius:
+                                                  BorderRadius.circular(12),
+                                            ),
+                                            child: Text(
+                                              booking.type,
+                                              style: TextStyle(
+                                                fontSize: 10,
+                                                color: Colors.blue,
+                                                fontWeight: FontWeight.w500,
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+
+                                      const SizedBox(height: 6),
+
+                                      // Date and Time
+                                      // Text(
+                                      //   'Date: ${recentLookupProvider.formatAppointmentDate(booking.date)}',
+                                      //   style: const TextStyle(fontSize: 12, color: Colors.grey),
+                                      // ),
+
+                                      // Amount
+                                      if (booking.payableAmount > 0)
+                                        Padding(
+                                          padding:
+                                              const EdgeInsets.only(top: 4),
+                                          // child: Text(
+                                          //   '₹${booking.payableAmount}',
+                                          //   style: const TextStyle(
+                                          //     fontSize: 14,
+                                          //     fontWeight: FontWeight.bold,
+                                          //     color: Colors.green,
+                                          //   ),
+                                          // ),
+                                        ),
+                                    ],
+                                  ),
+                                ),
+
+                                // Action buttons
+                                Column(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    SizedBox(
+                                      height: 20,
+                                    ),
+                                    if (booking.meetingLink.isNotEmpty &&
+                                        booking.status.toLowerCase() ==
+                                            'confirmed')
+                                      IconButton(
+                                        icon: const Icon(Icons.video_call,
+                                            color: Colors.blue),
+                                        tooltip: 'Join Meeting',
+                                        onPressed: () async {
+                                          final uri =
+                                              Uri.parse(booking.meetingLink);
+                                          if (await canLaunchUrl(uri)) {
+                                            await launchUrl(uri,
+                                                mode: LaunchMode
+                                                    .externalApplication);
+                                          } else {
+                                            ScaffoldMessenger.of(context)
+                                                .showSnackBar(
+                                              const SnackBar(
+                                                  content: Text(
+                                                      'Could not launch meeting link')),
+                                            );
+                                          }
+                                        },
+                                      ),
+                                    // GestureDetector(
+                                    //   onTap: () {
+                                    //     // Navigate to booking details
+                                    //     // Navigator.push(
+                                    //     //   context,
+                                    //     //   MaterialPageRoute(
+                                    //     //     builder: (context) => BookingDetailsScreen(
+                                    //     //       bookingId: booking.id,
+                                    //     //     ),
+                                    //     //   ),
+                                    //     // );
+                                    //   },
+                                    //   child: const Icon(Icons.arrow_forward_ios, size: 16),
+                                    // ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
+                }
+
+                // Fallback to old structure for backward compatibility
+                else if (recentLookupProvider.recentDoctors.isNotEmpty) {
+                  return RefreshIndicator(
+                    onRefresh: () async {
+                      await recentLookupProvider.refreshRecentDoctors();
+                    },
+                    child: Column(
+                      children: [
+                        ...recentLookupProvider.recentDoctors.map((doctor) {
+                          return Card(
+                            color: Colors.white,
+                            margin: const EdgeInsets.only(bottom: 12),
+                            child: Padding(
+                              padding: const EdgeInsets.all(12.0),
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  // Doctor Image
+                                  GestureDetector(
+                                    onTap: () {
+                                      // Navigator.push(
+                                      //   context,
+                                      //   MaterialPageRoute(
+                                      //     builder: (context) => ConsultationDetailsScreen(
+                                      //       doctorId: doctor.id,
+                                      //     ),
+                                      //   ),
+                                      // );
+                                    },
+                                    child: Container(
+                                      width: 90,
+                                      height: 90,
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(10),
+                                        color: Colors.grey.shade200,
+                                      ),
+                                      child: ClipRRect(
+                                        borderRadius: BorderRadius.circular(10),
+                                        child: doctor.image.isNotEmpty
+                                            ? Image.network(
+                                                doctor.image.startsWith('http')
+                                                    ? doctor.image
+                                                    : 'http://31.97.206.144:4051${doctor.image}',
+                                                width: 90,
+                                                height: 90,
+                                                fit: BoxFit.cover,
+                                                loadingBuilder: (context, child,
+                                                    loadingProgress) {
+                                                  if (loadingProgress == null)
+                                                    return child;
+                                                  return Center(
+                                                    child:
+                                                        CircularProgressIndicator(
+                                                      value: loadingProgress
+                                                                  .expectedTotalBytes !=
+                                                              null
+                                                          ? loadingProgress
+                                                                  .cumulativeBytesLoaded /
+                                                              loadingProgress
+                                                                  .expectedTotalBytes!
+                                                          : null,
+                                                    ),
+                                                  );
+                                                },
+                                                errorBuilder: (context, error,
+                                                    stackTrace) {
+                                                  return Container(
+                                                    width: 90,
+                                                    height: 90,
+                                                    color: Colors.grey.shade200,
+                                                    child: const Icon(
+                                                      Icons.person,
+                                                      size: 40,
+                                                      color: Colors.grey,
+                                                    ),
+                                                  );
+                                                },
+                                              )
+                                            : Container(
+                                                width: 90,
+                                                height: 90,
+                                                color: Colors.grey.shade200,
+                                                child: const Icon(
+                                                  Icons.person,
+                                                  size: 40,
+                                                  color: Colors.grey,
+                                                ),
+                                              ),
+                                      ),
+                                    ),
+                                  ),
+                                  const SizedBox(width: 12),
+
+                                  // Doctor Details
+                                  Expanded(
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          doctor.name.isNotEmpty
+                                              ? doctor.name
+                                              : "Dr. Melvin",
+                                          style: const TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 16),
+                                        ),
+                                        const SizedBox(height: 4),
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Expanded(
+                                              child: Text(
+                                                doctor.specialization.isNotEmpty
+                                                    ? doctor.specialization
+                                                    : "General",
+                                                style: const TextStyle(
+                                                    fontSize: 14),
+                                              ),
+                                            ),
+                                            Row(
+                                              children: [
+                                                IconButton(
+                                                  icon: const Icon(
+                                                      Icons.video_call,
+                                                      color: Colors.blue),
+                                                  tooltip: 'Join Meet',
+                                                  onPressed: () async {
+                                                    const meetUrl =
+                                                        'https://meet.google.com/kas-xfzh-irp';
+                                                    final uri =
+                                                        Uri.parse(meetUrl);
+                                                    if (await canLaunchUrl(
+                                                        uri)) {
+                                                      await launchUrl(uri,
+                                                          mode: LaunchMode
+                                                              .externalApplication);
+                                                    } else {
+                                                      ScaffoldMessenger.of(
+                                                              context)
+                                                          .showSnackBar(
+                                                        const SnackBar(
+                                                            content: Text(
+                                                                'Could not launch Meet link')),
+                                                      );
+                                                    }
+                                                  },
+                                                ),
+                                                GestureDetector(
+                                                  onTap: () {
+                                                    // Navigator.push(
+                                                    //   context,
+                                                    //   MaterialPageRoute(
+                                                    //     builder: (context) =>
+                                                    //         ConsultationDetailsScreen(
+                                                    //       doctorId: doctor.id,
+                                                    //     ),
+                                                    //   ),
+                                                    // );
+                                                  },
+                                                  child: const Icon(
+                                                      Icons.arrow_forward_ios,
+                                                      size: 16),
+                                                ),
+                                              ],
+                                            )
+                                          ],
+                                        ),
+                                        const SizedBox(height: 4),
+                                        Row(
+                                          children: [
+                                            Text(doctor.qualification)
+                                          ],
+                                        ),
+                                        const SizedBox(height: 2),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          );
+                        }).toList(),
+                      ],
+                    ),
+                  );
+                }
+
+                // No data state
+                else {
+                  return const SizedBox(
+                    height: 150,
+                    child: Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(Icons.person_search,
+                              size: 48, color: Colors.grey),
+                          SizedBox(height: 8),
+                          Text(
+                            'No recent bookings found',
+                            style: TextStyle(fontSize: 14, color: Colors.grey),
+                          ),
+                          Text(
+                            'Your recent consultations will appear here',
+                            style: TextStyle(fontSize: 12, color: Colors.grey),
+                          ),
+                        ],
+                      ),
+                    ),
+                  );
+                }
+              },
+            ),
 
 // Helper method to determine status color - add this outside the Consumer widget
-
 
             // Consumer<RecentPackageProvider>(
             //   builder: (context, provider, child) {
@@ -3435,26 +3487,26 @@ Consumer<RecentLookupProvider>(
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          const Icon(Icons.error_outline,
-                              size: 48, color: Colors.red),
+                          // const Icon(Icons.error_outline,
+                          //     size: 48, color: Colors.red),
                           const SizedBox(height: 16),
                           const Text(
-                            'Failed to load blogs',
+                            'No blogs available',
                             style: TextStyle(
                                 fontSize: 16, fontWeight: FontWeight.bold),
                           ),
                           const SizedBox(height: 8),
-                          Text(
-                            blogProvider.errorMessage
-                                .replaceFirst('Exception: ', ''),
-                            textAlign: TextAlign.center,
-                            style: const TextStyle(color: Colors.grey),
-                          ),
+                          // Text(
+                          //   blogProvider.errorMessage
+                          //       .replaceFirst('Exception: ', ''),
+                          //   textAlign: TextAlign.center,
+                          //   style: const TextStyle(color: Colors.grey),
+                          // ),
                           const SizedBox(height: 16),
-                          ElevatedButton(
-                            onPressed: () => blogProvider.fetchAllBlogs(),
-                            child: const Text('Retry'),
-                          ),
+                          // ElevatedButton(
+                          //   onPressed: () => blogProvider.fetchAllBlogs(),
+                          //   child: const Text('Retry'),
+                          // ),
                         ],
                       ),
                     ),

@@ -79,7 +79,7 @@ class ConsultationDetailsScreen extends StatefulWidget {
 
 class _ConsultationDetailsScreenState extends State<ConsultationDetailsScreen> {
   int selectedDateIndex = 0; // Changed to 0 since we'll start from today
-  String selectedTime = '9:00 AM';
+  String selectedTime = '';
   FamilyMember? selectedFamilyMember;
   String? _currentStaffId;
   bool _isLoadingStaffId = true;
@@ -323,6 +323,7 @@ print('uuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuu${widget.image}');
           familyMemberId: familyMemberIdToUse,
           type: selectedConsultationType,
           transactionId: response.paymentId.toString());
+          
 
       Navigator.pop(context); // Close loading dialog
 
@@ -631,7 +632,7 @@ print('uuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuu${widget.image}');
   Future<void> _proceedToBooking() async {
     final bookingProvider =
         Provider.of<ConsultationBookingProvider>(context, listen: false);
-
+     
     // Check if we should use profile data automatically
     if (selectedFamilyMember == null) {
       if (_profileData != null) {
@@ -681,6 +682,11 @@ print('uuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuu${widget.image}');
     );
 
     try {
+      print('hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh$selectedTime');
+      if(selectedTime==''){
+         throw Exception(
+            'Please Select  a slot');
+      }
       // Get selected date from the dynamic dates
       final selectedDate = dates[selectedDateIndex]['fullDate'] as DateTime;
       final formattedDate = _formatDayForApi(selectedDate);

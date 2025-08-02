@@ -850,7 +850,7 @@ Widget _buildBookingsList(GetAllBookingProvider provider) {
                     Container(
                       width: 120,
                       height: 2.5,
-                      color: const Color(0xFF2E67F6), // Blue underline
+                      color: const Color(0xFF2E67F6),
                     ),
                   ],
                 ),
@@ -886,6 +886,8 @@ Widget _buildBookingsList(GetAllBookingProvider provider) {
                     fontWeight: FontWeight.normal,
                   ),
                 ),
+
+               
               ],
             ),
           ),
@@ -1047,6 +1049,8 @@ Widget _buildBookingsList(GetAllBookingProvider provider) {
                           name: booking.primaryServiceName,
                           type: booking.type,
                           serviceType: booking.serviceType,
+                          // address: booking.diagnosticId?.address,
+                          // address: booking.diagnostic?.address
                         )));
           },
           child: Container(
