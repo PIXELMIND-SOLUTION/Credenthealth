@@ -1768,6 +1768,8 @@ class _OnlineScheduleScreenState extends State<OnlineScheduleScreen> {
                         image: doctor.image,
                         type: doctor.consultationType,
                         description: doctor.description,
+                        doctorSpecialty: doctor.specialization
+
                       ),
                     ),
                   );

@@ -3290,22 +3290,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 // }
 
                 if (!provider.hasData) {
-                  return Card(
-                    color: Colors.white,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    elevation: 2,
-                    child: const Padding(
-                      padding: EdgeInsets.all(16.0),
-                      child: Center(
-                        child: Text(
-                          'No package data available',
-                          style: TextStyle(color: Colors.grey, fontSize: 16),
-                        ),
-                      ),
-                    ),
-                  );
+                  return Text("");
                 }
 
                 final package = provider.package!;

@@ -879,7 +879,7 @@ Widget _buildBookingsList(GetAllBookingProvider provider) {
                   ),
                 ),
                 TextSpan(
-                  text: booking.id,
+                  text: booking.diagnosticBookingId != null ? booking.diagnosticBookingId.toString() : booking.doctorConsultationBookingId.toString(),
                   style: const TextStyle(
                     fontSize: 15,
                     color: Colors.black,

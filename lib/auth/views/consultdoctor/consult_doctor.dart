@@ -1309,9 +1309,6 @@
 //   }
 // }
 
-
-
-
 import 'package:consultation_app/auth/views/provider/get_all_daignostics_provider.dart';
 import 'package:consultation_app/model/diagnostic_model.dart';
 import 'package:flutter/material.dart';
@@ -1346,7 +1343,7 @@ class ConsultDoctor extends StatefulWidget {
 
 class _ConsultDoctorState extends State<ConsultDoctor> {
   late GetAllBookingProvider _bookingProvider;
-    late GetAllDiagnosticsProvider _diagnosticsProvider;
+  late GetAllDiagnosticsProvider _diagnosticsProvider;
   bool _isLoading = true;
   String? _errorMessage;
 
@@ -1358,16 +1355,15 @@ class _ConsultDoctorState extends State<ConsultDoctor> {
     _fetchBookingDetails();
   }
 
-
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     _diagnosticsProvider = Provider.of<GetAllDiagnosticsProvider>(context);
-    if (!_diagnosticsProvider.isLoading && _diagnosticsProvider.diagnostics.isEmpty) {
+    if (!_diagnosticsProvider.isLoading &&
+        _diagnosticsProvider.diagnostics.isEmpty) {
       _diagnosticsProvider.fetchDiagnostics();
     }
   }
-
 
   Future<void> _fetchBookingDetails() async {
     try {
@@ -1527,8 +1523,6 @@ class _ConsultDoctorState extends State<ConsultDoctor> {
 
   @override
   Widget build(BuildContext context) {
-
-
     print(
         'sssssssssssssssssssssssssssssssssssssssssssssssssssssss${widget.bookingId}');
     return Scaffold(
@@ -1609,12 +1603,6 @@ class _ConsultDoctorState extends State<ConsultDoctor> {
           final Booking? booking = provider.selectedBooking;
           // final Diagnostic?bookings=provider.geta
           if (booking == null) {
-
-
-
-        
-
-
             return const Center(
               child: Text(
                 'Booking not found',
@@ -1623,18 +1611,34 @@ class _ConsultDoctorState extends State<ConsultDoctor> {
             );
           }
 
-
-           String diagnosticAddress = 'N/A';
+          String diagnosticAddress = 'N/A';
           if (booking.diagnosticId != null) {
             final matched = _diagnosticsProvider.diagnostics.firstWhere(
               (d) => d.id == booking.diagnosticId!.id,
               orElse: () => Diagnostic(
-                id: '', name: '', email: '', phone: '', address: '',
-                image: '', centerType: '', methodology: '', pathologyAccredited: '',
-                gstNumber: '', centerStrength: '', country: '', state: '', city: '',
-                pincode: '', visitType: '',
-                homeCollectionSlots: [], centerVisitSlots: [],
-                contactPersons: [], tests: [], packages: [], scans: [], version: 0,
+                id: '',
+                name: '',
+                email: '',
+                phone: '',
+                address: '',
+                image: '',
+                centerType: '',
+                methodology: '',
+                pathologyAccredited: '',
+                gstNumber: '',
+                centerStrength: '',
+                country: '',
+                state: '',
+                city: '',
+                pincode: '',
+                visitType: '',
+                homeCollectionSlots: [],
+                centerVisitSlots: [],
+                contactPersons: [],
+                tests: [],
+                packages: [],
+                scans: [],
+                version: 0,
               ),
             );
             diagnosticAddress = matched.address;
@@ -1778,7 +1782,13 @@ class _ConsultDoctorState extends State<ConsultDoctor> {
 
                           const Divider(),
                           const SizedBox(height: 20),
-                          _buildDetailRow('Booking ID', booking.id, ''),
+                          _buildDetailRow(
+                              'Booking ID',
+                              booking.diagnosticBookingId != null
+                                  ? booking.diagnosticBookingId.toString()
+                                  : booking.doctorConsultationBookingId
+                                      .toString(),
+                              ''),
                           const Divider(),
                           const SizedBox(height: 20),
                           _buildDetailRow(
@@ -1820,11 +1830,10 @@ class _ConsultDoctorState extends State<ConsultDoctor> {
                                     : '',
                                 '',
                               ),
-                              
+
                               const Divider(),
                               const SizedBox(height: 20),
-                              _buildDetailRow('Venue',
-                                  diagnosticAddress,''),
+                              _buildDetailRow('Venue', diagnosticAddress, ''),
                             ],
                           ],
 
@@ -1855,8 +1864,13 @@ class _ConsultDoctorState extends State<ConsultDoctor> {
                                 booking.doctorQualification, ''),
                             //      const Divider(),
                             const SizedBox(height: 20),
-                            _buildDetailRow('Venue',
-                                booking.doctorId?.address ?? 'N/A', ''),
+                            _buildDetailRow(
+                              'Venue',
+                              booking.diagnosticBookingId != null
+                                  ? booking.diagnostic?.address ?? 'N/A'
+                                  : booking.doctorId?.address ?? 'N/A',
+                              '',
+                            ),
 
                             const Divider(),
                             const SizedBox(height: 20),
@@ -1899,6 +1913,16 @@ class _ConsultDoctorState extends State<ConsultDoctor> {
                                 ),
                               ),
                             ],
+                          ],
+
+                          if (booking.type.toLowerCase() == 'offline') ...[
+                            _buildDetailRow(
+                              'Venue',
+                              booking.diagnosticBookingId != null
+                                  ? booking.diagnostic?.address ?? 'N/A'
+                                  : booking.doctorId?.address ?? 'N/A',
+                              '',
+                            ),
                           ],
 
                           const Divider(),

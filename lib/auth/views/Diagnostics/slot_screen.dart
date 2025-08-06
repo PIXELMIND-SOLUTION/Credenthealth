@@ -1,10 +1,9 @@
-
-
 import 'package:consultation_app/auth/views/Diagnostics/confirm_booking_screen.dart';
 import 'package:consultation_app/auth/views/family/list_family_members.dart';
 import 'package:consultation_app/auth/views/provider/booking_slot_provider.dart';
 import 'package:consultation_app/auth/views/provider/family_provider.dart';
 import 'package:consultation_app/auth/views/provider/booking_provider.dart';
+import 'package:consultation_app/auth/views/provider/profile_provider.dart';
 import 'package:consultation_app/auth/views/provider/wallet_provider.dart';
 import 'package:consultation_app/auth/views/widgets/custom_snakebar.dart';
 import 'package:consultation_app/model/family_model.dart';
@@ -865,29 +864,19 @@ class _SlotScreenState extends State<SlotScreen> {
       ),
       child: Row(
         children: [
-          CircleAvatar(
-            radius: 20,
-            backgroundColor: Colors.grey[300],
-            child: ClipOval(
-              child: Image.asset(
-                'lib/assets/de73726d2bf0898fe1c5380f93a22d837dda6c65.png',
-                width: 40,
-                height: 40,
-                fit: BoxFit.cover,
-                errorBuilder: (context, error, stackTrace) {
-                  return Container(
-                    width: 40,
-                    height: 40,
-                    color: Colors.grey[400],
-                    child: const Icon(
-                      Icons.person,
-                      color: Colors.white,
-                      size: 24,
-                    ),
-                  );
-                },
-              ),
-            ),
+          Consumer<ProfileUpdateProvider>(
+            builder: (context, provider, child) {
+              final profile =
+                  provider.profile; // Assuming you have profile in provider
+
+              return CircleAvatar(
+                radius: 20,
+                backgroundImage: profile?.profileImage != null
+                    ? NetworkImage(_sanitizeImageUrl(profile!.profileImage))
+                    : const AssetImage('lib/assets/default_avatar.png')
+                        as ImageProvider,
+              );
+            },
           ),
           const SizedBox(width: 12),
           Expanded(
@@ -1051,6 +1040,14 @@ class _SlotScreenState extends State<SlotScreen> {
         ],
       ),
     );
+  }
+
+  String _sanitizeImageUrl(String url) {
+    // Fix double slashes in URL path
+    print(
+        "Urlllllllllllllllllllllllllllllllllllllllllllllllllllllllllll: $url");
+    final sanitizedUrl = url.replaceAll(RegExp(r'(?<!:)//'), '/');
+    return ("http://31.97.206.144:4051$sanitizedUrl");
   }
 
   @override
@@ -1318,68 +1315,78 @@ class _SlotScreenState extends State<SlotScreen> {
                                   ),
                                   itemCount: slotProvider.slots.length,
                                   itemBuilder: (context, index) {
-  bool isSelected = selectedTimeIndex == index;
-  final slot = slotProvider.slots[index];
+                                    bool isSelected =
+                                        selectedTimeIndex == index;
+                                    final slot = slotProvider.slots[index];
 
-  final isBooked = slot.isBooked; // assuming this field exists
+                                    final isBooked = slot
+                                        .isBooked; // assuming this field exists
 
-  return GestureDetector(
-    onTap: () {
-      if (isBooked) return; // Do nothing if already booked
+                                    return GestureDetector(
+                                      onTap: () {
+                                        if (isBooked)
+                                          return; // Do nothing if already booked
 
-      if (customSlot != slot.timeSlot) {
-        print("customSlot updated from $customSlot to ${slot.timeSlot}");
-      }
+                                        if (customSlot != slot.timeSlot) {
+                                          print(
+                                              "customSlot updated from $customSlot to ${slot.timeSlot}");
+                                        }
 
-      setState(() {
-        selectedTimeIndex = index;
-        customSlot = slot.timeSlot;
-      });
+                                        setState(() {
+                                          selectedTimeIndex = index;
+                                          customSlot = slot.timeSlot;
+                                        });
 
-      Future.delayed(Duration.zero, () {
-        print("Updated customSlot: $customSlot");
-      });
-    },
-    child: Container(
-      decoration: BoxDecoration(
-        color: isBooked
-            ? Colors.grey[300]
-            : isSelected
-                ? Colors.green[50]
-                : Colors.grey[100],
-        borderRadius: BorderRadius.circular(13),
-        border: isSelected && !isBooked
-            ? Border.all(color: Colors.green, width: 2)
-            : null,
-      ),
-      child: Stack(
-        children: [
-          Center(
-            child: Text(
-              isBooked ? 'Booked' : slot.timeSlot,
-              style: TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.w500,
-                color: isBooked ? Colors.grey : Colors.black,
-              ),
-            ),
-          ),
-          if (isSelected && !isBooked)
-            const Positioned(
-              top: 4,
-              right: 4,
-              child: Icon(
-                Icons.check_circle,
-                color: Colors.green,
-                size: 20,
-              ),
-            ),
-        ],
-      ),
-    ),
-  );
-},
-
+                                        Future.delayed(Duration.zero, () {
+                                          print(
+                                              "Updated customSlot: $customSlot");
+                                        });
+                                      },
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                          color: isBooked
+                                              ? Colors.grey[300]
+                                              : isSelected
+                                                  ? Colors.green[50]
+                                                  : Colors.grey[100],
+                                          borderRadius:
+                                              BorderRadius.circular(13),
+                                          border: isSelected && !isBooked
+                                              ? Border.all(
+                                                  color: Colors.green, width: 2)
+                                              : null,
+                                        ),
+                                        child: Stack(
+                                          children: [
+                                            Center(
+                                              child: Text(
+                                                isBooked
+                                                    ? 'Booked'
+                                                    : slot.timeSlot,
+                                                style: TextStyle(
+                                                  fontSize: 14,
+                                                  fontWeight: FontWeight.w500,
+                                                  color: isBooked
+                                                      ? Colors.grey
+                                                      : Colors.black,
+                                                ),
+                                              ),
+                                            ),
+                                            if (isSelected && !isBooked)
+                                              const Positioned(
+                                                top: 4,
+                                                right: 4,
+                                                child: Icon(
+                                                  Icons.check_circle,
+                                                  color: Colors.green,
+                                                  size: 20,
+                                                ),
+                                              ),
+                                          ],
+                                        ),
+                                      ),
+                                    );
+                                  },
                                 ),
                             ],
                           );
@@ -1460,38 +1467,31 @@ class _SlotScreenState extends State<SlotScreen> {
 
                 const SizedBox(height: 24),
 
-                // Select Family Member Section
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    // Add Family Member Button
-                    GestureDetector(
-                      onTap: _navigateToFamilyMembers,
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 15, vertical: 10),
-                        decoration: BoxDecoration(
-                          border: Border.all(color: Colors.blue, width: 1),
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        child: const Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Icon(Icons.add, color: Colors.blue, size: 16),
-                            SizedBox(width: 4),
-                            Text(
-                              'Add Family Member',
-                              style: TextStyle(
-                                color: Colors.blue,
-                                fontSize: 12,
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
+                // Family Members Section
+                GestureDetector(
+                  onTap: _navigateToFamilyMembers,
+                  child: Container(
+                    padding: const EdgeInsets.all(16),
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.blue),
+                      borderRadius: BorderRadius.circular(12),
                     ),
-                  ],
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: const [
+                        Icon(Icons.add, color: Colors.blue),
+                        SizedBox(width: 8),
+                        Text(
+                          'Select Family Member',
+                          style: TextStyle(
+                            color: Colors.blue,
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
 
                 const SizedBox(height: 16),
