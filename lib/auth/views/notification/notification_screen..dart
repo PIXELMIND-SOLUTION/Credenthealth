@@ -809,6 +809,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
+         surfaceTintColor: Colors.white,
         title: const Text(
           'Notifications',
           style: TextStyle(fontWeight: FontWeight.bold),

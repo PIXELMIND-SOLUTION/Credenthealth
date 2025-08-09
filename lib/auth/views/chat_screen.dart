@@ -31,6 +31,20 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
 
   @override
   void initState() {
+    if (widget.selectedDoctor != null) {
+      print("=== DOCTOR DEBUG INFO ===");
+      print("Doctor Name: ${widget.selectedDoctor!.name}");
+      print("Doctor Email: ${widget.selectedDoctor!.email}");
+      print("Specialization: '${widget.selectedDoctor!.specialization}'");
+      print("Consultation Type: '${widget.selectedDoctor!.consultationType}'");
+      print("Qualification: '${widget.selectedDoctor!.qualification}'");
+      print("Category: '${widget.selectedDoctor!.category}'");
+      print("=========================");
+
+      // Also print the raw JSON to see what data you're getting
+      print("Doctor JSON: ${widget.selectedDoctor!.toJson()}");
+    }
+
     super.initState();
 
     print("DoctorId: ${widget.selectedDoctor?.id}");
@@ -416,7 +430,7 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
                           ? message.actualFileName
                           : 'downloaded_file'),
                   child: Container(
-                    padding: EdgeInsets.all(5),
+                      padding: EdgeInsets.all(5),
                       decoration: BoxDecoration(
                           border: Border.all(color: Colors.blue),
                           borderRadius: BorderRadius.circular(30)),
@@ -512,9 +526,29 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
           if (!isCurrentUser) ...[
-            CircleAvatar(
-              backgroundImage: AssetImage("lib/assets/chatimage.png"),
-              radius: 16,
+            ClipOval(
+              child: widget.selectedDoctor!.image.isNotEmpty
+                  ? Image.network(
+                      widget.selectedDoctor!.image.startsWith('http')
+                          ? widget.selectedDoctor!.image
+                          : 'http://31.97.206.144:4051${widget.selectedDoctor!.image}',
+                      width: 40,
+                      height: 40,
+                      fit: BoxFit.contain,
+                      errorBuilder: (context, error, stackTrace) {
+                        return const Icon(
+                          Icons.person,
+                          size: 30,
+                          color: Colors.grey,
+                        );
+                      },
+                    )
+                  : Image.asset(
+                      "lib/assets/chatimage.png",
+                      width: 40,
+                      height: 40,
+                      fit: BoxFit.cover,
+                    ),
             ),
             const SizedBox(width: 8),
           ],
@@ -676,8 +710,35 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
                 child: Row(
                   children: [
                     CircleAvatar(
-                      backgroundImage: AssetImage('lib/assets/chatimage.png'),
+                      radius: 20, // Adjust radius as needed
+                      backgroundColor:
+                          Colors.grey.shade200, // Optional background color
+                      child: ClipOval(
+                        child: widget.selectedDoctor!.image.isNotEmpty
+                            ? Image.network(
+                                widget.selectedDoctor!.image.startsWith('http')
+                                    ? widget.selectedDoctor!.image
+                                    : 'http://31.97.206.144:4051${widget.selectedDoctor!.image}',
+                                width: 40,
+                                height: 40,
+                                fit: BoxFit.contain,
+                                errorBuilder: (context, error, stackTrace) {
+                                  return const Icon(
+                                    Icons.person,
+                                    size: 30,
+                                    color: Colors.grey,
+                                  );
+                                },
+                              )
+                            : Image.asset(
+                                "lib/assets/chatimage.png",
+                                width: 40,
+                                height: 40,
+                                fit: BoxFit.cover,
+                              ),
+                      ),
                     ),
+
                     const SizedBox(width: 12),
                     Expanded(
                       child: Column(
@@ -690,16 +751,16 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
                               fontSize: 16,
                             ),
                           ),
-                          Text(
-                            chatProvider
-                                    .selectedDoctor!.consultationType.isNotEmpty
-                                ? chatProvider.selectedDoctor!.consultationType
-                                : 'General Consultation',
-                            style: const TextStyle(
-                              color: Colors.grey,
-                              fontSize: 14,
-                            ),
-                          ),
+                          // Text(
+                          //   chatProvider
+                          //           .selectedDoctor!.consultationType.isNotEmpty
+                          //       ? chatProvider.selectedDoctor!.consultationType
+                          //       : 'General Consultation',
+                          //   style: const TextStyle(
+                          //     color: Colors.grey,
+                          //     fontSize: 14,
+                          //   ),
+                          // ),
                         ],
                       ),
                     ),
@@ -740,32 +801,32 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
               ),
 
               // Error message (if any)
-              if (chatProvider.error.isNotEmpty)
-                Container(
-                  width: double.infinity,
-                  padding: const EdgeInsets.all(8),
-                  color: Colors.red.shade100,
-                  child: Row(
-                    children: [
-                      Icon(Icons.error_outline,
-                          color: Colors.red.shade700, size: 16),
-                      const SizedBox(width: 8),
-                      Expanded(
-                        child: Text(
-                          chatProvider.error,
-                          style: TextStyle(
-                              color: Colors.red.shade700, fontSize: 12),
-                        ),
-                      ),
-                      // TextButton(
-                      //   onPressed: () {
-                      //     chatProvider._clearError();
-                      //   },
-                      //   child: Text('Dismiss', style: TextStyle(color: Colors.red.shade700)),
-                      // ),
-                    ],
-                  ),
-                ),
+              // if (chatProvider.error.isNotEmpty)
+              //   Container(
+              //     width: double.infinity,
+              //     padding: const EdgeInsets.all(8),
+              //     color: Colors.red.shade100,
+              //     child: Row(
+              //       children: [
+              //         Icon(Icons.error_outline,
+              //             color: Colors.red.shade700, size: 16),
+              //         const SizedBox(width: 8),
+              //         // Expanded(
+              //         //   child: Text(
+              //         //     chatProvider.error,
+              //         //     style: TextStyle(
+              //         //         color: Colors.red.shade700, fontSize: 12),
+              //         //   ),
+              //         // ),
+              //         // TextButton(
+              //         //   onPressed: () {
+              //         //     chatProvider._clearError();
+              //         //   },
+              //         //   child: Text('Dismiss', style: TextStyle(color: Colors.red.shade700)),
+              //         // ),
+              //       ],
+              //     ),
+              //   ),
 
               // Typing indicator
               // if (chatProvider.isTyping)

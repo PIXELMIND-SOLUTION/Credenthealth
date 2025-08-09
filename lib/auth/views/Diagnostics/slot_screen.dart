@@ -873,7 +873,7 @@ class _SlotScreenState extends State<SlotScreen> {
                 radius: 20,
                 backgroundImage: profile?.profileImage != null
                     ? NetworkImage(_sanitizeImageUrl(profile!.profileImage))
-                    : const AssetImage('lib/assets/default_avatar.png')
+                    : const AssetImage('lib/assets/chatscreenimage.png')
                         as ImageProvider,
               );
             },
@@ -1057,6 +1057,7 @@ class _SlotScreenState extends State<SlotScreen> {
         backgroundColor: Colors.white,
         appBar: AppBar(
           backgroundColor: Colors.white,
+          surfaceTintColor: Colors.white,
           elevation: 0,
           leading: IconButton(
             icon: const Icon(Icons.arrow_back, color: Colors.black),
@@ -1285,6 +1286,110 @@ class _SlotScreenState extends State<SlotScreen> {
                               ),
 
                               const SizedBox(height: 24),
+                              // const Text(
+                              //   'Choose Time',
+                              //   style: TextStyle(
+                              //     fontSize: 20,
+                              //     fontWeight: FontWeight.bold,
+                              //     color: Colors.black,
+                              //   ),
+                              // ),
+                              // const SizedBox(height: 16),
+
+                              // // Time Slot Loader or Display
+                              // if (slotProvider.isLoading)
+                              //   const Center(child: CircularProgressIndicator())
+                              // else if (slotProvider.error != null)
+                              //   Text('Error: ${slotProvider.error}')
+                              // else if (slotProvider.slots.isEmpty)
+                              //   const Text('No time slots available')
+                              // else
+                              //   GridView.builder(
+                              //     shrinkWrap: true,
+                              //     physics: const NeverScrollableScrollPhysics(),
+                              //     gridDelegate:
+                              //         const SliverGridDelegateWithFixedCrossAxisCount(
+                              //       crossAxisCount: 2,
+                              //       childAspectRatio: 3,
+                              //       crossAxisSpacing: 12,
+                              //       mainAxisSpacing: 12,
+                              //     ),
+                              //     itemCount: slotProvider.slots.length,
+                              //     itemBuilder: (context, index) {
+                              //       bool isSelected =
+                              //           selectedTimeIndex == index;
+                              //       final slot = slotProvider.slots[index];
+
+                              //       final isBooked = slot
+                              //           .isBooked; // assuming this field exists
+
+                              //       return GestureDetector(
+                              //         onTap: () {
+                              //           if (isBooked)
+                              //             return; // Do nothing if already booked
+
+                              //           if (customSlot != slot.timeSlot) {
+                              //             print(
+                              //                 "customSlot updated from $customSlot to ${slot.timeSlot}");
+                              //           }
+
+                              //           setState(() {
+                              //             selectedTimeIndex = index;
+                              //             customSlot = slot.timeSlot;
+                              //           });
+
+                              //           Future.delayed(Duration.zero, () {
+                              //             print(
+                              //                 "Updated customSlot: $customSlot");
+                              //           });
+                              //         },
+                              //         child: Container(
+                              //           decoration: BoxDecoration(
+                              //             color: isBooked
+                              //                 ? Colors.grey[300]
+                              //                 : isSelected
+                              //                     ? Colors.green[50]
+                              //                     : Colors.grey[100],
+                              //             borderRadius:
+                              //                 BorderRadius.circular(13),
+                              //             border: isSelected && !isBooked
+                              //                 ? Border.all(
+                              //                     color: Colors.green, width: 2)
+                              //                 : null,
+                              //           ),
+                              //           child: Stack(
+                              //             children: [
+                              //               Center(
+                              //                 child: Text(
+                              //                   isBooked
+                              //                       ? 'Booked'
+                              //                       : slot.timeSlot,
+                              //                   style: TextStyle(
+                              //                     fontSize: 14,
+                              //                     fontWeight: FontWeight.w500,
+                              //                     color: isBooked
+                              //                         ? Colors.grey
+                              //                         : Colors.black,
+                              //                   ),
+                              //                 ),
+                              //               ),
+                              //               if (isSelected && !isBooked)
+                              //                 const Positioned(
+                              //                   top: 4,
+                              //                   right: 4,
+                              //                   child: Icon(
+                              //                     Icons.check_circle,
+                              //                     color: Colors.green,
+                              //                     size: 20,
+                              //                   ),
+                              //                 ),
+                              //             ],
+                              //           ),
+                              //         ),
+                              //       );
+                              //     },
+                              //   ),
+
                               const Text(
                                 'Choose Time',
                                 style: TextStyle(
@@ -1295,7 +1400,7 @@ class _SlotScreenState extends State<SlotScreen> {
                               ),
                               const SizedBox(height: 16),
 
-                              // Time Slot Loader or Display
+// Time Slot Loader or Display
                               if (slotProvider.isLoading)
                                 const Center(child: CircularProgressIndicator())
                               else if (slotProvider.error != null)
@@ -1319,13 +1424,14 @@ class _SlotScreenState extends State<SlotScreen> {
                                         selectedTimeIndex == index;
                                     final slot = slotProvider.slots[index];
 
-                                    final isBooked = slot
-                                        .isBooked; // assuming this field exists
+                                    final isBooked = slot.isBooked;
+                                    final isExpired = slot.isExpired;
+                                    final isUnavailable = isBooked || isExpired;
 
                                     return GestureDetector(
                                       onTap: () {
-                                        if (isBooked)
-                                          return; // Do nothing if already booked
+                                        if (isUnavailable)
+                                          return; // Do nothing if booked or expired
 
                                         if (customSlot != slot.timeSlot) {
                                           print(
@@ -1344,14 +1450,14 @@ class _SlotScreenState extends State<SlotScreen> {
                                       },
                                       child: Container(
                                         decoration: BoxDecoration(
-                                          color: isBooked
+                                          color: isUnavailable
                                               ? Colors.grey[300]
                                               : isSelected
                                                   ? Colors.green[50]
                                                   : Colors.grey[100],
                                           borderRadius:
                                               BorderRadius.circular(13),
-                                          border: isSelected && !isBooked
+                                          border: isSelected && !isUnavailable
                                               ? Border.all(
                                                   color: Colors.green, width: 2)
                                               : null,
@@ -1362,17 +1468,19 @@ class _SlotScreenState extends State<SlotScreen> {
                                               child: Text(
                                                 isBooked
                                                     ? 'Booked'
-                                                    : slot.timeSlot,
+                                                    : isExpired
+                                                        ? 'Expired'
+                                                        : slot.timeSlot,
                                                 style: TextStyle(
                                                   fontSize: 14,
                                                   fontWeight: FontWeight.w500,
-                                                  color: isBooked
+                                                  color: isUnavailable
                                                       ? Colors.grey
                                                       : Colors.black,
                                                 ),
                                               ),
                                             ),
-                                            if (isSelected && !isBooked)
+                                            if (isSelected && !isUnavailable)
                                               const Positioned(
                                                 top: 4,
                                                 right: 4,
@@ -1380,6 +1488,27 @@ class _SlotScreenState extends State<SlotScreen> {
                                                   Icons.check_circle,
                                                   color: Colors.green,
                                                   size: 20,
+                                                ),
+                                              ),
+                                            // Optional: Add different icons for booked vs expired
+                                            if (isBooked)
+                                              const Positioned(
+                                                top: 4,
+                                                right: 4,
+                                                child: Icon(
+                                                  Icons.block,
+                                                  color: Colors.red,
+                                                  size: 16,
+                                                ),
+                                              ),
+                                            if (isExpired && !isBooked)
+                                              const Positioned(
+                                                top: 4,
+                                                right: 4,
+                                                child: Icon(
+                                                  Icons.access_time,
+                                                  color: Colors.orange,
+                                                  size: 16,
                                                 ),
                                               ),
                                           ],

@@ -1962,6 +1962,60 @@ class PackageInfo {
 }
 
 // UPDATED: FamilyMember class (unchanged)
+// class FamilyMember {
+//   final String id;
+//   final String fullName;
+//   final String mobileNumber;
+//   final int age;
+//   final String gender;
+//   final String dob;
+//   final int height;
+//   final int weight;
+//   final String relation;
+
+//   FamilyMember({
+//     required this.id,
+//     required this.fullName,
+//     required this.mobileNumber,
+//     required this.age,
+//     required this.gender,
+//     required this.dob,
+//     required this.height,
+//     required this.weight,
+//     required this.relation,
+//   });
+
+//   factory FamilyMember.fromJson(Map<String, dynamic> json) {
+//     return FamilyMember(
+//       id: json['_id'] ?? '',
+//       fullName: json['fullName'] ?? '',
+//       mobileNumber: json['mobileNumber'] ?? '',
+//       age: json['age'] ?? 0,
+//       gender: json['gender'] ?? '',
+//       dob: json['DOB'] ?? '',
+//       height: json['height'] ?? '',
+//       weight: json['weight'] ?? '',
+//       relation: json['relation'] ?? '',
+//     );
+//   }
+
+//   Map<String, dynamic> toJson() {
+//     return {
+//       '_id': id,
+//       'fullName': fullName,
+//       'mobileNumber': mobileNumber,
+//       'age': age,
+//       'gender': gender,
+//       'DOB': dob,
+//       'height': height,
+//       'weight': weight,
+//       'relation': relation,
+//     };
+//   }
+// }
+
+
+
 class FamilyMember {
   final String id;
   final String fullName;
@@ -1969,8 +2023,8 @@ class FamilyMember {
   final int age;
   final String gender;
   final String dob;
-  final int height;
-  final int weight;
+  final double height;  // Changed to double to handle decimal values
+  final double weight;  // Changed to double to handle decimal values
   final String relation;
 
   FamilyMember({
@@ -1990,11 +2044,11 @@ class FamilyMember {
       id: json['_id'] ?? '',
       fullName: json['fullName'] ?? '',
       mobileNumber: json['mobileNumber'] ?? '',
-      age: json['age'] ?? 0,
+      age: _safeInt(json['age']),
       gender: json['gender'] ?? '',
       dob: json['DOB'] ?? '',
-      height: json['height'] ?? 0,
-      weight: json['weight'] ?? 0,
+      height: _safeDouble(json['height']),  // Safe conversion to double
+      weight: _safeDouble(json['weight']),  // Safe conversion to double
       relation: json['relation'] ?? '',
     );
   }
@@ -2011,6 +2065,27 @@ class FamilyMember {
       'weight': weight,
       'relation': relation,
     };
+  }
+
+  // Safe conversion helper methods
+  static int _safeInt(dynamic value, {int defaultValue = 0}) {
+    if (value == null) return defaultValue;
+    if (value is int) return value;
+    if (value is double) return value.toInt();
+    if (value is String) {
+      return int.tryParse(value) ?? defaultValue;
+    }
+    return defaultValue;
+  }
+
+  static double _safeDouble(dynamic value, {double defaultValue = 0.0}) {
+    if (value == null) return defaultValue;
+    if (value is double) return value;
+    if (value is int) return value.toDouble();
+    if (value is String) {
+      return double.tryParse(value) ?? defaultValue;
+    }
+    return defaultValue;
   }
 }
 

@@ -1403,15 +1403,17 @@ class _OnlineScheduleScreenState extends State<OnlineScheduleScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.grey[50],
+      
       appBar: AppBar(
         backgroundColor: Colors.white,
+        surfaceTintColor: Colors.white,
         elevation: 0,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.black),
           onPressed: () {
             Navigator.pushAndRemoveUntil(
               context,
-              MaterialPageRoute(builder: (context) => NavbarScreen()),
+              MaterialPageRoute(builder: (context) =>const NavbarScreen()),
               (Route<dynamic> route) => false,
             );
           },

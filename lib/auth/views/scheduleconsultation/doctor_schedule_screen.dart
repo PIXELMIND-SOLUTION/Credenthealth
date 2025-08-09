@@ -1731,14 +1731,14 @@ class _DoctorScheduleScreenState extends State<DoctorScheduleScreen> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        const Icon(
-                          Icons.error_outline,
-                          size: 64,
-                          color: Colors.red,
-                        ),
+                        // const Icon(
+                        //   Icons.error_outline,
+                        //   size: 64,
+                        //   color: Colors.red,
+                        // ),
                         const SizedBox(height: 16),
                         Text(
-                          'Failed to load doctors',
+                          'No Doctors Available',
                           style: TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.w600,
@@ -1746,24 +1746,24 @@ class _DoctorScheduleScreenState extends State<DoctorScheduleScreen> {
                           ),
                         ),
                         const SizedBox(height: 8),
-                        Text(
-                          provider.doctorsError!,
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontSize: 14,
-                            color: Colors.grey.shade600,
-                          ),
-                        ),
+                        // Text(
+                        //   provider.doctorsError!,
+                        //   textAlign: TextAlign.center,
+                        //   style: TextStyle(
+                        //     fontSize: 14,
+                        //     color: Colors.grey.shade600,
+                        //   ),
+                        // ),
                         const SizedBox(height: 16),
-                        ElevatedButton(
-                          onPressed: () {
-                            if (widget.categoryName != null) {
-                              provider
-                                  .fetchDoctorsByCategory(widget.categoryName!);
-                            }
-                          },
-                          child: const Text('Retry'),
-                        ),
+                        // ElevatedButton(
+                        //   onPressed: () {
+                        //     if (widget.categoryName != null) {
+                        //       provider
+                        //           .fetchDoctorsByCategory(widget.categoryName!);
+                        //     }
+                        //   },
+                        //   child: const Text('Retry'),
+                        // ),
                       ],
                     ),
                   ),

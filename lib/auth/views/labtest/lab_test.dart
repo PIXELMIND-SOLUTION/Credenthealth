@@ -102,6 +102,7 @@ class _LabTestState extends State<LabTest> {
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.white,
+        surfaceTintColor: Colors.white,
         elevation: 0,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.black),
@@ -526,6 +527,30 @@ class _LabTestState extends State<LabTest> {
                   //     ),
                   //   ),
                   // ),
+                  // Expanded(
+                  //   child: Column(
+                  //     crossAxisAlignment: CrossAxisAlignment.start,
+                  //     children: [
+                  //       _buildHighlightedText(
+                  //         text: test.name,
+                  //         searchQuery: searchQuery,
+                  //         style: const TextStyle(
+                  //           fontSize: 16,
+                  //           fontWeight: FontWeight.w600,
+                  //           color: Colors.black,
+                  //         ),
+                  //       ),
+                  //       const SizedBox(height: 4),
+                  //       Container(
+                  //         width: 120,
+                  //         height: 3,
+                  //         color: Color(
+                  //             0xFF2E67F6), // Blue line color from your previous message
+                  //       ),
+                  //     ],
+                  //   ),
+                  // ),
+
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -540,11 +565,34 @@ class _LabTestState extends State<LabTest> {
                           ),
                         ),
                         const SizedBox(height: 4),
-                        Container(
-                          width: 120,
-                          height: 3,
-                          color: Color(
-                              0xFF2E67F6), // Blue line color from your previous message
+                        TweenAnimationBuilder<double>(
+                          duration: const Duration(milliseconds: 1200),
+                          tween: Tween<double>(begin: 0.0, end: 1.0),
+                          curve: Curves.easeInOut,
+                          builder: (context, value, child) {
+                            return Container(
+                              width: 120 * value,
+                              height: 3,
+                              decoration: BoxDecoration(
+                                gradient: LinearGradient(
+                                  colors: [
+                                    const Color(0xFF2E67F6),
+                                    const Color(0xFF4A7BF7),
+                                  ],
+                                  stops: [0.0, value],
+                                ),
+                                borderRadius: BorderRadius.circular(1.5),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: const Color(0xFF2E67F6)
+                                        .withOpacity(0.3),
+                                    blurRadius: 4,
+                                    offset: const Offset(0, 1),
+                                  ),
+                                ],
+                              ),
+                            );
+                          },
                         ),
                       ],
                     ),

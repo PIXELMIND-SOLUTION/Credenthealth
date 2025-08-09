@@ -11,6 +11,8 @@ class DarkMode extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.white,
+         surfaceTintColor: Colors.white,
         title: const Text(
           'Appearance Settings',
           style: TextStyle(fontWeight: FontWeight.w600),
@@ -32,7 +34,7 @@ class DarkMode extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(16),
-                color: Theme.of(context).cardColor,
+                color:Colors.white,
                 boxShadow: [
                   BoxShadow(
                     color: Colors.black.withOpacity(0.05),

@@ -1372,7 +1372,9 @@ class _ScheduleConsultationScreenState
                     context,
                     MaterialPageRoute(
                       builder: (context) => DoctorScheduleScreen(
+
                         categoryId: widget.id,
+                        categoryName: selectedIssue,
                       ),
                     ),
                   );

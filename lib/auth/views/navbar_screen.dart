@@ -142,7 +142,7 @@ class NavbarScreen extends StatelessWidget {
         _buildCenterNavItem( // Custom center "Findings" button
           context,
           icon: Icons.add,
-          label: 'Reports&Prescriptions',
+          label: 'MedicalRecords',
           index: 2,
           isSelected: bottomNavbarProvider.currentIndex == 2,
         ),

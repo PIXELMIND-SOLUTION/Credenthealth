@@ -662,15 +662,15 @@ class _DoctorsListScreenState extends State<DoctorsListScreen>
                 children: [
                   Container(
                     padding: const EdgeInsets.all(24),
-                    decoration: BoxDecoration(
-                      color: Colors.red.shade50,
-                      shape: BoxShape.circle,
-                    ),
-                    child: Icon(
-                      Icons.error_outline,
-                      size: 64,
-                      color: Colors.red.shade400,
-                    ),
+                    // decoration: BoxDecoration(
+                    //   color: Colors.red.shade50,
+                    //   shape: BoxShape.circle,
+                    // ),
+                    // child: Icon(
+                    //   Icons.error_outline,
+                    //   size: 64,
+                    //   color: Colors.red.shade400,
+                    // ),
                   ),
                   const SizedBox(height: 24),
                   Text(

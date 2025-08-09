@@ -181,6 +181,7 @@ class _PrivacyPolicyState extends State<PrivacyPolicy>
         title: const Text('Privacy Policy', style: TextStyle(fontWeight: FontWeight.bold)),
         centerTitle: true,
         backgroundColor: Colors.white,
+        surfaceTintColor: Colors.white,
         foregroundColor: Colors.black,
         elevation: 0.5,
       ),

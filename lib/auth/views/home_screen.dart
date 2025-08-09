@@ -1,838 +1,9 @@
-//
-
-// import 'package:consultation_app/auth/views/HRA/hra_screen.dart';
-// import 'package:consultation_app/auth/views/labtest/labtest_packages_screen.dart';
-// import 'package:consultation_app/auth/views/scheduleconsultation/schedule_consultation_screen.dart';
-// import 'package:consultation_app/auth/views/scheduleconsultation/doctor_schedule_screen.dart';
-// import 'package:consultation_app/auth/views/steptracker/step_tracker_screen.dart';
-// import 'package:consultation_app/auth/views/wallet/wallet_screen.dart';
-// import 'package:flutter/material.dart';
-
-// class HomeScreen extends StatelessWidget {
-//   const HomeScreen({super.key});
-
-//   void _showConsultationOptions(BuildContext context) {
-//     showModalBottomSheet(
-//       context: context,
-//       backgroundColor: Colors.transparent,
-//       builder: (BuildContext context) {
-//         return Container(
-//           decoration: const BoxDecoration(
-//             color: Colors.white,
-//             borderRadius: BorderRadius.only(
-//               topLeft: Radius.circular(20),
-//               topRight: Radius.circular(20),
-//             ),
-//           ),
-//           child: Column(
-//             mainAxisSize: MainAxisSize.min,
-//             children: [
-//               // Top indicator bar
-//               Container(
-//                 margin: const EdgeInsets.only(top: 8),
-//                 width: 40,
-//                 height: 4,
-//                 decoration: BoxDecoration(
-//                   color: Colors.blue,
-//                   borderRadius: BorderRadius.circular(2),
-//                 ),
-//               ),
-//               const SizedBox(height: 20),
-
-//               // Book Clinic Visit Option
-//               Container(
-//                 margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
-//                 padding: const EdgeInsets.all(16),
-//                 decoration: BoxDecoration(
-//                   border: Border.all(),
-//                   color: Colors.grey.shade50,
-//                   borderRadius: BorderRadius.circular(12),
-//                 ),
-//                 child: Row(
-//                   children: [
-//                     Container(
-//                       width: 50,
-//                       height: 50,
-//                       decoration: BoxDecoration(
-//                         color: Colors.white,
-//                         borderRadius: BorderRadius.circular(12),
-//                       ),
-//                       child: const Icon(
-//                         Icons.local_hospital,
-//                         color: Colors.blue,
-//                         size: 28,
-//                       ),
-//                     ),
-//                     const SizedBox(width: 16),
-//                     const Expanded(
-//                       child: Column(
-//                         crossAxisAlignment: CrossAxisAlignment.start,
-//                         children: [
-//                           Text(
-//                             'Book Clinic Visit',
-//                             style: TextStyle(
-//                               fontSize: 16,
-//                               fontWeight: FontWeight.w600,
-//                               color: Colors.black,
-//                             ),
-//                           ),
-//                           SizedBox(height: 4),
-//                           Text(
-//                             'Schedule an in-person visit\nwith your preferred doctor',
-//                             style: TextStyle(
-//                               fontSize: 12,
-//                               color: Colors.grey,
-//                               height: 1.3,
-//                             ),
-//                           ),
-//                         ],
-//                       ),
-//                     ),
-//                     GestureDetector(
-//                       onTap: () {
-//                         Navigator.pop(context);
-//                         Navigator.push(
-//                           context,
-//                           MaterialPageRoute(
-//                             builder: (context) => ScheduleConsultationScreen(id: 'Book Clinic Visit',),
-//                           ),
-//                         );
-//                       },
-//                       child: const Icon(
-//                         Icons.arrow_forward_ios,
-//                         color: Colors.black,
-//                         size: 16,
-//                       ),
-//                     ),
-//                   ],
-//                 ),
-//               ),
-
-//               // Book Online Consultation Option
-//               Container(
-//                 margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
-//                 padding: const EdgeInsets.all(16),
-//                 decoration: BoxDecoration(
-//                   border: Border.all(),
-//                   color: Colors.grey.shade50,
-//                   borderRadius: BorderRadius.circular(12),
-//                 ),
-//                 child: Row(
-//                   children: [
-//                     Container(
-//                       width: 50,
-//                       height: 50,
-//                       decoration: BoxDecoration(
-//                         color: Colors.white,
-//                         borderRadius: BorderRadius.circular(12),
-//                       ),
-//                       child: const Icon(
-//                         Icons.video_call,
-//                         color: Colors.green,
-//                         size: 28,
-//                       ),
-//                     ),
-//                     const SizedBox(width: 16),
-//                     const Expanded(
-//                       child: Column(
-//                         crossAxisAlignment: CrossAxisAlignment.start,
-//                         children: [
-//                           Text(
-//                             'Book Online Consultation',
-//                             style: TextStyle(
-//                               fontSize: 16,
-//                               fontWeight: FontWeight.w600,
-//                               color: Colors.black,
-//                             ),
-//                           ),
-//                           SizedBox(height: 4),
-//                           Text(
-//                             'Connect with doctors through\nvideo or audio calls',
-//                             style: TextStyle(
-//                               fontSize: 12,
-//                               color: Colors.grey,
-//                               height: 1.3,
-//                             ),
-//                           ),
-//                         ],
-//                       ),
-//                     ),
-//                     GestureDetector(
-//                       onTap: () {
-//                         Navigator.pop(context);
-//                         Navigator.push(
-//                           context,
-//                           MaterialPageRoute(
-//                             builder: (context) => DoctorScheduleScreen(id: 'Book Online Consultation',),
-//                           ),
-//                         );
-//                       },
-//                       child: const Icon(
-//                         Icons.arrow_forward_ios,
-//                         color: Colors.black,
-//                         size: 16,
-//                       ),
-//                     ),
-//                   ],
-//                 ),
-//               ),
-
-//               const SizedBox(height: 30),
-//             ],
-//           ),
-//         );
-//       },
-//     );
-//   }
-
-//   void _showLabTestOptions(BuildContext context) {
-//     showModalBottomSheet(
-//       context: context,
-//       backgroundColor: Colors.transparent,
-//       builder: (BuildContext context) {
-//         return Container(
-//           decoration: const BoxDecoration(
-//             color: Colors.white,
-//             borderRadius: BorderRadius.only(
-//               topLeft: Radius.circular(20),
-//               topRight: Radius.circular(20),
-//             ),
-//           ),
-//           child: Column(
-//             mainAxisSize: MainAxisSize.min,
-//             children: [
-//               // Top indicator bar
-//               Container(
-//                 margin: const EdgeInsets.only(top: 8),
-//                 width: 40,
-//                 height: 4,
-//                 decoration: BoxDecoration(
-//                   color: Colors.blue,
-//                   borderRadius: BorderRadius.circular(2),
-//                 ),
-//               ),
-//               const SizedBox(height: 20),
-
-//               // Lab Test Packages Option
-//               Container(
-//                 margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
-//                 padding: const EdgeInsets.all(16),
-//                 decoration: BoxDecoration(
-//                   border: Border.all(),
-//                   color: Colors.grey.shade50,
-//                   borderRadius: BorderRadius.circular(12),
-//                 ),
-//                 child: Row(
-//                   children: [
-//                     Container(
-//                       width: 50,
-//                       height: 50,
-//                       decoration: BoxDecoration(
-//                         color: Colors.white,
-//                         borderRadius: BorderRadius.circular(12),
-//                       ),
-//                       child: const Icon(
-//                         Icons.science,
-//                         color: Colors.purple,
-//                         size: 28,
-//                       ),
-//                     ),
-//                     const SizedBox(width: 16),
-//                     const Expanded(
-//                       child: Column(
-//                         crossAxisAlignment: CrossAxisAlignment.start,
-//                         children: [
-//                           Text(
-//                             'Lab Test Packages',
-//                             style: TextStyle(
-//                               fontSize: 16,
-//                               fontWeight: FontWeight.w600,
-//                               color: Colors.black,
-//                             ),
-//                           ),
-//                           SizedBox(height: 4),
-//                           Text(
-//                             'Browse and book comprehensive\nhealth checkup packages',
-//                             style: TextStyle(
-//                               fontSize: 12,
-//                               color: Colors.grey,
-//                               height: 1.3,
-//                             ),
-//                           ),
-//                         ],
-//                       ),
-//                     ),
-//                     GestureDetector(
-//                       onTap: () {
-//                         Navigator.pop(context);
-//                         Navigator.push(
-//                           context,
-//                           MaterialPageRoute(
-//                             builder: (context) => LabtestPackagesScreen(),
-//                           ),
-//                         );
-//                       },
-//                       child: const Icon(
-//                         Icons.arrow_forward_ios,
-//                         color: Colors.black,
-//                         size: 16,
-//                       ),
-//                     ),
-//                   ],
-//                 ),
-//               ),
-//               const SizedBox(height: 30),
-//             ],
-//           ),
-//         );
-//       },
-//     );
-//   }
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(
-//         elevation: 0,
-//         backgroundColor: Colors.white,
-//         automaticallyImplyLeading: false,
-//         title:  Row(
-//           children: [
-//             const Text(
-//               'Good Morning',
-//               style: TextStyle(fontWeight: FontWeight.bold),
-//             ),
-//             const SizedBox(
-//               width: 70,
-//             ),
-//             GestureDetector(
-//               onTap: () {
-//                 Navigator.push(context, MaterialPageRoute(builder: (context)=>WalletScreen()));
-//               },
-//               child: const Icon(Icons.wallet_rounded)),
-//             const Text(
-//               '10,000',
-//               style: TextStyle(fontSize: 17),
-//             )
-//           ],
-//         ),
-//         actions: const [
-//           Icon(Icons.notifications_none, color: Colors.black),
-//           SizedBox(width: 16),
-//         ],
-//       ),
-//       body: SingleChildScrollView(
-//         padding: const EdgeInsets.all(16.0),
-//         child: Column(
-//           crossAxisAlignment: CrossAxisAlignment.start,
-//           children: [
-//             const SizedBox(height: 16),
-//             TextField(
-//               decoration: InputDecoration(
-//                 hintText: 'Search',
-//                 prefixIcon: const Icon(Icons.search),
-//                 suffixIcon: const Icon(Icons.tune),
-//                 border: OutlineInputBorder(
-//                   borderRadius: BorderRadius.circular(12.0),
-//                 ),
-//               ),
-//             ),
-//             const SizedBox(height: 16),
-//             Card(
-//               color: Colors.white,
-//               elevation: 2,
-//               shape: RoundedRectangleBorder(
-//                   borderRadius: BorderRadius.circular(12)),
-//               child: Padding(
-//                 padding: const EdgeInsets.all(16.0),
-//                 child: Column(
-//                   children: [
-//                      Row(
-//                       // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//                       children: [
-//                         const Text('Today',
-//                             style: TextStyle(fontWeight: FontWeight.bold)),
-//                         const SizedBox(
-//                           width: 140,
-//                         ),
-//                         GestureDetector(
-//                           onTap: () {
-//                              Navigator.push(
-//                     context,
-//                     MaterialPageRoute(
-//                         builder: (context) => const StepTrackerScreen()));
-//                           },
-//                           child: const Text('View Details',
-//                               style: TextStyle(
-//                                   color: Colors.black,
-//                                   fontWeight: FontWeight.bold)),
-//                         ),
-//                         const Icon(
-//                           Icons.arrow_forward_ios,
-//                           size: 17,
-//                         )
-//                       ],
-//                     ),
-//                     const SizedBox(height: 16),
-//                     Stack(
-//                       alignment: Alignment.center,
-//                       children: [
-//                         SizedBox(
-//                           height: 100,
-//                           width: 100,
-//                           child: CircularProgressIndicator(
-//                             value: 0.6,
-//                             strokeWidth: 8,
-//                             backgroundColor: Colors.grey.shade200,
-//                             valueColor:
-//                                 const AlwaysStoppedAnimation<Color>(Color.fromARGB(255, 44, 33, 243)),
-//                           ),
-//                         ),
-//                         const Column(
-//                           mainAxisAlignment: MainAxisAlignment.center,
-//                           children: [
-//                             Icon(Icons.directions_walk, size: 24),
-//                             SizedBox(height: 4),
-//                             Text('2003',
-//                                 style: TextStyle(fontWeight: FontWeight.bold)),
-//                             Text('Steps'),
-//                           ],
-//                         )
-//                       ],
-//                     ),
-//                   ],
-//                 ),
-//               ),
-//             ),
-//             const SizedBox(height: 16),
-//             Row(
-//               mainAxisAlignment: MainAxisAlignment.spaceAround,
-//               children: [
-//                 GestureDetector(
-//                   onTap: () {
-//                     _showConsultationOptions(context);
-//                   },
-//                   child: const _ImageWithLabel(
-//                     imageUrl:
-//                         'lib/assets/7cdd89d896030f8574013e72652cb5be844e4d73.png',
-//                     label: 'Consult a Doctor',
-//                   ),
-//                 ),
-//                 GestureDetector(
-//                   onTap: () {
-//                     Navigator.push(
-//                           context,
-//                           MaterialPageRoute(
-//                             builder: (context) => LabtestPackagesScreen(),
-//                           ),
-//                         );
-//                     // _showLabTestOptions(context);
-//                   },
-//                   child: const _ImageWithLabel(
-//                     imageUrl:
-//                         'lib/assets/0ba3665652697af44e4a0e838b7ce086923e5177.png',
-//                     label: 'Lab test & Packages',
-//                   ),
-//                 ),
-//                 GestureDetector(
-//                   onTap: () {
-//                     Navigator.push(context, MaterialPageRoute(builder: (context)=>HraScreen()));
-//                   },
-//                   child: const _ImageWithLabel(
-//                     imageUrl:
-//                         'lib/assets/1e90069b10a439afd8c44bacc8a0207579683c9d.png',
-//                     label: 'HRA',
-//                   ),
-//                 )
-//               ],
-//             ),
-//             SizedBox(height: 15,),
-//             Row(
-//               children: [
-//                 SizedBox(width: 25,),
-//                  GestureDetector(
-//                   onTap: () {
-//                     // _showConsultationOptions(context);
-//                   },
-//                   child: const _ImageWithLabel(
-//                     imageUrl:
-//                         'lib/assets/eye.png',
-//                     label: 'Eye',
-//                   ),
-//                 ),
-//                 SizedBox(width: 45,),
-//                  GestureDetector(
-//                   onTap: () {
-//                     // _showConsultationOptions(context);
-//                   },
-//                   child: const _ImageWithLabel(
-//                     imageUrl:
-//                         'lib/assets/dental.png',
-//                     label: 'Dental',
-//                   ),
-//                 ),
-//                  SizedBox(width: 40,),
-//                  GestureDetector(
-//                   onTap: () {
-//                     // _showConsultationOptions(context);
-//                   },
-//                   child: const _ImageWithLabel(
-//                     imageUrl:
-//                         'lib/assets/medicines.png',
-//                     label: 'Medicines',
-//                   ),
-//                 ),
-//               ],
-//             ),
-//             const SizedBox(height: 24),
-//             const Text("Recent Lookups",
-//                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-//             const SizedBox(height: 12),
-//             Card(
-//             color: Colors.white,
-//               child: Padding(
-//                 padding:
-//                     const EdgeInsets.all(12.0), // Add padding inside the card
-//                 child: Row(
-//                   crossAxisAlignment: CrossAxisAlignment.start,
-//                   children: [
-//                     // Image inside a container
-//                     Container(
-//                       width: 90,
-//                       height: 90,
-//                       decoration: BoxDecoration(
-//                         borderRadius: BorderRadius.circular(10),
-//                         shape: BoxShape.rectangle,
-//                         image: const DecorationImage(
-//                           image: NetworkImage(
-//                             'https://t4.ftcdn.net/jpg/02/60/04/09/360_F_260040900_oO6YW1sHTnKxby4GcjCvtypUCWjnQRg5.jpg',
-//                           ),
-//                           fit: BoxFit.cover,
-//                         ),
-//                       ),
-//                     ),
-//                     const SizedBox(width: 12),
-
-//                     // Text content
-//                     const Expanded(
-//                       child: Column(
-//                         crossAxisAlignment: CrossAxisAlignment.start,
-//                         children: [
-//                           Text(
-//                             "Dr. Vineeth",
-//                             style: TextStyle(
-//                                 fontWeight: FontWeight.bold, fontSize: 16),
-//                           ),
-//                           SizedBox(height: 4),
-//                           Row(
-//                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//                             children: [
-//                               Text("Cardiology"),
-//                               Icon(Icons.arrow_forward_ios, size: 16),
-//                             ],
-//                           ),
-//                           SizedBox(height: 4),
-//                           Row(
-//                             children: [
-//                               Icon(Icons.star, color: Colors.orange, size: 16),
-//                               SizedBox(width: 4),
-//                               Text.rich(
-//                                 TextSpan(
-//                                   children: [
-//                                     TextSpan(
-//                                       text: '4.2 ',
-//                                       style: TextStyle(color: Colors.orange),
-//                                     ),
-//                                     TextSpan(
-//                                       text: '(2941)',
-//                                       style: TextStyle(color: Colors.black),
-//                                     ),
-//                                   ],
-//                                 ),
-//                               )
-//                             ],
-//                           ),
-//                           Row(
-//                             children: [
-//                               Icon(
-//                                 Icons.location_on,
-//                                 size: 15,
-//                                 color: Colors.grey,
-//                               ),
-//                               SizedBox(height: 2),
-//                               Text(
-//                                 "Hyderabad",
-//                                 style: TextStyle(color: Colors.grey),
-//                               ),
-//                             ],
-//                           ),
-//                         ],
-//                       ),
-//                     ),
-
-//                     // Trailing icon
-//                   ],
-//                 ),
-//               ),
-//             ),
-//             const SizedBox(height: 12),
-
-//             Card(
-//               color: Colors.white,
-//               shape: RoundedRectangleBorder(
-//                   borderRadius: BorderRadius.circular(12)),
-//               elevation: 2,
-//               child: Padding(
-//                 padding: const EdgeInsets.all(16.0),
-//                 child: Row(
-//                   crossAxisAlignment: CrossAxisAlignment.start,
-//                   children: [
-//                     // Main content section
-//                   const  Expanded(
-//                       child: Column(
-//                         crossAxisAlignment: CrossAxisAlignment.start,
-//                         children: [
-//                            Text(
-//                             "Lipid Profile Test",
-//                             style: TextStyle(
-//                               fontWeight: FontWeight.bold,
-//                               fontSize: 16,
-//                               color: Colors.black87,
-//                             ),
-//                           ),
-//                            SizedBox(height: 4),
-//                            Text(
-//                             "Includes 10 Tests",
-//                             style: TextStyle(
-//                               color: Colors.grey,
-//                               fontSize: 14,
-//                             ),
-//                           ),
-//                            SizedBox(height: 8),
-//                            Text(
-//                             "₹ 399",
-//                             style: TextStyle(
-//                               fontWeight: FontWeight.bold,
-//                               fontSize: 16,
-//                               color: Colors.black87,
-//                             ),
-//                           ),
-//                            SizedBox(height: 8),
-//                            Row(
-//                             children: [
-//                               Icon(Icons.no_food, size: 16, color: Colors.grey),
-//                               SizedBox(width: 4),
-//                               Text(
-//                                 "Fasting Required",
-//                                 style: TextStyle(
-//                                   color: Colors.grey,
-//                                   fontSize: 12,
-//                                 ),
-//                               ),
-//                             ],
-//                           ),
-//                         ],
-//                       ),
-//                     ),
-
-//                     // Right side with arrow and button
-//                     Column(
-//                       crossAxisAlignment: CrossAxisAlignment.end,
-//                       children: [
-//                         // Arrow icon
-//                         const Icon(Icons.arrow_forward_ios,
-//                             size: 16, color: Colors.black),
-
-//                         const SizedBox(height: 50),
-
-//                         // Book now button
-//                         ElevatedButton(
-//                           onPressed: () {},
-//                           style: ElevatedButton.styleFrom(
-//                             backgroundColor: const Color.fromARGB(255, 33, 58, 243),
-//                             foregroundColor: Colors.white,
-//                             padding: const EdgeInsets.symmetric(
-//                                 horizontal: 20, vertical: 8),
-//                             shape: RoundedRectangleBorder(
-//                               borderRadius: BorderRadius.circular(8),
-//                             ),
-//                             elevation: 0,
-//                           ),
-//                           child: const Text(
-//                             "Book now",
-//                             style: TextStyle(
-//                               fontSize: 14,
-//                               fontWeight: FontWeight.w500,
-//                             ),
-//                           ),
-//                         ),
-//                       ],
-//                     ),
-//                   ],
-//                 ),
-//               ),
-//             ),
-//             const SizedBox(height: 24),
-//             const Text(
-//               "Blogs",
-//               style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
-//             ),
-//             const SizedBox(height: 12),
-//             SizedBox(
-//               height: 270,
-//               child: ListView.builder(
-//                 scrollDirection: Axis.horizontal,
-//                 itemCount: 2,
-//                 itemBuilder: (context, index) => Container(
-//                   width: 260,
-//                   margin: const EdgeInsets.only(right: 12),
-//                   decoration: BoxDecoration(
-//                     border: Border.all(color: Colors.blue.shade100),
-//                     borderRadius: BorderRadius.circular(10),
-//                   ),
-//                   child: Card(
-//                     color: Colors.white,
-//                     shape: RoundedRectangleBorder(
-//                       borderRadius: BorderRadius.circular(10),
-//                     ),
-//                     elevation: 2,
-//                     child: Column(
-//                       crossAxisAlignment: CrossAxisAlignment.start,
-//                       children: [
-//                         ClipRRect(
-//                           borderRadius: const BorderRadius.only(
-//                               topLeft: Radius.circular(10),
-//                               topRight: Radius.circular(10)),
-//                           child: Image.network(
-//                             'https://media.istockphoto.com/id/156292188/photo/doctor-holding-out-several-packs-of-a-variety-of-pills.jpg?s=612x612&w=0&k=20&c=WEYtSbG6FM0WDbm7E_3QT8ZCqIEwQ9tDnGakyg5hhIw=',
-//                             height: 100,
-//                             width: double.infinity,
-//                             fit: BoxFit.cover,
-//                           ),
-//                         ),
-//                         const Padding(
-//                           padding: EdgeInsets.symmetric(
-//                               horizontal: 8.0, vertical: 6),
-//                           child: Text(
-//                             "Importance of Medical",
-//                             style: TextStyle(
-//                                 fontWeight: FontWeight.bold,
-//                                 fontSize: 14,
-//                                 color: Colors.black),
-//                           ),
-//                         ),
-//                         const Padding(
-//                           padding: EdgeInsets.symmetric(horizontal: 8.0),
-//                           child: Text(
-//                             "I have a experience on ui ux and i have done some projects..",
-//                             style:
-//                                 TextStyle(fontSize: 12, color: Colors.black54),
-//                           ),
-//                         ),
-//                         const SizedBox(height: 8),
-//                         const Padding(
-//                           padding: EdgeInsets.symmetric(horizontal: 8.0),
-//                           child: Row(
-//                             children: [
-//                               CircleAvatar(
-//                                 radius: 17,
-//                                 backgroundImage: NetworkImage(
-//                                     'https://static.vecteezy.com/system/resources/thumbnails/026/375/249/small_2x/ai-generative-portrait-of-confident-male-doctor-in-white-coat-and-stethoscope-standing-with-arms-crossed-and-looking-at-camera-photo.jpg'),
-//                               ),
-//                               SizedBox(width: 6),
-//                               Column(
-//                                 crossAxisAlignment: CrossAxisAlignment.start,
-//                                 children: [
-//                                   Text("By Dr. Smith",
-//                                       style: TextStyle(
-//                                           fontSize: 12,
-//                                           fontWeight: FontWeight.w500)),
-//                                   Text("January 31, 2021",
-//                                       style: TextStyle(
-//                                           fontSize: 11, color: Colors.black54)),
-//                                 ],
-//                               )
-//                             ],
-//                           ),
-//                         ),
-//                         const Spacer(),
-//                         Align(
-//                           alignment: Alignment.bottomRight,
-//                           child: Padding(
-//                             padding:
-//                                 const EdgeInsets.symmetric(horizontal: 8.0),
-//                             child: Container(
-//                               padding: const EdgeInsets.symmetric(
-//                                   horizontal: 12, vertical: 6),
-//                               decoration: BoxDecoration(
-//                                 color: const Color.fromARGB(255, 33, 58, 243),
-//                                 borderRadius: BorderRadius.circular(6),
-//                               ),
-//                               child: const Text(
-//                                 "Read more >>",
-//                                 style: TextStyle(
-//                                     color: Colors.white, fontSize: 12),
-//                               ),
-//                             ),
-//                           ),
-//                         ),
-//                         const SizedBox(height: 8),
-//                       ],
-//                     ),
-//                   ),
-//                 ),
-//               ),
-//             )
-//           ],
-//         ),
-//       ),
-//     );
-//   }
-// }
-
-// class _ImageWithLabel extends StatelessWidget {
-//   final String imageUrl; // This can be a network URL or asset path
-//   final String label;
-
-//   const _ImageWithLabel({
-//     required this.imageUrl,
-//     required this.label,
-//     super.key,
-//   });
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Column(
-//       children: [
-//         CircleAvatar(
-//           radius: 30,
-//           backgroundColor: Colors.blue.shade50,
-//           child: Image.asset(
-//             imageUrl,
-//             fit: BoxFit.cover,
-//             width: 42,
-//             height: 40,
-//           ),
-//         ),
-//         const SizedBox(height: 8),
-//         SizedBox(
-//           width: 80,
-//           child: Text(
-//             label,
-//             textAlign: TextAlign.center,
-//             style: const TextStyle(fontSize: 12,fontWeight: FontWeight.bold),
-//           ),
-//         ),
-//       ],
-//     );
-//   }
-// }
-
 import 'package:consultation_app/Helper/auth_preference.dart';
 import 'package:consultation_app/auth/views/Blog/blog_detail_screen.dart';
 import 'package:consultation_app/auth/views/Diagnostics/slot_screen.dart';
 import 'package:consultation_app/auth/views/HRA/hra_screen.dart';
 import 'package:consultation_app/auth/views/booking_screen.dart';
+import 'package:consultation_app/auth/views/cart/cart_screen.dart';
 import 'package:consultation_app/auth/views/consultdoctor/consult_doctor.dart';
 import 'package:consultation_app/auth/views/labtest/labtest_packages_screen.dart';
 import 'package:consultation_app/auth/views/notification/notification_screen..dart';
@@ -1224,6 +395,7 @@ class _HomeScreenState extends State<HomeScreen> {
       appBar: AppBar(
         elevation: 0,
         backgroundColor: Colors.white,
+        surfaceTintColor: Colors.white,
         automaticallyImplyLeading: false,
         title: LayoutBuilder(
           builder: (context, constraints) {
@@ -1303,21 +475,55 @@ class _HomeScreenState extends State<HomeScreen> {
             );
           },
         ),
+        // actions: [
+        //   GestureDetector(
+        //     onTap: () {
+        //       Navigator.push(
+        //         context,
+        //         MaterialPageRoute(
+        //           builder: (context) => const NotificationScreen(),
+        //         ),
+        //       );
+        //     },
+        //     child: const Icon(Icons.notifications_none, color: Colors.black),
+        //   ),
+        //   SizedBox(
+        //       width: MediaQuery.of(context).size.width *
+        //           0.03), // Responsive spacing
+        // ],
+
         actions: [
-          GestureDetector(
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const NotificationScreen(),
-                ),
-              );
-            },
-            child: const Icon(Icons.notifications_none, color: Colors.black),
+          Stack(
+            clipBehavior: Clip.none,
+            children: [
+              GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const CartScreen(),
+                    ),
+                  );
+                },
+                child: const Icon(Icons.shopping_cart, color: Colors.black),
+              ),
+              // Positioned(
+              //   right: 0,
+              //   top: -2,
+              //   child: Container(
+              //     width: 10,
+              //     height: 10,
+              //     decoration: const BoxDecoration(
+              //       color: Colors.red,
+              //       shape: BoxShape.circle,
+              //     ),
+              //   ),
+              // ),
+            ],
           ),
           SizedBox(
-              width: MediaQuery.of(context).size.width *
-                  0.03), // Responsive spacing
+            width: MediaQuery.of(context).size.width * 0.03,
+          ),
         ],
       ),
 
@@ -2539,7 +1745,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
                 // Handle error state
                 if (recentLookupProvider.hasError) {
-                  return SizedBox(
+                  return const SizedBox(
                     height: 150,
                     child: Center(
                       child: Column(
@@ -2695,7 +1901,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                       Row(
                                         children: [
                                           Container(
-                                            padding: EdgeInsets.symmetric(
+                                            padding:const EdgeInsets.symmetric(
                                                 horizontal: 8, vertical: 2),
                                             decoration: BoxDecoration(
                                               borderRadius:
@@ -2703,15 +1909,15 @@ class _HomeScreenState extends State<HomeScreen> {
                                             ),
                                             child: Text(
                                               booking.status,
-                                              style: TextStyle(
+                                              style:const TextStyle(
                                                 fontSize: 10,
                                                 fontWeight: FontWeight.w500,
                                               ),
                                             ),
                                           ),
-                                          SizedBox(width: 8),
+                                        const  SizedBox(width: 8),
                                           Container(
-                                            padding: EdgeInsets.symmetric(
+                                            padding:const EdgeInsets.symmetric(
                                                 horizontal: 8, vertical: 2),
                                             decoration: BoxDecoration(
                                               color:
@@ -2721,7 +1927,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                             ),
                                             child: Text(
                                               booking.type,
-                                              style: TextStyle(
+                                              style:const TextStyle(
                                                 fontSize: 10,
                                                 color: Colors.blue,
                                                 fontWeight: FontWeight.w500,
@@ -2762,7 +1968,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: [
-                                    SizedBox(
+                                 const   SizedBox(
                                       height: 20,
                                     ),
                                     if (booking.meetingLink.isNotEmpty &&
@@ -3297,6 +2503,15 @@ class _HomeScreenState extends State<HomeScreen> {
 
                 return GestureDetector(
                   onTap: () {
+                    //  Navigator.push(
+                    //     context,
+                    //     MaterialPageRoute(
+                    //         builder: (context) => ConsultDoctor(
+                    //           bookingId: package.id,
+                    //           serviceType: package.name,
+                    //           type: package.doctorInfo,
+                    //             // bookingId: package.id,
+                    //             )));
                     Navigator.push(
                         context,
                         MaterialPageRoute(

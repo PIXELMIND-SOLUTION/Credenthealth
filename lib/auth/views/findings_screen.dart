@@ -43,8 +43,7 @@ class _FindingsScreenState extends State<FindingsScreen> {
   //     _isDownloading = true;
   //     _downloadingBookingId = bookingId;
   //   });
-   
-     
+
   //   try {
   //     // Request permissions
   //     final status = await Permission.manageExternalStorage.request();
@@ -62,7 +61,6 @@ class _FindingsScreenState extends State<FindingsScreen> {
   //     }
 
   //     final dio = Dio();
-
 
   //     final downloadUrl =
   //         'http://31.97.206.144:4051/api/staff/mybookings/$staffId';
@@ -142,52 +140,207 @@ class _FindingsScreenState extends State<FindingsScreen> {
   //   }
   // }
 
+  Future<void> _downloadPdfReport(Booking booking) async {
+    print("Files Download:   ${booking.doctorPrescriptions.length}");
+    // Determine which files to download
+    final files = booking.doctorReports;
 
-
-Future<void> _downloadPdfReport(Booking booking) async {
-
-  print("Files Download:   ${booking.doctorReports}");
-  // Determine which files to download
-  final files = booking.doctorReports;
-
-  if (files.isEmpty) {
-    _showErrorSnackBar(
-     'No reports available for this booking'
-    );
-    return;
-  }
-
-  setState(() {
-    _isDownloading = true;
-    _downloadingBookingId = booking.id;
-  });
-
-  try {
-    // Request permissions
-    final status = await Permission.manageExternalStorage.request();
-    if (!status.isGranted) {
-      _showErrorSnackBar('Storage permission is required to download files');
+    if (files.isEmpty) {
+      _showErrorSnackBar('No reports available for this booking');
       return;
     }
 
-    // Create downloads directory if it doesn't exist
-    final downloadsDir = Directory('/storage/emulated/0/Download');
-    if (!await downloadsDir.exists()) {
-      await downloadsDir.create(recursive: true);
+    setState(() {
+      _isDownloading = true;
+      _downloadingBookingId = booking.id;
+    });
+
+    try {
+      // Request permissions
+      final status = await Permission.manageExternalStorage.request();
+      if (!status.isGranted) {
+        _showErrorSnackBar('Storage permission is required to download files');
+        return;
+      }
+
+      // Create downloads directory if it doesn't exist
+      final downloadsDir = Directory('/storage/emulated/0/Download');
+      if (!await downloadsDir.exists()) {
+        await downloadsDir.create(recursive: true);
+      }
+
+      // YOUR BASE API URL - IMPORTANT!
+      const baseUrl =
+          'http://31.97.206.144:4051'; // Replace with your actual base URL
+
+      // Download each file
+      for (final filePath in files) {
+        if (filePath == null || filePath.isEmpty) continue;
+
+        try {
+          // Construct complete URL
+          final completeUrl = '$baseUrl$filePath';
+          final uri = Uri.parse(completeUrl);
+
+          // Extract filename from URL
+          final filename = uri.pathSegments.last;
+          final localFilePath = '${downloadsDir.path}/$filename';
+
+          print('Downloading from: $completeUrl');
+          print('Saving to: $localFilePath');
+
+          // Download the file
+          final response = await http.get(uri);
+          if (response.statusCode == 200) {
+            final file = File(localFilePath);
+            await file.writeAsBytes(response.bodyBytes);
+            _showSuccessSnackBar('Downloaded: $filename');
+
+            // Optionally open the file after download
+            final result = await OpenFile.open(localFilePath);
+            if (result.type != ResultType.done) {
+              print('Failed to open file: ${result.message}');
+            }
+          } else {
+            _showErrorSnackBar(
+                'Failed to download file: HTTP ${response.statusCode}');
+          }
+        } catch (e) {
+          print('Error downloading file $filePath: $e');
+          _showErrorSnackBar('Failed to download one of the files');
+        }
+      }
+    } catch (e) {
+      print('Error in download process: $e');
+      _showErrorSnackBar('Download failed. Please try again.');
+    } finally {
+      setState(() {
+        _isDownloading = false;
+        _downloadingBookingId = null;
+      });
+    }
+  }
+
+  Future<void> _downloadPdfPrescription(
+      Booking booking, bool isPrescription) async {
+    print("Files Download:   ${booking.doctorPrescriptions}");
+    // Determine which files to download
+    final files = booking.doctorPrescriptions;
+
+    if (files.isEmpty) {
+      _showErrorSnackBar('No prescriptions available for this booking');
+      return;
     }
 
-    // YOUR BASE API URL - IMPORTANT!
-    const baseUrl = 'http://31.97.206.144:4051'; // Replace with your actual base URL
+    setState(() {
+      _isDownloading = true;
+      _downloadingBookingId = booking.id;
+    });
 
-    // Download each file
-    for (final filePath in files) {
-      if (filePath == null || filePath.isEmpty) continue;
+    try {
+      // Request permissions
+      final status = await Permission.manageExternalStorage.request();
+      if (!status.isGranted) {
+        _showErrorSnackBar('Storage permission is required to download files');
+        return;
+      }
+
+      // Create downloads directory if it doesn't exist
+      final downloadsDir = Directory('/storage/emulated/0/Download');
+      if (!await downloadsDir.exists()) {
+        await downloadsDir.create(recursive: true);
+      }
+
+      // YOUR BASE API URL - IMPORTANT!
+      const baseUrl =
+          'http://31.97.206.144:4051'; // Replace with your actual base URL
+
+      // Download each file
+      for (final filePath in files) {
+        if (filePath == null || filePath.isEmpty) continue;
+
+        try {
+          // Construct complete URL
+          final completeUrl = '$baseUrl$filePath';
+          final uri = Uri.parse(completeUrl);
+
+          // Extract filename from URL
+          final filename = uri.pathSegments.last;
+          final localFilePath = '${downloadsDir.path}/$filename';
+
+          print('Downloading from: $completeUrl');
+          print('Saving to: $localFilePath');
+
+          // Download the file
+          final response = await http.get(uri);
+          if (response.statusCode == 200) {
+            final file = File(localFilePath);
+            await file.writeAsBytes(response.bodyBytes);
+            _showSuccessSnackBar('Downloaded: $filename');
+
+            // Optionally open the file after download
+            final result = await OpenFile.open(localFilePath);
+            if (result.type != ResultType.done) {
+              print('Failed to open file: ${result.message}');
+            }
+          } else {
+            _showErrorSnackBar(
+                'Failed to download file: HTTP ${response.statusCode}');
+          }
+        } catch (e) {
+          print('Error downloading file $filePath: $e');
+          _showErrorSnackBar('Failed to download one of the files');
+        }
+      }
+    } catch (e) {
+      print('Error in download process: $e');
+      _showErrorSnackBar('Download failed. Please try again.');
+    } finally {
+      setState(() {
+        _isDownloading = false;
+        _downloadingBookingId = null;
+      });
+    }
+  }
+
+  Future<void> _downloadPdfDiaReport(Booking booking) async {
+    print("Files Download:   ${booking.reportFile}");
+    // Determine which files to download
+    final filePath = booking.reportFile;
+
+    if (filePath!.isEmpty) {
+      _showErrorSnackBar('No reports available for this booking');
+      return;
+    }
+
+    setState(() {
+      _isDownloading = true;
+      _downloadingBookingId = booking.id;
+    });
+
+    try {
+      // Request permissions
+      final status = await Permission.manageExternalStorage.request();
+      if (!status.isGranted) {
+        _showErrorSnackBar('Storage permission is required to download files');
+        return;
+      }
+
+      // Create downloads directory if it doesn't exist
+      final downloadsDir = Directory('/storage/emulated/0/Download');
+      if (!await downloadsDir.exists()) {
+        await downloadsDir.create(recursive: true);
+      }
+
+      // YOUR BASE API URL - IMPORTANT!
+      const baseUrl =
+          'http://31.97.206.144:4051'; // Replace with your actual base URL
 
       try {
         // Construct complete URL
         final completeUrl = '$baseUrl$filePath';
         final uri = Uri.parse(completeUrl);
-        
+
         // Extract filename from URL
         final filename = uri.pathSegments.last;
         final localFilePath = '${downloadsDir.path}/$filename';
@@ -201,76 +354,69 @@ Future<void> _downloadPdfReport(Booking booking) async {
           final file = File(localFilePath);
           await file.writeAsBytes(response.bodyBytes);
           _showSuccessSnackBar('Downloaded: $filename');
-          
+
           // Optionally open the file after download
           final result = await OpenFile.open(localFilePath);
           if (result.type != ResultType.done) {
             print('Failed to open file: ${result.message}');
           }
         } else {
-          _showErrorSnackBar('Failed to download file: HTTP ${response.statusCode}');
+          _showErrorSnackBar(
+              'Failed to download file: HTTP ${response.statusCode}');
         }
       } catch (e) {
         print('Error downloading file $filePath: $e');
         _showErrorSnackBar('Failed to download one of the files');
       }
+    } catch (e) {
+      print('Error in download process: $e');
+      _showErrorSnackBar('Download failed. Please try again.');
+    } finally {
+      setState(() {
+        _isDownloading = false;
+        _downloadingBookingId = null;
+      });
     }
-  } catch (e) {
-    print('Error in download process: $e');
-    _showErrorSnackBar('Download failed. Please try again.');
-  } finally {
-    setState(() {
-      _isDownloading = false;
-      _downloadingBookingId = null;
-    });
-  }
-}
-
-Future<void> _downloadPdfPrescription(Booking booking, bool isPrescription) async {
-
-  print("Files Download:   ${booking.doctorPrescriptions}");
-  // Determine which files to download
-  final files = booking.doctorPrescriptions;
-  
-  if (files.isEmpty) {
-    _showErrorSnackBar(
-       'No prescriptions available for this booking'
-        
-    );
-    return;
   }
 
-  setState(() {
-    _isDownloading = true;
-    _downloadingBookingId = booking.id;
-  });
+  Future<void> _downloadPdfDiaPrescription(Booking booking) async {
+    print("Files Download:   ${booking.diagPrescription}");
+    // Determine which files to download
+    final filePath = booking.diagPrescription;
 
-  try {
-    // Request permissions
-    final status = await Permission.manageExternalStorage.request();
-    if (!status.isGranted) {
-      _showErrorSnackBar('Storage permission is required to download files');
+    if (filePath!.isEmpty) {
+      _showErrorSnackBar('No prescriptions available for this booking');
       return;
     }
 
-    // Create downloads directory if it doesn't exist
-    final downloadsDir = Directory('/storage/emulated/0/Download');
-    if (!await downloadsDir.exists()) {
-      await downloadsDir.create(recursive: true);
-    }
+    setState(() {
+      _isDownloading = true;
+      _downloadingBookingId = booking.id;
+    });
 
-    // YOUR BASE API URL - IMPORTANT!
-    const baseUrl = 'http://31.97.206.144:4051'; // Replace with your actual base URL
+    try {
+      // Request permissions
+      final status = await Permission.manageExternalStorage.request();
+      if (!status.isGranted) {
+        _showErrorSnackBar('Storage permission is required to download files');
+        return;
+      }
 
-    // Download each file
-    for (final filePath in files) {
-      if (filePath == null || filePath.isEmpty) continue;
+      // Create downloads directory if it doesn't exist
+      final downloadsDir = Directory('/storage/emulated/0/Download');
+      if (!await downloadsDir.exists()) {
+        await downloadsDir.create(recursive: true);
+      }
+
+      // YOUR BASE API URL - IMPORTANT!
+      const baseUrl =
+          'http://31.97.206.144:4051'; // Replace with your actual base URL
 
       try {
         // Construct complete URL
         final completeUrl = '$baseUrl$filePath';
         final uri = Uri.parse(completeUrl);
-        
+
         // Extract filename from URL
         final filename = uri.pathSegments.last;
         final localFilePath = '${downloadsDir.path}/$filename';
@@ -284,199 +430,30 @@ Future<void> _downloadPdfPrescription(Booking booking, bool isPrescription) asyn
           final file = File(localFilePath);
           await file.writeAsBytes(response.bodyBytes);
           _showSuccessSnackBar('Downloaded: $filename');
-          
+
           // Optionally open the file after download
           final result = await OpenFile.open(localFilePath);
           if (result.type != ResultType.done) {
             print('Failed to open file: ${result.message}');
           }
         } else {
-          _showErrorSnackBar('Failed to download file: HTTP ${response.statusCode}');
+          _showErrorSnackBar(
+              'Failed to download file: HTTP ${response.statusCode}');
         }
       } catch (e) {
         print('Error downloading file $filePath: $e');
         _showErrorSnackBar('Failed to download one of the files');
       }
+    } catch (e) {
+      print('Error in download process: $e');
+      _showErrorSnackBar('Download failed. Please try again.');
+    } finally {
+      setState(() {
+        _isDownloading = false;
+        _downloadingBookingId = null;
+      });
     }
-  } catch (e) {
-    print('Error in download process: $e');
-    _showErrorSnackBar('Download failed. Please try again.');
-  } finally {
-    setState(() {
-      _isDownloading = false;
-      _downloadingBookingId = null;
-    });
   }
-}
-
-
-
-
-
-
-
-
-
-Future<void> _downloadPdfDiaReport(Booking booking) async {
-
-  print("Files Download:   ${booking.reportFile}");
-  // Determine which files to download
-  final filePath = booking.reportFile;
-
-  if (filePath!.isEmpty) {
-    _showErrorSnackBar(
-     'No reports available for this booking'
-    );
-    return;
-  }
-
-  setState(() {
-    _isDownloading = true;
-    _downloadingBookingId = booking.id;
-  });
-
-  try {
-    // Request permissions
-    final status = await Permission.manageExternalStorage.request();
-    if (!status.isGranted) {
-      _showErrorSnackBar('Storage permission is required to download files');
-      return;
-    }
-
-    // Create downloads directory if it doesn't exist
-    final downloadsDir = Directory('/storage/emulated/0/Download');
-    if (!await downloadsDir.exists()) {
-      await downloadsDir.create(recursive: true);
-    }
-
-    // YOUR BASE API URL - IMPORTANT!
-    const baseUrl = 'http://31.97.206.144:4051'; // Replace with your actual base URL
-
-      try {
-        // Construct complete URL
-        final completeUrl = '$baseUrl$filePath';
-        final uri = Uri.parse(completeUrl);
-        
-        // Extract filename from URL
-        final filename = uri.pathSegments.last;
-        final localFilePath = '${downloadsDir.path}/$filename';
-
-        print('Downloading from: $completeUrl');
-        print('Saving to: $localFilePath');
-
-        // Download the file
-        final response = await http.get(uri);
-        if (response.statusCode == 200) {
-          final file = File(localFilePath);
-          await file.writeAsBytes(response.bodyBytes);
-          _showSuccessSnackBar('Downloaded: $filename');
-          
-          // Optionally open the file after download
-          final result = await OpenFile.open(localFilePath);
-          if (result.type != ResultType.done) {
-            print('Failed to open file: ${result.message}');
-          }
-        } else {
-          _showErrorSnackBar('Failed to download file: HTTP ${response.statusCode}');
-        }
-      } catch (e) {
-        print('Error downloading file $filePath: $e');
-        _showErrorSnackBar('Failed to download one of the files');
-      }
-    
-  } catch (e) {
-    print('Error in download process: $e');
-    _showErrorSnackBar('Download failed. Please try again.');
-  } finally {
-    setState(() {
-      _isDownloading = false;
-      _downloadingBookingId = null;
-    });
-  }
-}
-
-Future<void> _downloadPdfDiaPrescription(Booking booking) async {
-
-  print("Files Download:   ${booking.diagPrescription}");
-  // Determine which files to download
-  final filePath = booking.diagPrescription;
-  
-  if (filePath!.isEmpty) {
-    _showErrorSnackBar(
-       'No prescriptions available for this booking'
-        
-    );
-    return;
-  }
-
-  setState(() {
-    _isDownloading = true;
-    _downloadingBookingId = booking.id;
-  });
-
-  try {
-    // Request permissions
-    final status = await Permission.manageExternalStorage.request();
-    if (!status.isGranted) {
-      _showErrorSnackBar('Storage permission is required to download files');
-      return;
-    }
-
-    // Create downloads directory if it doesn't exist
-    final downloadsDir = Directory('/storage/emulated/0/Download');
-    if (!await downloadsDir.exists()) {
-      await downloadsDir.create(recursive: true);
-    }
-
-    // YOUR BASE API URL - IMPORTANT!
-    const baseUrl = 'http://31.97.206.144:4051'; // Replace with your actual base URL
-
-      try {
-        // Construct complete URL
-        final completeUrl = '$baseUrl$filePath';
-        final uri = Uri.parse(completeUrl);
-        
-        // Extract filename from URL
-        final filename = uri.pathSegments.last;
-        final localFilePath = '${downloadsDir.path}/$filename';
-
-        print('Downloading from: $completeUrl');
-        print('Saving to: $localFilePath');
-
-        // Download the file
-        final response = await http.get(uri);
-        if (response.statusCode == 200) {
-          final file = File(localFilePath);
-          await file.writeAsBytes(response.bodyBytes);
-          _showSuccessSnackBar('Downloaded: $filename');
-          
-          // Optionally open the file after download
-          final result = await OpenFile.open(localFilePath);
-          if (result.type != ResultType.done) {
-            print('Failed to open file: ${result.message}');
-          }
-        } else {
-          _showErrorSnackBar('Failed to download file: HTTP ${response.statusCode}');
-        }
-      } catch (e) {
-        print('Error downloading file $filePath: $e');
-        _showErrorSnackBar('Failed to download one of the files');
-      }
-  }
-  catch (e) {
-    print('Error in download process: $e');
-    _showErrorSnackBar('Download failed. Please try again.');
-  } finally {
-    setState(() {
-      _isDownloading = false;
-      _downloadingBookingId = null;
-    });
-  }
-}
-
-
-
-
 
   void _showSuccessSnackBar(String message) {
     ScaffoldMessenger.of(context).showSnackBar(
@@ -504,9 +481,10 @@ Future<void> _downloadPdfDiaPrescription(Booking booking) async {
       backgroundColor: Colors.grey[50],
       appBar: AppBar(
         backgroundColor: Colors.white,
+         surfaceTintColor: Colors.white,
         elevation: 0,
         title: const Text(
-          'Reports & Prescriptions',
+          'Medical Records',
           style: TextStyle(
             color: Colors.black,
             fontSize: 20,
@@ -695,97 +673,377 @@ Future<void> _downloadPdfDiaPrescription(Booking booking) async {
     );
   }
 
+  // Widget _buildReportCard(Booking booking, GetAllBookingProvider provider) {
+  //   final isCurrentlyDownloading =
+  //       _isDownloading && _downloadingBookingId == booking.id;
+
+  //       print('ttttttttttttttttttttttttttttttttttttttttt${booking.doctorReports}');
+  //       print('kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk${booking.doctorPrescriptions}');
+
+  //   return Container(
+  //     margin: const EdgeInsets.only(bottom: 16),
+  //     padding: const EdgeInsets.all(16),
+  //     decoration: BoxDecoration(
+  //       color: Colors.white,
+  //       borderRadius: BorderRadius.circular(12),
+  //       border: Border.all(color: Colors.grey[300]!),
+  //       boxShadow: [
+  //         BoxShadow(
+  //           color: Colors.grey.withOpacity(0.1),
+  //           spreadRadius: 1,
+  //           blurRadius: 4,
+  //           offset: const Offset(0, 2),
+  //         ),
+  //       ],
+  //     ),
+  //     child: Column(
+  //       crossAxisAlignment: CrossAxisAlignment.start,
+  //       children: [
+  //         Text(
+  //           booking.type.toLowerCase() == 'online'
+  //               ? 'Online Consultation'
+  //               : booking.type.toLowerCase() == 'offline'
+  //                   ? 'Clinic Visit'
+  //                   : booking.type.isNotEmpty
+  //                       ? booking.type
+  //                       : (booking.serviceType ?? ''),
+  //           style: const TextStyle(
+  //             fontWeight: FontWeight.bold,
+  //             fontSize: 16,
+  //           ),
+  //         ),
+
+  //         // Text(
+  //         //   booking.primaryServiceName.isNotEmpty
+  //         //       ? booking.primaryServiceName
+  //         //       : booking.serviceType,
+  //         //   style: const TextStyle(
+  //         //     fontSize: 16,
+  //         //     fontWeight: FontWeight.w600,
+  //         //     color: Colors.black,
+  //         //   ),
+  //         // ),
+  //         const SizedBox(height: 12),
+  //         Text(
+  //           'Booking ID : ${booking.diagnosticBookingId != null ? booking.diagnosticBookingId.toString() : booking.doctorConsultationBookingId.toString()}',
+  //           style: const TextStyle(
+  //             fontSize: 15,
+  //             color: Colors.black,
+  //           ),
+  //         ),
+  //         const SizedBox(height: 4),
+  //         Text(
+  //           'Date & Time : ${_formatDateTime(booking.date, booking.timeSlot)}',
+  //           style: const TextStyle(
+  //             fontSize: 15,
+  //             color: Colors.black,
+  //           ),
+  //         ),
+  //         const SizedBox(height: 16),
+  //         Row(
+  //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //           children: [
+  //             GestureDetector(
+  //               onTap: () => _showBookingDetails(booking),
+  //               child: Row(
+  //                 children: [
+  //                   Icon(
+  //                     Icons.keyboard_arrow_down,
+  //                     color: Colors.grey[600],
+  //                     size: 16,
+  //                   ),
+  //                   const SizedBox(width: 4),
+  //                   Text(
+  //                     'Booking Details',
+  //                     style: TextStyle(
+  //                       fontSize: 12,
+  //                       color: Colors.grey[600],
+  //                     ),
+  //                   ),
+  //                 ],
+  //               ),
+  //             ),
+  //             GestureDetector(
+  //               onTap: isCurrentlyDownloading
+  //                   ? null
+  //                   : () => (booking.diagnosticBookingId != "" || booking.diagnosticBookingId != null)
+  //                       ? _downloadPdfDiaReport(booking)
+  //                       : _downloadPdfReport(booking),
+  //               child: Container(
+  //                 padding: const EdgeInsets.symmetric(
+  //                   horizontal: 12,
+  //                   vertical: 6,
+  //                 ),
+  //                 decoration: BoxDecoration(
+  //                   borderRadius: BorderRadius.circular(8),
+  //                   border: Border.all(
+  //                     color: isCurrentlyDownloading ? Colors.grey : Colors.teal,
+  //                   ),
+  //                 ),
+  //                 child: Row(
+  //                   mainAxisSize: MainAxisSize.min,
+  //                   children: [
+  //                     if (isCurrentlyDownloading)
+  //                       SizedBox(
+  //                         width: 12,
+  //                         height: 12,
+  //                         child: CircularProgressIndicator(
+  //                           strokeWidth: 2,
+  //                           valueColor:
+  //                               AlwaysStoppedAnimation<Color>(Colors.teal),
+  //                         ),
+  //                       )
+  //                     else
+  //                       Icon(
+  //                         Icons.download,
+  //                         color: Colors.teal,
+  //                         size: 12,
+  //                       ),
+  //                     const SizedBox(width: 4),
+  //                     Text(
+  //                       'Reports',
+  //                       style: TextStyle(
+  //                         color: isCurrentlyDownloading
+  //                             ? Colors.grey
+  //                             : Colors.teal,
+  //                         fontSize: 12,
+  //                         fontWeight: FontWeight.w500,
+  //                       ),
+  //                     ),
+  //                   ],
+  //                 ),
+  //               ),
+  //             ),
+
+  //             GestureDetector(
+  //               onTap: isCurrentlyDownloading
+  //                   ? null
+  //                   : () => booking.diagnosticBookingId != ""
+  //                       ? _downloadPdfDiaPrescription(booking)
+  //                       : _downloadPdfDiaReport(booking),
+  //               child: Container(
+  //                 padding: const EdgeInsets.symmetric(
+  //                   horizontal: 5,
+  //                   vertical: 6,
+  //                 ),
+  //                 decoration: BoxDecoration(
+  //                   borderRadius: BorderRadius.circular(8),
+  //                   border: Border.all(
+  //                     color: isCurrentlyDownloading ? Colors.grey : Colors.teal,
+  //                   ),
+  //                 ),
+  //                 child: Row(
+  //                   mainAxisSize: MainAxisSize.min,
+  //                   children: [
+  //                     if (isCurrentlyDownloading)
+  //                       SizedBox(
+  //                         width: 10,
+  //                         height: 10,
+  //                         child: CircularProgressIndicator(
+  //                           strokeWidth: 2,
+  //                           valueColor:
+  //                               AlwaysStoppedAnimation<Color>(Colors.teal),
+  //                         ),
+  //                       )
+  //                     else
+  //                       Icon(
+  //                         Icons.download,
+  //                         color: Colors.teal,
+  //                         size: 12,
+  //                       ),
+  //                     const SizedBox(width: 4),
+  //                     Text(
+  //                       'Prescription',
+  //                       style: TextStyle(
+  //                         color: isCurrentlyDownloading
+  //                             ? Colors.grey
+  //                             : Colors.teal,
+  //                         fontSize: 12,
+  //                         fontWeight: FontWeight.w500,
+  //                       ),
+  //                     ),
+  //                   ],
+  //                 ),
+  //               ),
+  //             ),
+
+  //             // GestureDetector(
+  //             //   onTap: isCurrentlyDownloading
+  //             //       ? null
+  //             //       : () => _downloadPdfReport(booking.id),
+  //             //   child: Container(
+  //             //     padding: const EdgeInsets.symmetric(
+  //             //       horizontal: 12,
+  //             //       vertical: 6,
+  //             //     ),
+  //             //     decoration: BoxDecoration(
+  //             //       borderRadius: BorderRadius.circular(8),
+  //             //       border: Border.all(
+  //             //         color: isCurrentlyDownloading ? Colors.grey : Colors.teal,
+  //             //       ),
+  //             //     ),
+  //             //     child: Row(
+  //             //       mainAxisSize: MainAxisSize.min,
+  //             //       children: [
+  //             //         if (isCurrentlyDownloading)
+  //             //           SizedBox(
+  //             //             width: 12,
+  //             //             height: 12,
+  //             //             child: CircularProgressIndicator(
+  //             //               strokeWidth: 2,
+  //             //               valueColor:
+  //             //                   AlwaysStoppedAnimation<Color>(Colors.teal),
+  //             //             ),
+  //             //           )
+  //             //         else
+  //             //           Icon(
+  //             //             Icons.download,
+  //             //             color: Colors.teal,
+  //             //             size: 12,
+  //             //           ),
+  //             //         const SizedBox(width: 4),
+  //             //         Text(
+  //             //           isCurrentlyDownloading ? 'Downloading...' : 'Prescription',
+  //             //           style: TextStyle(
+  //             //             color: isCurrentlyDownloading
+  //             //                 ? Colors.grey
+  //             //                 : Colors.teal,
+  //             //             fontSize: 12,
+  //             //             fontWeight: FontWeight.w500,
+  //             //           ),
+  //             //         ),
+
+  //             //       ],
+  //             //     ),
+  //             //   ),
+  //             // ),
+  //           ],
+  //         ),
+  //       ],
+  //     ),
+  //   );
+  // }
+
+
+
   Widget _buildReportCard(Booking booking, GetAllBookingProvider provider) {
-    final isCurrentlyDownloading =
-        _isDownloading && _downloadingBookingId == booking.id;
+  final isCurrentlyDownloading =
+      _isDownloading && _downloadingBookingId == booking.id;
 
-    return Container(
-      margin: const EdgeInsets.only(bottom: 16),
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Colors.grey[300]!),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.1),
-            spreadRadius: 1,
-            blurRadius: 4,
-            offset: const Offset(0, 2),
-          ),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            booking.type.toLowerCase() == 'online'
-                ? 'Online Consultation'
-                : booking.type.toLowerCase() == 'offline'
-                    ? 'Clinic Visit'
-                    : booking.type.isNotEmpty
-                        ? booking.type
-                        : (booking.serviceType ?? ''),
-            style: const TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 16,
-            ),
-          ),
+  // Enhanced debugging
+  print('=== BOOKING DEBUG INFO ===');
+  print('Booking ID: ${booking.id}');
+  print('Diagnostic Booking ID: ${booking.diagnosticBookingId}');
+  print('Doctor Consultation Booking ID: ${booking.doctorConsultationBookingId}');
+  print('Doctor Reports: ${booking.doctorReports}');
+  print('Doctor Prescriptions: ${booking.doctorPrescriptions}');
+  print('Report File: ${booking.reportFile}');
+  print('Diag Prescription: ${booking.diagPrescription}');
+  print('========================');
 
-          // Text(
-          //   booking.primaryServiceName.isNotEmpty
-          //       ? booking.primaryServiceName
-          //       : booking.serviceType,
-          //   style: const TextStyle(
-          //     fontSize: 16,
-          //     fontWeight: FontWeight.w600,
-          //     color: Colors.black,
-          //   ),
-          // ),
-          const SizedBox(height: 12),
-          Text(
-            'Booking ID : ${booking.diagnosticBookingId != null ? booking.diagnosticBookingId.toString() : booking.doctorConsultationBookingId.toString()}',
-            style: const TextStyle(
-              fontSize: 15,
-              color: Colors.black,
-            ),
+  // Better null safety checks
+  final hasDoctorReports = booking.doctorReports != null && booking.doctorReports!.isNotEmpty;
+  final hasDoctorPrescriptions = booking.doctorPrescriptions != null && booking.doctorPrescriptions!.isNotEmpty;
+  final hasReportFile = booking.reportFile != null && booking.reportFile!.isNotEmpty;
+  final hasDiagPrescription = booking.diagPrescription != null && booking.diagPrescription!.isNotEmpty;
+  
+  // Determine if this is a diagnostic booking
+  final isDiagnosticBooking = booking.diagnosticBookingId != null && 
+                              booking.diagnosticBookingId.toString().isNotEmpty && 
+                              booking.diagnosticBookingId.toString() != "" &&
+                              booking.diagnosticBookingId.toString() != "null";
+
+  // Determine what reports/prescriptions are available
+  final hasReports = isDiagnosticBooking ? hasReportFile : hasDoctorReports;
+  final hasPrescriptions = isDiagnosticBooking ? hasDiagPrescription : hasDoctorPrescriptions;
+
+  print('=== AVAILABILITY CHECK ===');
+  print('Is Diagnostic Booking: $isDiagnosticBooking');
+  print('Has Reports: $hasReports');
+  print('Has Prescriptions: $hasPrescriptions');
+  print('========================');
+
+  return Container(
+    margin: const EdgeInsets.only(bottom: 16),
+    padding: const EdgeInsets.all(16),
+    decoration: BoxDecoration(
+      color: Colors.white,
+      borderRadius: BorderRadius.circular(12),
+      border: Border.all(color: Colors.grey[300]!),
+      boxShadow: [
+        BoxShadow(
+          color: Colors.grey.withOpacity(0.1),
+          spreadRadius: 1,
+          blurRadius: 4,
+          offset: const Offset(0, 2),
+        ),
+      ],
+    ),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          booking.type.toLowerCase() == 'online'
+              ? 'Online Consultation'
+              : booking.type.toLowerCase() == 'offline'
+                  ? 'Clinic Visit'
+                  : booking.type.isNotEmpty
+                      ? booking.type
+                      : (booking.serviceType ?? ''),
+          style: const TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 16,
           ),
-          const SizedBox(height: 4),
-          Text(
-            'Date & Time : ${_formatDateTime(booking.date, booking.timeSlot)}',
-            style: const TextStyle(
-              fontSize: 15,
-              color: Colors.black,
-            ),
+        ),
+        const SizedBox(height: 12),
+        Text(
+          'Booking ID : ${isDiagnosticBooking ? booking.diagnosticBookingId.toString() : booking.doctorConsultationBookingId.toString()}',
+          style: const TextStyle(
+            fontSize: 15,
+            color: Colors.black,
           ),
-          const SizedBox(height: 16),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              GestureDetector(
-                onTap: () => _showBookingDetails(booking),
-                child: Row(
-                  children: [
-                    Icon(
-                      Icons.keyboard_arrow_down,
+        ),
+        const SizedBox(height: 4),
+        Text(
+          'Date & Time : ${_formatDateTime(booking.date, booking.timeSlot)}',
+          style: const TextStyle(
+            fontSize: 15,
+            color: Colors.black,
+          ),
+        ),
+        const SizedBox(height: 16),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            GestureDetector(
+              onTap: () => _showBookingDetails(booking),
+              child: Row(
+                children: [
+                  Icon(
+                    Icons.keyboard_arrow_down,
+                    color: Colors.grey[600],
+                    size: 16,
+                  ),
+                  const SizedBox(width: 4),
+                  Text(
+                    'Booking Details',
+                    style: TextStyle(
+                      fontSize: 12,
                       color: Colors.grey[600],
-                      size: 16,
                     ),
-                    const SizedBox(width: 4),
-                    Text(
-                      'Booking Details',
-                      style: TextStyle(
-                        fontSize: 12,
-                        color: Colors.grey[600],
-                      ),
-                    ),
-                  ],
-                ),
+                  ),
+                ],
               ),
+            ),
+            SizedBox(width: 7,),
+            // Reports Button - Only show if reports are available
+            if (hasReports)
               GestureDetector(
                 onTap: isCurrentlyDownloading
                     ? null
-                    : () => booking.diagnosticBookingId != "" ? _downloadPdfDiaReport(booking): _downloadPdfReport(booking),
+                    : () => isDiagnosticBooking
+                        ? _downloadPdfDiaReport(booking)
+                        : _downloadPdfReport(booking),
                 child: Container(
                   padding: const EdgeInsets.symmetric(
                     horizontal: 12,
@@ -801,29 +1059,26 @@ Future<void> _downloadPdfDiaPrescription(Booking booking) async {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       if (isCurrentlyDownloading)
-                        SizedBox(
+                        const SizedBox(
                           width: 12,
                           height: 12,
                           child: CircularProgressIndicator(
                             strokeWidth: 2,
-                            valueColor:
-                                AlwaysStoppedAnimation<Color>(Colors.teal),
+                            valueColor: AlwaysStoppedAnimation<Color>(Colors.teal),
                           ),
                         )
                       else
-                        Icon(
+                        const Icon(
                           Icons.download,
                           color: Colors.teal,
-                          size: 12,
+                          size: 13,
                         ),
                       const SizedBox(width: 4),
                       Text(
                         'Reports',
                         style: TextStyle(
-                          color: isCurrentlyDownloading
-                              ? Colors.grey
-                              : Colors.teal,
-                          fontSize: 12,
+                          color: isCurrentlyDownloading ? Colors.grey : Colors.teal,
+                          fontSize: 10,
                           fontWeight: FontWeight.w500,
                         ),
                       ),
@@ -832,14 +1087,20 @@ Future<void> _downloadPdfDiaPrescription(Booking booking) async {
                 ),
               ),
 
+            // Add spacing if both buttons are present
+            if (hasReports && hasPrescriptions) const SizedBox(width: 8),
 
-                            GestureDetector(
+            // Prescriptions Button - Only show if prescriptions are available
+            if (hasPrescriptions)
+              GestureDetector(
                 onTap: isCurrentlyDownloading
                     ? null
-                    : () => booking.diagnosticBookingId != "" ? _downloadPdfDiaPrescription(booking): _downloadPdfDiaReport(booking),
+                    : () => isDiagnosticBooking
+                        ? _downloadPdfDiaPrescription(booking)
+                        : _downloadPdfPrescription(booking, true), // Fixed method call
                 child: Container(
                   padding: const EdgeInsets.symmetric(
-                    horizontal: 12,
+                    horizontal: 2,
                     vertical: 6,
                   ),
                   decoration: BoxDecoration(
@@ -852,29 +1113,26 @@ Future<void> _downloadPdfDiaPrescription(Booking booking) async {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       if (isCurrentlyDownloading)
-                        SizedBox(
-                          width: 12,
-                          height: 12,
+                        const SizedBox(
+                          width: 10,
+                          height: 10,
                           child: CircularProgressIndicator(
                             strokeWidth: 2,
-                            valueColor:
-                                AlwaysStoppedAnimation<Color>(Colors.teal),
+                            valueColor: AlwaysStoppedAnimation<Color>(Colors.teal),
                           ),
                         )
                       else
-                        Icon(
+                        const Icon(
                           Icons.download,
                           color: Colors.teal,
-                          size: 12,
+                          size: 13,
                         ),
                       const SizedBox(width: 4),
                       Text(
                         'Prescription',
                         style: TextStyle(
-                          color: isCurrentlyDownloading
-                              ? Colors.grey
-                              : Colors.teal,
-                          fontSize: 12,
+                          color: isCurrentlyDownloading ? Colors.grey : Colors.teal,
+                          fontSize: 10,
                           fontWeight: FontWeight.w500,
                         ),
                       ),
@@ -883,62 +1141,31 @@ Future<void> _downloadPdfDiaPrescription(Booking booking) async {
                 ),
               ),
 
-              // GestureDetector(
-              //   onTap: isCurrentlyDownloading
-              //       ? null
-              //       : () => _downloadPdfReport(booking.id),
-              //   child: Container(
-              //     padding: const EdgeInsets.symmetric(
-              //       horizontal: 12,
-              //       vertical: 6,
-              //     ),
-              //     decoration: BoxDecoration(
-              //       borderRadius: BorderRadius.circular(8),
-              //       border: Border.all(
-              //         color: isCurrentlyDownloading ? Colors.grey : Colors.teal,
-              //       ),
-              //     ),
-              //     child: Row(
-              //       mainAxisSize: MainAxisSize.min,
-              //       children: [
-              //         if (isCurrentlyDownloading)
-              //           SizedBox(
-              //             width: 12,
-              //             height: 12,
-              //             child: CircularProgressIndicator(
-              //               strokeWidth: 2,
-              //               valueColor:
-              //                   AlwaysStoppedAnimation<Color>(Colors.teal),
-              //             ),
-              //           )
-              //         else
-              //           Icon(
-              //             Icons.download,
-              //             color: Colors.teal,
-              //             size: 12,
-              //           ),
-              //         const SizedBox(width: 4),
-              //         Text(
-              //           isCurrentlyDownloading ? 'Downloading...' : 'Prescription',
-              //           style: TextStyle(
-              //             color: isCurrentlyDownloading
-              //                 ? Colors.grey
-              //                 : Colors.teal,
-              //             fontSize: 12,
-              //             fontWeight: FontWeight.w500,
-              //           ),
-              //         ),
-
-              //       ],
-              //     ),
-              //   ),
-              // ),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
+            // Show a message if no files are available
+            if (!hasReports && !hasPrescriptions)
+              Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 12,
+                  vertical: 6,
+                ),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(8),
+                  border: Border.all(color: Colors.grey[400]!),
+                ),
+                child: Text(
+                  'No files available',
+                  style: TextStyle(
+                    color: Colors.grey[600],
+                    fontSize: 12,
+                  ),
+                ),
+              ),
+          ],
+        ),
+      ],
+    ),
+  );
+}
 
   String _formatDateTime(String date, String timeSlot) {
     try {
@@ -985,7 +1212,11 @@ Future<void> _downloadPdfDiaPrescription(Booking booking) async {
               ),
             ),
             const SizedBox(height: 20),
-            _buildDetailRow('Booking ID', booking.diagnosticBookingId != "" ? booking.diagnosticBookingId.toString() : booking.doctorConsultationBookingId.toString()),
+            _buildDetailRow(
+                'Booking ID',
+                booking.diagnosticBookingId != ""
+                    ? booking.diagnosticBookingId.toString()
+                    : booking.doctorConsultationBookingId.toString()),
             // _buildDetailRow('Service Type', booking.serviceType),
             // _buildDetailRow('Test Name', booking.primaryServiceName),
             _buildDetailRow(

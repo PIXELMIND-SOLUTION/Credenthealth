@@ -431,6 +431,7 @@ class _BookingScreenState extends State<BookingScreen> {
       backgroundColor: Colors.grey[50],
       appBar: AppBar(
         backgroundColor: Colors.white,
+        surfaceTintColor: Colors.white,
         elevation: 0,
         automaticallyImplyLeading: false,
         leading: IconButton(
@@ -829,32 +830,83 @@ Widget _buildBookingsList(GetAllBookingProvider provider) {
               //   ),
               // ),
 
+              // Expanded(
+              //   child: Column(
+              //     crossAxisAlignment: CrossAxisAlignment.start,
+              //     children: [
+              //       Text(
+              //         booking.type.toLowerCase() == 'offline'
+              //             ? 'Clinic Visit'
+              //             : booking.type.toLowerCase() == 'online'
+              //                 ? 'Online Consultation'
+              //                 : booking.type.isNotEmpty
+              //                     ? booking.type
+              //                     : (booking.serviceType ?? ''),
+              //         style: const TextStyle(
+              //           fontSize: 16,
+              //           fontWeight: FontWeight.w600,
+              //         ),
+              //       ),
+              //       const SizedBox(height: 4),
+              //       Container(
+              //         width: 120,
+              //         height: 2.5,
+              //         color: const Color(0xFF2E67F6),
+              //       ),
+              //     ],
+              //   ),
+              // ),
+
+
               Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      booking.type.toLowerCase() == 'offline'
-                          ? 'Clinic Visit'
-                          : booking.type.toLowerCase() == 'online'
-                              ? 'Online Consultation'
-                              : booking.type.isNotEmpty
-                                  ? booking.type
-                                  : (booking.serviceType ?? ''),
-                      style: const TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                    const SizedBox(height: 4),
-                    Container(
-                      width: 120,
-                      height: 2.5,
-                      color: const Color(0xFF2E67F6),
-                    ),
-                  ],
-                ),
+  child: Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      Text(
+        booking.type.toLowerCase() == 'offline'
+            ? 'Clinic Visit'
+            : booking.type.toLowerCase() == 'online'
+                ? 'Online Consultation'
+                : booking.type.isNotEmpty
+                    ? booking.type
+                    : (booking.serviceType ?? ''),
+        style: const TextStyle(
+          fontSize: 16,
+          fontWeight: FontWeight.w600,
+        ),
+      ),
+      const SizedBox(height: 4),
+      TweenAnimationBuilder<double>(
+        duration: const Duration(milliseconds: 1200),
+        tween: Tween<double>(begin: 0.0, end: 1.0),
+        curve: Curves.easeInOut,
+        builder: (context, value, child) {
+          return Container(
+            width: 120 * value,
+            height: 2.5,
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [
+                  const Color(0xFF2E67F6),
+                  const Color(0xFF4A7BF7),
+                ],
+                stops: [0.0, value],
               ),
+              borderRadius: BorderRadius.circular(1.25),
+              boxShadow: [
+                BoxShadow(
+                  color: const Color(0xFF2E67F6).withOpacity(0.3),
+                  blurRadius: 4,
+                  offset: const Offset(0, 1),
+                ),
+              ],
+            ),
+          );
+        },
+      ),
+    ],
+  ),
+),
 
               Text(
                 '₹ ${booking.payableAmount.toStringAsFixed(0)}',
@@ -981,7 +1033,21 @@ Widget _buildBookingsList(GetAllBookingProvider provider) {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               GestureDetector(
-                onTap: () => _showBookingDetails(booking),
+                onTap: () {
+                   Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => ConsultDoctor(
+                          bookingId: booking.id,
+                          staffId: booking.staffId,
+                          name: booking.primaryServiceName,
+                          type: booking.type,
+                          serviceType: booking.serviceType,
+                          // address: booking.diagnosticId?.address,
+                          // address: booking.diagnostic?.address
+                        )));
+                },
+                // onTap: () => _showBookingDetails(booking),
                 child: Row(
                   children: [
                     Icon(
@@ -1040,18 +1106,18 @@ Widget _buildBookingsList(GetAllBookingProvider provider) {
       case 'confirmed':
         return GestureDetector(
           onTap: () {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => ConsultDoctor(
-                          bookingId: booking.id,
-                          staffId: booking.staffId,
-                          name: booking.primaryServiceName,
-                          type: booking.type,
-                          serviceType: booking.serviceType,
-                          // address: booking.diagnosticId?.address,
-                          // address: booking.diagnostic?.address
-                        )));
+            // Navigator.push(
+            //     context,
+            //     MaterialPageRoute(
+            //         builder: (context) => ConsultDoctor(
+            //               bookingId: booking.id,
+            //               staffId: booking.staffId,
+            //               name: booking.primaryServiceName,
+            //               type: booking.type,
+            //               serviceType: booking.serviceType,
+            //               // address: booking.diagnosticId?.address,
+            //               // address: booking.diagnostic?.address
+            //             )));
           },
           child: Container(
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
@@ -1115,31 +1181,44 @@ Widget _buildBookingsList(GetAllBookingProvider provider) {
     }
   }
 
-  String _formatDateTime(String date, String timeSlot) {
+  // String _formatDateTime(String date, String timeSlot) {
+  //   try {
+  //     final DateTime dateTime = DateTime.parse(date);
+
+  //     // Format: July 20, 2025
+  //     final String formattedDate = DateFormat('MMMM d, y').format(dateTime);
+
+  //     // Parse and format the time if needed
+  //     DateTime? time;
+  //     try {
+  //       time = DateFormat('HH:mm').parse(timeSlot);
+  //     } catch (_) {
+  //       try {
+  //         time = DateFormat('hh:mm a').parse(timeSlot);
+  //       } catch (_) {
+  //         return '$formattedDate, $timeSlot';
+  //       }
+  //     }
+
+  //     final String formattedTime = DateFormat('hh:mm a').format(time);
+  //     return '$formattedDate, $formattedTime';
+  //   } catch (e) {
+  //     return '$date, $timeSlot';
+  //   }
+  // }
+
+ String _formatDateTime(String date, String timeSlot) {
     try {
       final DateTime dateTime = DateTime.parse(date);
-
-      // Format: July 20, 2025
-      final String formattedDate = DateFormat('MMMM d, y').format(dateTime);
-
-      // Parse and format the time if needed
-      DateTime? time;
-      try {
-        time = DateFormat('HH:mm').parse(timeSlot);
-      } catch (_) {
-        try {
-          time = DateFormat('hh:mm a').parse(timeSlot);
-        } catch (_) {
-          return '$formattedDate, $timeSlot';
-        }
-      }
-
-      final String formattedTime = DateFormat('hh:mm a').format(time);
-      return '$formattedDate, $formattedTime';
+      final String formattedDate =
+          '${dateTime.day.toString().padLeft(2, '0')}-${dateTime.month.toString().padLeft(2, '0')}-${dateTime.year}';
+      return '$formattedDate , $timeSlot';
     } catch (e) {
-      return '$date, $timeSlot';
+      return '$date , $timeSlot';
     }
   }
+
+
 
   void _showBookingDetails(Booking booking) {
     showModalBottomSheet(

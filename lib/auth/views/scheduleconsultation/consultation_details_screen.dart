@@ -925,9 +925,10 @@ class _ConsultationDetailsScreenState extends State<ConsultationDetailsScreen> {
     }
   }
 
-    String _sanitizeImageUrl(String url) {
+  String _sanitizeImageUrl(String url) {
     // Fix double slashes in URL path
-    print("Urlllllllllllllllllllllllllllllllllllllllllllllllllllllllllll: $url");
+    print(
+        "Urlllllllllllllllllllllllllllllllllllllllllllllllllllllllllll: $url");
     final sanitizedUrl = url.replaceAll(RegExp(r'(?<!:)//'), '/');
     return ("http://31.97.206.144:4051$sanitizedUrl");
   }
@@ -956,18 +957,20 @@ class _ConsultationDetailsScreenState extends State<ConsultationDetailsScreen> {
       child: Row(
         children: [
           // Avatar
-Consumer<ProfileUpdateProvider>(
-  builder: (context, provider, child) {
-    final profile = provider.profile; // Assuming you have profile in provider
+          Consumer<ProfileUpdateProvider>(
+            builder: (context, provider, child) {
+              final profile =
+                  provider.profile; // Assuming you have profile in provider
 
-    return CircleAvatar(
-      radius: 20,
-      backgroundImage: profile?.profileImage != null
-          ? NetworkImage(_sanitizeImageUrl(profile!.profileImage))
-          : const AssetImage('lib/assets/default_avatar.png') as ImageProvider,
-    );
-  },
-),
+              return CircleAvatar(
+                radius: 20,
+                backgroundImage: profile?.profileImage != null
+                    ? NetworkImage(_sanitizeImageUrl(profile!.profileImage))
+                    : const AssetImage('lib/assets/chatscreenimage.png')
+                        as ImageProvider,
+              );
+            },
+          ),
 
           const SizedBox(width: 12),
 
@@ -1156,6 +1159,7 @@ Consumer<ProfileUpdateProvider>(
         backgroundColor: Colors.white,
         appBar: AppBar(
           backgroundColor: Colors.white,
+          surfaceTintColor: Colors.white,
           elevation: 0,
           leading: IconButton(
             icon: const Icon(Icons.arrow_back, color: Colors.black),
@@ -1188,6 +1192,7 @@ Consumer<ProfileUpdateProvider>(
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.white,
+        surfaceTintColor: Colors.white,
         elevation: 0,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.black),
@@ -1507,11 +1512,301 @@ Consumer<ProfileUpdateProvider>(
                   //               ),
                   //             ),
 
+                  // const Text(
+                  //   'Choose Date',
+                  //   style: TextStyle(
+                  //     fontSize: 18,
+                  //     fontWeight: FontWeight.w600,
+                  //   ),
+                  // ),
+                  // const SizedBox(height: 16),
+
+                  // SingleChildScrollView(
+                  //   scrollDirection: Axis.horizontal,
+                  //   child: Row(
+                  //     children: dates.asMap().entries.map((entry) {
+                  //       int index = entry.key;
+                  //       Map<String, dynamic> date = entry.value;
+                  //       bool isSelected = selectedDateIndex == index;
+                  //       bool isCalendarPicker = index == dates.length - 1;
+
+                  //       return Padding(
+                  //         padding: const EdgeInsets.symmetric(horizontal: 6.0),
+                  //         child: GestureDetector(
+                  //           onTap: () async {
+                  //             if (isCalendarPicker) {
+                  //               // Show date picker
+                  //               DateTime? picked = await showDatePicker(
+                  //                 context: context,
+                  //                 initialDate: DateTime.now(),
+                  //                 firstDate: DateTime.now()
+                  //                     .subtract(const Duration(days: 365)),
+                  //                 lastDate: DateTime.now()
+                  //                     .add(const Duration(days: 365)),
+                  //               );
+
+                  //               if (picked != null) {
+                  //                 setState(() {
+                  //                   String dayAbbr =
+                  //                       _getDayAbbreviation(picked.weekday);
+
+                  //                   // Insert new date before the calendar icon
+                  //                   dates.insert(dates.length - 1, {
+                  //                     'day': dayAbbr,
+                  //                     'date': picked.day.toString(),
+                  //                     'fullDate': picked,
+                  //                   });
+
+                  //                   selectedDateIndex = dates.length - 2;
+                  //                 });
+
+                  //                 // ✅ Fetch doctor slots using DoctorSlotProvider
+                  //                 final formattedDate =
+                  //                     _formatDateForApi(picked.toString());
+                  //                 final slotProvider =
+                  //                     Provider.of<DoctorSlotProvider>(context,
+                  //                         listen: false);
+                  //                 slotProvider.getDoctorSlots(
+                  //                   type: selectedConsultationType,
+                  //                   date: formattedDate,
+                  //                   doctorId: widget.doctorId!,
+                  //                 );
+                  //               }
+                  //             } else {
+                  //               setState(() {
+                  //                 selectedDateIndex = index;
+                  //               });
+
+                  //               final selectedDate =
+                  //                   dates[index]['fullDate'] as DateTime;
+                  //               final formattedDate =
+                  //                   _formatDateForApi(selectedDate.toString());
+
+                  //               // ✅ Fetch doctor slots using DoctorSlotProvider
+                  //               final slotProvider =
+                  //                   Provider.of<DoctorSlotProvider>(context,
+                  //                       listen: false);
+                  //               slotProvider.getDoctorSlots(
+                  //                   doctorId: widget.doctorId!,
+                  //                   date: formattedDate,
+                  //                   type: selectedConsultationType);
+                  //             }
+                  //           },
+                  //           child: Container(
+                  //             width: 60,
+                  //             height: 80,
+                  //             decoration: BoxDecoration(
+                  //               color:
+                  //                   isSelected ? Colors.blue : Colors.grey[100],
+                  //               borderRadius: BorderRadius.circular(12),
+                  //             ),
+                  //             child: Column(
+                  //               mainAxisAlignment: MainAxisAlignment.center,
+                  //               children: [
+                  //                 if (!isCalendarPicker) ...[
+                  //                   Text(
+                  //                     date['day'],
+                  //                     style: TextStyle(
+                  //                       fontSize: 12,
+                  //                       color: isSelected
+                  //                           ? Colors.white
+                  //                           : Colors.grey,
+                  //                       fontWeight: FontWeight.w500,
+                  //                     ),
+                  //                   ),
+                  //                   const SizedBox(height: 4),
+                  //                   Text(
+                  //                     date['date'],
+                  //                     style: TextStyle(
+                  //                       fontSize: 18,
+                  //                       color: isSelected
+                  //                           ? Colors.white
+                  //                           : Colors.black,
+                  //                       fontWeight: FontWeight.w600,
+                  //                     ),
+                  //                   ),
+                  //                 ] else
+                  //                   const Icon(
+                  //                     Icons.calendar_today,
+                  //                     size: 24,
+                  //                     color: Colors.grey,
+                  //                   ),
+                  //               ],
+                  //             ),
+                  //           ),
+                  //         ),
+                  //       );
+                  //     }).toList(),
+                  //   ),
+                  // ),
+
+                  // const Text(
+                  //   'Choose Date',
+                  //   style: TextStyle(
+                  //     fontSize: 18,
+                  //     fontWeight: FontWeight.w600,
+                  //     color: Colors.black,
+                  //   ),
+                  // ),
+                  // const SizedBox(height: 16),
+
+                  // SingleChildScrollView(
+                  //   scrollDirection: Axis.horizontal,
+                  //   child: Row(
+                  //     children: dates.asMap().entries.map((entry) {
+                  //       int index = entry.key;
+                  //       Map<String, dynamic> date = entry.value;
+                  //       bool isSelected = selectedDateIndex == index;
+                  //       bool isCalendarPicker = index == dates.length - 1;
+
+                  //       return Padding(
+                  //         padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                  //         child: GestureDetector(
+                  //           onTap: () async {
+                  //             if (isCalendarPicker) {
+                  //               // Show date picker
+                  //               DateTime? picked = await showDatePicker(
+                  //                 context: context,
+                  //                 initialDate: DateTime.now(),
+                  //                 firstDate: DateTime.now()
+                  //                     .subtract(const Duration(days: 365)),
+                  //                 lastDate: DateTime.now()
+                  //                     .add(const Duration(days: 365)),
+                  //               );
+
+                  //               if (picked != null) {
+                  //                 setState(() {
+                  //                   String dayAbbr =
+                  //                       _getDayAbbreviation(picked.weekday);
+
+                  //                   // Insert new date before the calendar icon
+                  //                   dates.insert(dates.length - 1, {
+                  //                     'day': dayAbbr,
+                  //                     'date': picked.day.toString(),
+                  //                     'fullDate': picked,
+                  //                   });
+
+                  //                   selectedDateIndex = dates.length - 2;
+                  //                 });
+
+                  //                 // ✅ Fetch doctor slots using DoctorSlotProvider
+                  //                 final formattedDate =
+                  //                     _formatDateForApi(picked.toString());
+                  //                 final slotProvider =
+                  //                     Provider.of<DoctorSlotProvider>(context,
+                  //                         listen: false);
+                  //                 slotProvider.getDoctorSlots(
+                  //                   type: selectedConsultationType,
+                  //                   date: formattedDate,
+                  //                   doctorId: widget.doctorId!,
+                  //                 );
+                  //               }
+                  //             } else {
+                  //               setState(() {
+                  //                 selectedDateIndex = index;
+                  //               });
+
+                  //               final selectedDate =
+                  //                   dates[index]['fullDate'] as DateTime;
+                  //               final formattedDate =
+                  //                   _formatDateForApi(selectedDate.toString());
+
+                  //               // ✅ Fetch doctor slots using DoctorSlotProvider
+                  //               final slotProvider =
+                  //                   Provider.of<DoctorSlotProvider>(context,
+                  //                       listen: false);
+                  //               slotProvider.getDoctorSlots(
+                  //                   doctorId: widget.doctorId!,
+                  //                   date: formattedDate,
+                  //                   type: selectedConsultationType);
+                  //             }
+                  //           },
+                  //           child: Column(
+                  //             children: [
+                  //               Stack(
+                  //                 children: [
+                  //                   Container(
+                  //                     width: 50,
+                  //                     height: 70,
+                  //                     decoration: BoxDecoration(
+                  //                       color: Colors.grey[100],
+                  //                       borderRadius: BorderRadius.circular(18),
+                  //                     ),
+                  //                     child: Column(
+                  //                       mainAxisAlignment:
+                  //                           MainAxisAlignment.center,
+                  //                       children: [
+                  //                         if (!isCalendarPicker) ...[
+                  //                           Text(
+                  //                             date['day'],
+                  //                             style: TextStyle(
+                  //                               fontSize: 12,
+                  //                               color: Colors.grey[600],
+                  //                               fontWeight: FontWeight.w500,
+                  //                             ),
+                  //                           ),
+                  //                           const SizedBox(height: 2),
+                  //                           Text(
+                  //                             date['date'],
+                  //                             style: const TextStyle(
+                  //                               fontSize: 16,
+                  //                               color: Colors.black,
+                  //                               fontWeight: FontWeight.w600,
+                  //                             ),
+                  //                           ),
+                  //                         ] else
+                  //                           Icon(
+                  //                             Icons.calendar_today,
+                  //                             size: 20,
+                  //                             color: Colors.grey[600],
+                  //                           ),
+                  //                       ],
+                  //                     ),
+                  //                   ),
+                  //                   if (isSelected && !isCalendarPicker)
+                  //                     Positioned(
+                  //                       top: 2,
+                  //                       right: 2,
+                  //                       child: Container(
+                  //                         width: 18,
+                  //                         height: 18,
+                  //                         decoration: const BoxDecoration(
+                  //                           color: Colors.green,
+                  //                           shape: BoxShape.circle,
+                  //                         ),
+                  //                         child: const Icon(
+                  //                           Icons.check,
+                  //                           size: 12,
+                  //                           color: Colors.white,
+                  //                         ),
+                  //                       ),
+                  //                     ),
+                  //                 ],
+                  //               ),
+                  //               const SizedBox(height: 4),
+                  //               if (isSelected)
+                  //                 Container(
+                  //                   width: 30,
+                  //                   height: 3,
+                  //                   // decoration: BoxDecoration(
+                  //                   //   color: Colors.blue,
+                  //                   //   borderRadius: BorderRadius.circular(2),
+                  //                   // ),
+                  //                 ),
+                  //             ],
+                  //           ),
+                  //         ),
+                  //       );
+                  //     }).toList(),
+                  //   ),
+                  // ),
+
                   const Text(
                     'Choose Date',
                     style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.w600,
+                      color: Colors.black,
                     ),
                   ),
                   const SizedBox(height: 16),
@@ -1523,12 +1818,13 @@ Consumer<ProfileUpdateProvider>(
                         int index = entry.key;
                         Map<String, dynamic> date = entry.value;
                         bool isSelected = selectedDateIndex == index;
+                        bool isCalendarPicker = index == dates.length - 1;
 
                         return Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 6.0),
+                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
                           child: GestureDetector(
                             onTap: () async {
-                              if (index == dates.length - 1) {
+                              if (isCalendarPicker) {
                                 // Show date picker
                                 DateTime? picked = await showDatePicker(
                                   context: context,
@@ -1557,16 +1853,25 @@ Consumer<ProfileUpdateProvider>(
                                   // ✅ Fetch doctor slots using DoctorSlotProvider
                                   final formattedDate =
                                       _formatDateForApi(picked.toString());
-                                  // final dateFormat =
-                                  // _formatDateForApi(picked.toString());
                                   final slotProvider =
                                       Provider.of<DoctorSlotProvider>(context,
                                           listen: false);
-                                  slotProvider.getDoctorSlots(
+                                  await slotProvider.getDoctorSlots(
                                     type: selectedConsultationType,
                                     date: formattedDate,
                                     doctorId: widget.doctorId!,
                                   );
+
+                                  // Debug: Log slot information
+                                  if (slotProvider.doctorSlot != null) {
+                                    print(
+                                        '📊 Slots fetched - Available: ${slotProvider.availableSlots.length}, '
+                                        'Booked: ${slotProvider.bookedSlots.length}, '
+                                        'Expired: ${slotProvider.expiredSlots.length}');
+                                  } else if (slotProvider.error != null) {
+                                    print(
+                                        '❌ Error fetching slots: ${slotProvider.error}');
+                                  }
                                 }
                               } else {
                                 setState(() {
@@ -1582,55 +1887,96 @@ Consumer<ProfileUpdateProvider>(
                                 final slotProvider =
                                     Provider.of<DoctorSlotProvider>(context,
                                         listen: false);
-                                slotProvider.getDoctorSlots(
+                                await slotProvider.getDoctorSlots(
                                     doctorId: widget.doctorId!,
                                     date: formattedDate,
                                     type: selectedConsultationType);
+
+                                // Debug: Log slot information
+                                if (slotProvider.doctorSlot != null) {
+                                  print(
+                                      '📊 Slots fetched - Available: ${slotProvider.availableSlots.length}, '
+                                      'Booked: ${slotProvider.bookedSlots.length}, '
+                                      'Expired: ${slotProvider.expiredSlots.length}');
+                                } else if (slotProvider.error != null) {
+                                  print(
+                                      '❌ Error fetching slots: ${slotProvider.error}');
+                                }
                               }
                             },
-                            child: Container(
-                              width: 60,
-                              height: 80,
-                              decoration: BoxDecoration(
-                                color:
-                                    isSelected ? Colors.blue : Colors.grey[100],
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Text(
-                                    date['day'],
-                                    style: TextStyle(
-                                      fontSize: 12,
-                                      color: isSelected
-                                          ? Colors.white
-                                          : Colors.grey,
-                                      fontWeight: FontWeight.w500,
-                                    ),
-                                  ),
-                                  const SizedBox(height: 4),
-                                  Text(
-                                    date['date'],
-                                    style: TextStyle(
-                                      fontSize: 18,
-                                      color: isSelected
-                                          ? Colors.white
-                                          : Colors.black,
-                                      fontWeight: FontWeight.w600,
-                                    ),
-                                  ),
-                                  if (index == dates.length - 1)
-                                    const Padding(
-                                      padding: EdgeInsets.only(top: 4),
-                                      child: Icon(
-                                        Icons.calendar_today,
-                                        size: 14,
-                                        color: Colors.grey,
+                            child: Column(
+                              children: [
+                                Stack(
+                                  children: [
+                                    Container(
+                                      width: 50,
+                                      height: 70,
+                                      decoration: BoxDecoration(
+                                        color: Colors.grey[100],
+                                        borderRadius: BorderRadius.circular(18),
+                                      ),
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          if (!isCalendarPicker) ...[
+                                            Text(
+                                              date['day'],
+                                              style: TextStyle(
+                                                fontSize: 12,
+                                                color: Colors.grey[600],
+                                                fontWeight: FontWeight.w500,
+                                              ),
+                                            ),
+                                            const SizedBox(height: 2),
+                                            Text(
+                                              date['date'],
+                                              style: const TextStyle(
+                                                fontSize: 16,
+                                                color: Colors.black,
+                                                fontWeight: FontWeight.w600,
+                                              ),
+                                            ),
+                                          ] else
+                                            Icon(
+                                              Icons.calendar_today,
+                                              size: 20,
+                                              color: Colors.grey[600],
+                                            ),
+                                        ],
                                       ),
                                     ),
-                                ],
-                              ),
+                                    if (isSelected && !isCalendarPicker)
+                                      Positioned(
+                                        top: 2,
+                                        right: 2,
+                                        child: Container(
+                                          width: 18,
+                                          height: 18,
+                                          decoration: const BoxDecoration(
+                                            color: Colors.green,
+                                            shape: BoxShape.circle,
+                                          ),
+                                          child: const Icon(
+                                            Icons.check,
+                                            size: 12,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                      ),
+                                  ],
+                                ),
+                                const SizedBox(height: 4),
+                                if (isSelected)
+                                  Container(
+                                    width: 30,
+                                    height: 3,
+                                    // decoration: BoxDecoration(
+                                    //   color: Colors.blue,
+                                    //   borderRadius: BorderRadius.circular(2),
+                                    // ),
+                                  ),
+                              ],
                             ),
                           ),
                         );

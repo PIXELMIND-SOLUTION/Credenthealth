@@ -6,6 +6,7 @@ import 'package:consultation_app/auth/views/address/address_list.dart';
 import 'package:consultation_app/auth/views/address/support_screen.dart';
 import 'package:consultation_app/auth/views/family/list_family_members.dart';
 import 'package:consultation_app/auth/views/modes/dark_mode.dart';
+import 'package:consultation_app/auth/views/notification/notification_screen..dart';
 import 'package:consultation_app/auth/views/profile/edit_profile.dart';
 import 'package:consultation_app/auth/views/provider/profile_provider.dart';
 import 'package:consultation_app/auth/views/steptracker/step_tracker_screen.dart';
@@ -144,6 +145,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       appBar: AppBar(
         automaticallyImplyLeading: false,
         backgroundColor: Colors.white,
+         surfaceTintColor: Colors.white,
         elevation: 0,
         title: const Text(
           'Menu',
@@ -321,6 +323,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       },
                     ),
 
+
+                  _MenuItem(
+                      icon: Icons.notifications,
+                      iconBg: const Color.fromARGB(255, 224, 146, 218),
+                      iconColor: const Color.fromARGB(136, 7, 5, 5),
+                      label: 'Notifications',
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const NotificationScreen()),
+                        );
+                      },
+                    ),
                     const SizedBox(height: 20),
 
                     SizedBox(

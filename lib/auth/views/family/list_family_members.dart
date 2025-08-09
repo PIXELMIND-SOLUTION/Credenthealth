@@ -714,6 +714,7 @@ class _ListFamilyMembersState extends State<ListFamilyMembers> {
       return Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.white,
+           surfaceTintColor: Colors.white,
           title: const Text(
             "Family Members",
             style: TextStyle(fontWeight: FontWeight.bold),

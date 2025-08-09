@@ -54,6 +54,7 @@ import 'package:consultation_app/auth/views/provider/hra_questions_provider.dart
 import 'package:consultation_app/auth/views/provider/login_provider.dart';
 import 'package:consultation_app/auth/views/provider/logout_provider.dart';
 import 'package:consultation_app/auth/views/provider/new_recent_package_provider.dart';
+import 'package:consultation_app/auth/views/provider/package_provider.dart';
 import 'package:consultation_app/auth/views/provider/popular_test_provider.dart';
 import 'package:consultation_app/auth/views/provider/profile_image_provider.dart';
 import 'package:consultation_app/auth/views/provider/profile_provider.dart' hide ProfileProvider;
@@ -158,7 +159,8 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_)=>BookingSlotProvider()),
         ChangeNotifierProvider(create: (_)=>ProfileProvider()),
                 ChangeNotifierProvider(create: (_)=>ProfileUpdateProvider()),
-                ChangeNotifierProvider(create: (_)=>SpecialCategoryProvider())
+                ChangeNotifierProvider(create: (_)=>SpecialCategoryProvider()),
+                ChangeNotifierProvider(create: (_)=>NewPackageProvider())
       ],
       child: Consumer<ThemeProvider>(
         builder: (context, themeProvider, child) {

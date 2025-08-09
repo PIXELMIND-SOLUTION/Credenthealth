@@ -47,7 +47,7 @@ class XrayModel {
 
 
   String getImageUrl() {
-    const String baseImageUrl = 'http://194.164.148.244:4051';
+    const String baseImageUrl = 'http://31.97.206.144:4051';
     return '$baseImageUrl$image';
   }
 

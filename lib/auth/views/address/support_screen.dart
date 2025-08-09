@@ -1131,6 +1131,7 @@ class _SupportScreenState extends State<SupportScreen> {
       backgroundColor: Colors.grey[50],
       appBar: AppBar(
         backgroundColor: Colors.white,
+         surfaceTintColor: Colors.white,
         elevation: 1,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.black),
@@ -1423,8 +1424,9 @@ class _SupportScreenState extends State<SupportScreen> {
   }
 
   Widget _buildRaiseTicketButton() {
+  
     return Container(
-      width: double.infinity,
+      width: 300,
       height: 50,
       child: ElevatedButton(
         onPressed: () async {

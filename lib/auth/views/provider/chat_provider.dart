@@ -1182,20 +1182,40 @@ class ChatProvider extends ChangeNotifier {
   }
 
   // Format message time
-  String formatMessageTime(DateTime timestamp) {
-    print("Time Stamp : $timestamp");
-    final now = DateTime.now();
-    final today = DateTime(now.year, now.month, now.day);
-    final messageDate = DateTime(timestamp.year, timestamp.month, timestamp.day);
+  // String formatMessageTime(DateTime timestamp) {
+  //   print("Time Stamp : $timestamp");
+  //   final now = DateTime.now();
+  //   final today = DateTime(now.year, now.month, now.day);
+  //   final messageDate = DateTime(timestamp.year, timestamp.month, timestamp.day);
     
-    if (messageDate == today) {
-      // Today - show only time
-      return "${timestamp.hour.toString().padLeft(2, '0')}:${timestamp.minute.toString().padLeft(2, '0')}";
-    } else {
-      // Other days - show date and time
-      return "${timestamp.day}/${timestamp.month} ${timestamp.hour.toString().padLeft(2, '0')}:${timestamp.minute.toString().padLeft(2, '0')}";
-    }
+  //   if (messageDate == today) {
+  //     // Today - show only time
+  //     return "${timestamp.hour.toString().padLeft(2, '0')}:${timestamp.minute.toString().padLeft(2, '0')}";
+  //   } else {
+  //     // Other days - show date and time
+  //     return "${timestamp.day}/${timestamp.month} ${timestamp.hour.toString().padLeft(2, '0')}:${timestamp.minute.toString().padLeft(2, '0')}";
+  //   }
+  // }
+
+
+
+  String formatMessageTime(DateTime timestamp) {
+  print("Time Stamp : $timestamp");
+  timestamp = timestamp.toLocal(); // ✅ Convert to local time
+
+  final now = DateTime.now();
+  final today = DateTime(now.year, now.month, now.day);
+  final messageDate = DateTime(timestamp.year, timestamp.month, timestamp.day);
+  
+  if (messageDate == today) {
+    // Today - show only time
+    return "${timestamp.hour.toString().padLeft(2, '0')}:${timestamp.minute.toString().padLeft(2, '0')}";
+  } else {
+    // Other days - show date and time
+    return "${timestamp.day}/${timestamp.month} ${timestamp.hour.toString().padLeft(2, '0')}:${timestamp.minute.toString().padLeft(2, '0')}";
   }
+}
+
 
   @override
   void dispose() {
