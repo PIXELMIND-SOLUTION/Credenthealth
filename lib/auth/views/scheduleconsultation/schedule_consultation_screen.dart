@@ -1169,28 +1169,28 @@ class _ScheduleConsultationScreenState
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        const Icon(Icons.error_outline,
-                            size: 64, color: Colors.red),
+                        // const Icon(Icons.error_outline,
+                        //     size: 64, color: Colors.red),
                         const SizedBox(height: 16),
                         Text(
-                          'Failed to load categories',
+                          'No categories available',
                           style: TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.w600,
                               color: Colors.grey.shade800),
                         ),
                         const SizedBox(height: 8),
-                        Text(
-                          provider.categoriesError!,
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                              fontSize: 14, color: Colors.grey.shade600),
-                        ),
+                        // Text(
+                        //   provider.categoriesError!,
+                        //   textAlign: TextAlign.center,
+                        //   style: TextStyle(
+                        //       fontSize: 14, color: Colors.grey.shade600),
+                        // ),
                         const SizedBox(height: 16),
-                        ElevatedButton(
-                          onPressed: () => provider.fetchAllCategories(),
-                          child: const Text('Retry'),
-                        ),
+                        // ElevatedButton(
+                        //   onPressed: () => provider.fetchAllCategories(),
+                        //   child: const Text('Retry'),
+                        // ),
                       ],
                     ),
                   ),

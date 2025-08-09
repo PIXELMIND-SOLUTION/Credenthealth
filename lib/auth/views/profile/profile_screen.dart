@@ -189,7 +189,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     ? NetworkImage(_sanitizeImageUrl(
                                         profile!.profileImage))
                                     : const AssetImage(
-                                            'lib/assets/default_avatar.png')
+                                            'lib/assets/chatscreenimage.png')
                                         as ImageProvider,
                               ),
                             ),

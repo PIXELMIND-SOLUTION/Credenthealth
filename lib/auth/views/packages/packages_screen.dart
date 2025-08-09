@@ -3136,7 +3136,7 @@ class _PackagesScreenState extends State<PackagesScreen> {
                   if (package.includedTests.length > 2)
                     TextButton(
                       onPressed: () {
-                        Navigator.push(context, MaterialPageRoute(builder: (context)=>PackageDetailsScreen(packageId: package.id, packageName: package.packageName)));
+                        Navigator.push(context, MaterialPageRoute(builder: (context)=>PackageDetailsScreen(packageId: package.packageId, packageName: package.packageName)));
                       },
                       // onPressed: () => _showAllTests(context, package),
                       style: TextButton.styleFrom(
@@ -3173,7 +3173,7 @@ class _PackagesScreenState extends State<PackagesScreen> {
                           context,
                           MaterialPageRoute(
                               builder: (context) => DiagnosticsScreen(
-                                    packageId: package.id,
+                                    packageId: package.packageId,
                                     amount: package.effectivePrice.toString(),
                                   )));
                     },
