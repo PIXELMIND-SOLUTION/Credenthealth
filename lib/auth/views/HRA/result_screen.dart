@@ -1741,7 +1741,7 @@ class _ResultScreenState extends State<ResultScreen> {
                                             ? _getCombinedPrescriptions(
                                                 hraProvider,
                                                 prescribedCategories)
-                                            : riskMessage, // Show risk message as fallback
+                                            : riskMessage, 
                                         style: const TextStyle(
                                           fontSize: 15,
                                           fontWeight: FontWeight.normal,

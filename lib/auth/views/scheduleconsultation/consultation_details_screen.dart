@@ -1346,7 +1346,7 @@ class _ConsultationDetailsScreenState extends State<ConsultationDetailsScreen> {
                   //     height: 1.4,
                   //   ),
                   // ),
-                  const SizedBox(height: 24),
+                  // const SizedBox(height: 24),
 
                   // Choose Date Section
                   // const Text(

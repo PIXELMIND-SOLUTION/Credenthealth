@@ -1291,8 +1291,8 @@ class _ScheduleConsultationScreenState
 
                             if (specialProvider.error != null) {
                               return Text(
-                                'Error loading special issues: ${specialProvider.error}',
-                                style: TextStyle(color: Colors.red),
+                                'No special Categories added',
+                                style: TextStyle(color: Colors.black),
                               );
                             }
 

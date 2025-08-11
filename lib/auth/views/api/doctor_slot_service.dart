@@ -83,7 +83,7 @@ class DoctorSlotService {
 
       final response = await http.post(url);
       print('seeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeetha${response.body}');
-      
+      print('oiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii${response.body}');
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
         final doctorSlot = DoctorSlot.fromJson(data);

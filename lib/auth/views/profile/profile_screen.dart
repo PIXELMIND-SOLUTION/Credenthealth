@@ -1,5 +1,3 @@
-
-
 import 'package:consultation_app/Helper/auth_preference.dart';
 import 'package:consultation_app/auth/login_screen.dart';
 import 'package:consultation_app/auth/views/address/address_list.dart';
@@ -123,11 +121,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   String _sanitizeImageUrl(String url) {
     // Fix double slashes in URL path
-    print("Urlllllllllllllllllllllllllllllllllllllllllllllllllllllllllll: $url");
+    print(
+        "Urlllllllllllllllllllllllllllllllllllllllllllllllllllllllllll: $url");
     final sanitizedUrl = url.replaceAll(RegExp(r'(?<!:)//'), '/');
     return ("http://31.97.206.144:4051$sanitizedUrl");
   }
-
 
   void _navigateToLogin() {
     Navigator.of(context).pushAndRemoveUntil(
@@ -145,7 +143,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       appBar: AppBar(
         automaticallyImplyLeading: false,
         backgroundColor: Colors.white,
-         surfaceTintColor: Colors.white,
+        surfaceTintColor: Colors.white,
         elevation: 0,
         title: const Text(
           'Menu',
@@ -323,8 +321,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       },
                     ),
 
-
-                  _MenuItem(
+                    _MenuItem(
                       icon: Icons.notifications,
                       iconBg: const Color.fromARGB(255, 224, 146, 218),
                       iconColor: const Color.fromARGB(136, 7, 5, 5),
@@ -411,3 +408,4 @@ class _MenuItem extends StatelessWidget {
     );
   }
 }
+
