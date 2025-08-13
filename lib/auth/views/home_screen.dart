@@ -19,6 +19,7 @@ import 'package:consultation_app/auth/views/scheduleconsultation/schedule_consul
 import 'package:consultation_app/auth/views/scheduleconsultation/doctor_schedule_screen.dart';
 import 'package:consultation_app/auth/views/steptracker/step_tracker_screen.dart';
 import 'package:consultation_app/auth/views/wallet/wallet_screen.dart';
+import 'package:consultation_app/auth/views/widgets/tracker_animation.dart';
 import 'package:consultation_app/bookonlinedoctor/book_online_consultation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -143,7 +144,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                'Book Clinic Visit',
+                                'Visit Clinic',
                                 style: TextStyle(
                                   fontSize: 16,
                                   fontWeight: FontWeight.w600,
@@ -229,7 +230,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                'Book Online Consultation',
+                                'Virtual Consultation',
                                 style: TextStyle(
                                   fontSize: 16,
                                   fontWeight: FontWeight.w600,
@@ -617,17 +618,99 @@ class _HomeScreenState extends State<HomeScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const SizedBox(height: 16),
-            // TextField(
-            //   decoration: InputDecoration(
-            //     hintText: 'Search',
-            //     prefixIcon: const Icon(Icons.search),
-            //     suffixIcon: const Icon(Icons.tune),
-            //     border: OutlineInputBorder(
-            //       borderRadius: BorderRadius.circular(12.0),
+            // Consumer<TrackerProvider>(
+            //     builder: (context, trackerProvider, child) {
+            //   return Card(
+            //     color: Colors.white,
+            //     elevation: 2,
+            //     shape: RoundedRectangleBorder(
+            //         borderRadius: BorderRadius.circular(12)),
+            //     child: Padding(
+            //       padding: const EdgeInsets.all(16.0),
+            //       child: Column(
+            //         children: [
+            //           Row(
+            //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //             children: [
+            //               const Text(
+            //                 'Today',
+            //                 style: TextStyle(fontWeight: FontWeight.bold),
+            //               ),
+            //               GestureDetector(
+            //                 onTap: () {
+            //                   Navigator.push(
+            //                     context,
+            //                     MaterialPageRoute(
+            //                       builder: (context) =>
+            //                           const StepTrackerScreen(),
+            //                     ),
+            //                   );
+            //                 },
+            //                 child: const Row(
+            //                   children: [
+            //                     Text(
+            //                       'View Details',
+            //                       style: TextStyle(
+            //                         color: Colors.black,
+            //                         fontWeight: FontWeight.bold,
+            //                       ),
+            //                     ),
+            //                     SizedBox(width: 4),
+            //                     Icon(
+            //                       Icons.arrow_forward_ios,
+            //                       size: 17,
+            //                     ),
+            //                   ],
+            //                 ),
+            //               ),
+            //             ],
+            //           ),
+            //           const SizedBox(height: 16),
+            //           if (trackerProvider.isLoading) ...[
+            //             const SizedBox(
+            //               height: 100,
+            //               child: Center(
+            //                 child: CircularProgressIndicator(),
+            //               ),
+            //             ),
+            //           ] else
+            //             ...[],
+            //           Stack(
+            //             alignment: Alignment.center,
+            //             children: [
+            //               SizedBox(
+            //                 height: 100,
+            //                 width: 100,
+            //                 child: CircularProgressIndicator(
+            //                   value: trackerProvider.progressPercentage
+            //                       .clamp(0.0, 1.0),
+            //                   strokeWidth: 8,
+            //                   backgroundColor: Colors.grey.shade200,
+            //                   valueColor: const AlwaysStoppedAnimation<Color>(
+            //                       Color.fromARGB(255, 44, 33, 243)),
+            //                 ),
+            //               ),
+            //               Column(
+            //                 mainAxisAlignment: MainAxisAlignment.center,
+            //                 children: [
+            //                   const Icon(Icons.directions_walk, size: 24),
+            //                   const SizedBox(height: 4),
+            //                   Text(
+            //                     '${trackerProvider.currentSteps}',
+            //                     style: const TextStyle(
+            //                         fontWeight: FontWeight.bold),
+            //                   ),
+            //                   const Text('Steps'),
+            //                 ],
+            //               )
+            //             ],
+            //           ),
+            //         ],
+            //       ),
             //     ),
-            //   ),
+            //   );
+            // }
             // ),
-            const SizedBox(height: 16),
             Consumer<TrackerProvider>(
                 builder: (context, trackerProvider, child) {
               return Card(
@@ -675,36 +758,6 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                         ],
                       ),
-
-                      // Row(
-                      //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      //   children: [
-                      //     const Text('Today',
-                      //         style: TextStyle(fontWeight: FontWeight.bold)),
-                      //     // const SizedBox(
-                      //     //   width: 140,
-                      //     // ),
-                      //     GestureDetector(
-                      //       onTap: () {
-                      //         Navigator.push(
-                      //             context,
-                      //             MaterialPageRoute(
-                      //                 builder: (context) =>
-                      //                     const StepTrackerScreen()));
-                      //       },
-                      //       child: const Text('View Details',
-                      //           style: TextStyle(
-                      //               color: Colors.black,
-                      //               fontWeight: FontWeight.bold)
-                      //               ),
-
-                      //     ),
-                      //     const Icon(
-                      //       Icons.arrow_forward_ios,
-                      //       size: 17,
-                      //     )
-                      //   ],
-                      // ),
                       const SizedBox(height: 16),
                       if (trackerProvider.isLoading) ...[
                         const SizedBox(
@@ -713,78 +766,46 @@ class _HomeScreenState extends State<HomeScreen> {
                             child: CircularProgressIndicator(),
                           ),
                         ),
-                      ] else if (trackerProvider.errorMessage.isNotEmpty) ...[
-                        SizedBox(
-                          height: 100,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              // const Icon(
-                              //   Icons.error_outline,
-                              //   color: Colors.red,
-                              //   size: 32,
-                              // ),
-                              const SizedBox(height: 8),
-                              // Text(
-                              //   trackerProvider.errorMessage,
-                              //   textAlign: TextAlign.center,
-                              //   style: const TextStyle(
-                              //     color: Colors.red,
-                              //     fontSize: 12,
-                              //   ),
-                              // ),
-                              const SizedBox(height: 8),
-                              // ElevatedButton(
-                              //   onPressed: () {
-                              //     trackerProvider.refreshData();
-                              //   },
-                              //   style: ElevatedButton.styleFrom(
-                              //     backgroundColor: Colors.blue,
-                              //     padding: const EdgeInsets.symmetric(
-                              //       horizontal: 16,
-                              //       vertical: 8,
-                              //     ),
-                              //   ),
-                              //   child: const Text(
-                              //     'Retry',
-                              //     style: TextStyle(color: Colors.white),
-                              //   ),
-                              // ),
-                            ],
-                          ),
-                        ),
-                      ] else
-                        ...[],
-                      Stack(
-                        alignment: Alignment.center,
-                        children: [
-                          SizedBox(
-                            height: 100,
-                            width: 100,
-                            child: CircularProgressIndicator(
-                              value: trackerProvider.progressPercentage
-                                  .clamp(0.0, 1.0),
-                              strokeWidth: 8,
-                              backgroundColor: Colors.grey.shade200,
-                              valueColor: const AlwaysStoppedAnimation<Color>(
-                                  Color.fromARGB(255, 44, 33, 243)),
-                            ),
-                          ),
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              const Icon(Icons.directions_walk, size: 24),
-                              const SizedBox(height: 4),
-                              Text(
-                                '${trackerProvider.currentSteps}',
-                                style: const TextStyle(
-                                    fontWeight: FontWeight.bold),
+                      ] else ...[
+                        Stack(
+                          alignment: Alignment.center,
+                          children: [
+                            SizedBox(
+                              height: 100,
+                              width: 100,
+                              child: CircularProgressIndicator(
+                                value: trackerProvider.progressPercentage
+                                    .clamp(0.0, 1.0),
+                                strokeWidth: 8,
+                                backgroundColor: Colors.grey.shade200,
+                                valueColor: const AlwaysStoppedAnimation<Color>(
+                                    Color.fromARGB(255, 44, 33, 243)),
                               ),
-                              const Text('Steps'),
-                            ],
-                          )
-                        ],
-                      ),
+                            ),
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                // Use the animated walking widget when user is walking
+                                WalkingLegAnimation(
+                                  isWalking: trackerProvider.isWalking,
+                                  activeColor: Colors.green,
+                                  size: 24,
+                                  walkingSpeed: Duration(
+                                      milliseconds:
+                                          400), // Optional: adjust speed
+                                ),
+                                const SizedBox(height: 4),
+                                Text(
+                                  '${trackerProvider.currentSteps}',
+                                  style: const TextStyle(
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                const Text('Steps'),
+                              ],
+                            )
+                          ],
+                        ),
+                      ],
                     ],
                   ),
                 ),
@@ -1901,7 +1922,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                       Row(
                                         children: [
                                           Container(
-                                            padding:const EdgeInsets.symmetric(
+                                            padding: const EdgeInsets.symmetric(
                                                 horizontal: 8, vertical: 2),
                                             decoration: BoxDecoration(
                                               borderRadius:
@@ -1909,15 +1930,15 @@ class _HomeScreenState extends State<HomeScreen> {
                                             ),
                                             child: Text(
                                               booking.status,
-                                              style:const TextStyle(
+                                              style: const TextStyle(
                                                 fontSize: 10,
                                                 fontWeight: FontWeight.w500,
                                               ),
                                             ),
                                           ),
-                                        const  SizedBox(width: 8),
+                                          const SizedBox(width: 8),
                                           Container(
-                                            padding:const EdgeInsets.symmetric(
+                                            padding: const EdgeInsets.symmetric(
                                                 horizontal: 8, vertical: 2),
                                             decoration: BoxDecoration(
                                               color:
@@ -1927,7 +1948,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                             ),
                                             child: Text(
                                               booking.type,
-                                              style:const TextStyle(
+                                              style: const TextStyle(
                                                 fontSize: 10,
                                                 color: Colors.blue,
                                                 fontWeight: FontWeight.w500,
@@ -1968,7 +1989,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: [
-                                 const   SizedBox(
+                                    const SizedBox(
                                       height: 20,
                                     ),
                                     if (booking.meetingLink.isNotEmpty &&

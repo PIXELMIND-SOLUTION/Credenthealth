@@ -3393,7 +3393,7 @@ class _StepTrackerScreenState extends State<StepTrackerScreen>
           onPressed: () => Navigator.pop(context),
         ),
         title: const Text(
-          'Activity tracker',
+          'Track Your Activity',
           style: TextStyle(
             color: Colors.black,
             fontSize: 20,

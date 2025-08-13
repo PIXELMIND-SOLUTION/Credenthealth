@@ -33,8 +33,10 @@ class AddressService {
         body: jsonEncode(address.toJson()),
       );
 
+      print('Create Address Body: ${address.toJson()}');
+
       print('Create Address Response: ${response.statusCode}');
-      print('Create Address Body: ${response.body}');
+      print('Create Address Response Body: ${response.body}');
 
       if (response.statusCode == 200 || response.statusCode == 201) {
         final responseData = jsonDecode(response.body);
@@ -239,6 +241,9 @@ static Future<Map<String, dynamic>> getAllAddresses() async {
   static Future<Map<String, dynamic>> removeAddress(String addressId) async {
     try {
       final staffId = await SharedPrefsHelper.getStaffIdWithFallback();
+            print("Staff ID In Address Delete: $staffId");
+      print("Address ID In Address Delete: $addressId");
+
       
       if (staffId.isEmpty) {
         return {

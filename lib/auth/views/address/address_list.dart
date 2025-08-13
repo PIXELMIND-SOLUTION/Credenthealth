@@ -1,145 +1,4 @@
 
-// import 'package:flutter/material.dart';
-
-// class AddressList extends StatelessWidget {
-//   const AddressList({super.key});
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       backgroundColor: Colors.grey[50],
-//       appBar: AppBar(
-//         backgroundColor: Colors.white,
-//         elevation: 1,
-//         leading: IconButton(
-//           icon: const Icon(Icons.arrow_back, color: Colors.black),
-//           onPressed: () => Navigator.pop(context),
-//         ),
-//         title: const Text(
-//           'Addresses',
-//           style: TextStyle(
-//             color: Colors.black,
-//             fontSize: 20,
-//             fontWeight: FontWeight.bold,
-//           ),
-//         ),
-//         centerTitle: true,
-//       ),
-//       body: Padding(
-//         padding: const EdgeInsets.all(16.0),
-//         child: Column(
-//           children: [
-//             // Add Address Button
-//             Container(
-//               width: double.infinity,
-//               height: 50,
-//               child: ElevatedButton(
-//                 onPressed: () {
-                  
-//                 },
-//                 style: ElevatedButton.styleFrom(
-//                   backgroundColor: const Color.fromARGB(255, 33, 65, 243),
-//                   shape: RoundedRectangleBorder(
-//                     borderRadius: BorderRadius.circular(8),
-//                   ),
-//                   elevation: 0,
-//                 ),
-//                 child: const Row(
-//                   mainAxisAlignment: MainAxisAlignment.center,
-//                   children: [
-//                     Icon(
-//                       Icons.add,
-//                       color: Colors.white,
-//                       size: 20,
-//                     ),
-//                     SizedBox(width: 8),
-//                     Text(
-//                       'Add address',
-//                       style: TextStyle(
-//                         color: Colors.white,
-//                         fontSize: 16,
-//                         fontWeight: FontWeight.w500,
-//                       ),
-//                     ),
-//                   ],
-//                 ),
-//               ),
-//             ),
-//             const SizedBox(height: 20),
-//             // Address Card
-//             GestureDetector(
-//               onTap: () {
-//                 // Navigator.push(context, MaterialPageRoute(builder: (context)=>SupportScreen()));
-//               },
-//               child: Container(
-//                 width: double.infinity,
-//                 decoration: BoxDecoration(
-//                   border: Border.all(),
-//                   color: Colors.white,
-//                   borderRadius: BorderRadius.circular(12),
-//                   boxShadow: [
-//                     BoxShadow(
-//                       color: Colors.grey.withOpacity(0.1),
-//                       spreadRadius: 1,
-//                       blurRadius: 4,
-//                       offset: const Offset(0, 2),
-//                     ),
-//                   ],
-//                 ),
-//                 child: Padding(
-//                   padding: const EdgeInsets.all(16.0),
-//                   child: Row(
-//                     crossAxisAlignment: CrossAxisAlignment.start,
-//                     children: [
-//                       // Location Icon
-//                       Container(
-//                         margin: const EdgeInsets.only(top: 2),
-//                         child: const Icon(
-//                           Icons.location_on,
-//                           color: Colors.black54,
-//                           size: 20,
-//                         ),
-//                       ),
-//                       const SizedBox(width: 12),
-//                       // Address Details
-//                       Expanded(
-//                         child: Column(
-//                           crossAxisAlignment: CrossAxisAlignment.start,
-//                           children: [
-//                             const Text(
-//                               'Hostel',
-//                               style: TextStyle(
-//                                 color: Colors.black,
-//                                 fontSize: 16,
-//                                 fontWeight: FontWeight.w600,
-//                               ),
-//                             ),
-//                             const SizedBox(height: 4),
-//                             Text(
-//                               '542, top floor, Addagutta society, western hills,\nKukatpally, Hyderabad',
-//                               style: TextStyle(
-//                                 color: Colors.black,
-//                                 fontSize: 14,
-//                                 fontWeight: FontWeight.w400,
-//                                 height: 1.4,
-//                               ),
-//                             ),
-//                           ],
-//                         ),
-//                       ),
-//                     ],
-//                   ),
-//                 ),
-//               ),
-//             ),
-//           ],
-//         ),
-//       ),
-//     );
-//   }
-// }
-
-
 
 import 'package:consultation_app/auth/views/address/add_address.dart';
 import 'package:consultation_app/auth/views/provider/address_provider.dart';
@@ -355,15 +214,18 @@ class _AddressListState extends State<AddressList> {
       child: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             // Location Icon
-            Container(
-              margin: const EdgeInsets.only(top: 2),
-              child: const Icon(
-                Icons.location_on,
-                color: Colors.black54,
-                size: 20,
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Container(
+                margin: const EdgeInsets.only(top: 2),
+                child: const Icon(
+                  Icons.location_on_outlined,
+                  color: Colors.black54,
+                  size: 30,
+                ),
               ),
             ),
             const SizedBox(width: 12),
@@ -432,7 +294,8 @@ class _AddressListState extends State<AddressList> {
                   ),
                   const SizedBox(height: 4),
                   Text(
-                    address.fullAddress,
+                    textAlign: TextAlign.justify,
+                    address.street,
                     style: const TextStyle(
                       color: Colors.black,
                       fontSize: 14,

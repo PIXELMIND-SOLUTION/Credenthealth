@@ -529,10 +529,11 @@ class _ConsultationDetailsScreenState extends State<OnlineScreen> {
   }
 
   String _formatDayForApi(DateTime date) {
-    // Example: Monday, 19-07-2025
+    // Example: Monday
     final dayName = DateFormat('EEEE').format(date); // Monday, Tuesday, etc.
-    final dateFormatted = DateFormat('dd-MM-yyyy').format(date); // 19-07-2025
-    return ('$dayName').toLowerCase();
+    final formattedDay =
+        dayName[0].toUpperCase() + dayName.substring(1).toLowerCase();
+    return formattedDay;
   }
 
   // String _formatDateForApi(DateTime date) {
@@ -1836,60 +1837,65 @@ class _ConsultationDetailsScreenState extends State<OnlineScreen> {
                       }
 
                       return GridView.builder(
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        itemCount: slots.length,
-                        gridDelegate:
-                            const SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2,
-                          mainAxisSpacing: 12,
-                          crossAxisSpacing: 12,
-                          childAspectRatio: 3,
-                        ),
-                        itemBuilder: (context, index) {
-                          final slot = slots[index];
-                          final isSelected = selectedTime == slot.time;
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          itemCount: slots.length,
+                          gridDelegate:
+                              const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2,
+                            mainAxisSpacing: 12,
+                            crossAxisSpacing: 12,
+                            childAspectRatio: 3,
+                          ),
+                          itemBuilder: (context, index) {
+                            final slot = slots[index];
+                            final isSelected = selectedTime == slot.time;
 
-                          return GestureDetector(
-                            onTap: slot.isBooked
-                                ? null
-                                : () {
-                                    setState(() {
-                                      selectedTime = slot.time;
-                                    });
-                                  },
-                            child: Container(
-                              decoration: BoxDecoration(
-                                color: slot.isBooked
-                                    ? Colors.grey[300]
-                                    : isSelected
-                                        ? Colors.blue
-                                        : Colors.grey[100],
-                                borderRadius: BorderRadius.circular(8),
-                                border: slot.isBooked
-                                    ? Border.all(color: Colors.grey)
-                                    : null,
-                              ),
-                              child: Center(
-                                child: Text(
-                                  slot.isBooked
-                                      ? "${slot.time}\nNot Available"
-                                      : slot.time,
-                                  style: TextStyle(
-                                    color: slot.isBooked
-                                        ? Colors.grey
-                                        : isSelected
-                                            ? Colors.white
-                                            : Colors.black,
+                            return GestureDetector(
+                              onTap: (slot.isBooked ||
+                                      slot.isExpired) // disable both booked & expired
+                                  ? null
+                                  : () {
+                                      setState(() {
+                                        selectedTime = slot.time;
+                                      });
+                                    },
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color: slot.isExpired
+                                      ?  Colors.grey[300]
+                                      : slot.isBooked
+                                          ? Colors.grey[300]
+                                          : isSelected
+                                              ? Colors.blue
+                                              : Colors.grey[100],
+                                  borderRadius: BorderRadius.circular(8),
+                                  border: (slot.isBooked || slot.isExpired)
+                                      ? Border.all(color: const Color.fromARGB(255, 198, 198, 198))
+                                      : null,
+                                ),
+                                child: Center(
+                                  child: Text(
+                                    slot.isExpired
+                                        ? "${slot.time}\nExpired"
+                                        : slot.isBooked
+                                            ? "${slot.time}\nNot Available"
+                                            : slot.time,
+                                    style: TextStyle(
+                                      color: slot.isExpired
+                                          ? const Color.fromARGB(255, 0, 0, 0)
+                                          : slot.isBooked
+                                              ? Colors.grey
+                                              : isSelected
+                                                  ? Colors.white
+                                                  : Colors.black,
+                                    ),
+                                    textAlign: TextAlign.center,
                                   ),
-                                  textAlign: TextAlign
-                                      .center, // center-align for multiline
                                 ),
                               ),
-                            ),
-                          );
-                        },
-                      );
+                            );
+                          });
                     },
                   ),
 

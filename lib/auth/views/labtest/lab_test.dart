@@ -728,7 +728,7 @@ class _LabTestState extends State<LabTest> {
                   const Spacer(),
                   // Fixed the cart button logic
                   if (isInCart && cartItem != null) ...[
-                    Text('Item is already in cart')
+                    Text('Added to cart')
                     // Container(
                     //   decoration: BoxDecoration(
                     //     border: Border.all(color: Colors.grey[300]!),

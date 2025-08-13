@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:consultation_app/auth/views/provider/chat_provider.dart';
+import 'package:consultation_app/auth/views/provider/profile_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:gal/gal.dart';
 import 'package:path_provider/path_provider.dart';
@@ -518,6 +519,9 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
   }
 
   Widget _buildMessageBubble(ChatMessage message, bool isCurrentUser) {
+        final profileProvider = Provider.of<ProfileUpdateProvider>(context);
+    final profile = profileProvider.profile;
+
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 4),
       child: Row(
@@ -631,14 +635,29 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
           ),
           if (isCurrentUser) ...[
             const SizedBox(width: 8),
+            // CircleAvatar(
+            //   backgroundImage: AssetImage("lib/assets/chatscreenimage.png"),
+            //   radius: 16,
+            // ),
             CircleAvatar(
-              backgroundImage: AssetImage("lib/assets/chatscreenimage.png"),
-              radius: 16,
+              radius: 15,
+              backgroundImage: profile?.profileImage != null
+                  ? NetworkImage(_sanitizeImageUrl(profile!.profileImage))
+                  : const AssetImage('lib/assets/chatscreenimage.png')
+                      as ImageProvider,
             ),
           ],
         ],
       ),
     );
+  }
+
+    String _sanitizeImageUrl(String url) {
+    // Fix double slashes in URL path
+    print(
+        "Urlllllllllllllllllllllllllllllllllllllllllllllllllllllllllll: $url");
+    final sanitizedUrl = url.replaceAll(RegExp(r'(?<!:)//'), '/');
+    return ("http://31.97.206.144:4051$sanitizedUrl");
   }
 
   @override
@@ -712,7 +731,7 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
                     CircleAvatar(
                       radius: 20, // Adjust radius as needed
                       backgroundColor:
-                          Colors.grey.shade200, // Optional background color
+                          const Color.fromARGB(255, 184, 184, 184), // Optional background color
                       child: ClipOval(
                         child: widget.selectedDoctor!.image.isNotEmpty
                             ? Image.network(

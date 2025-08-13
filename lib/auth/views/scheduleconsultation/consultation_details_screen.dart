@@ -2141,56 +2141,71 @@ class _ConsultationDetailsScreenState extends State<ConsultationDetailsScreen> {
                       }
 
                       return GridView.builder(
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        itemCount: slots.length,
-                        gridDelegate:
-                            const SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2,
-                          mainAxisSpacing: 12,
-                          crossAxisSpacing: 12,
-                          childAspectRatio: 3,
-                        ),
-                        itemBuilder: (context, index) {
-                          final slot = slots[index];
-                          final isSelected = selectedTime == slot.time;
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          itemCount: slots.length,
+                          gridDelegate:
+                              const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2,
+                            mainAxisSpacing: 12,
+                            crossAxisSpacing: 12,
+                            childAspectRatio: 3,
+                          ),
+                          itemBuilder: (context, index) {
+                            final slot = slots[index];
+                            final isSelected = selectedTime == slot.time;
 
-                          return GestureDetector(
-                            onTap: slot.isBooked
-                                ? null
-                                : () {
-                                    setState(() {
-                                      selectedTime = slot.time;
-                                    });
-                                  },
-                            child: Container(
-                              decoration: BoxDecoration(
-                                color: slot.isBooked
-                                    ? Colors.grey[300]
-                                    : isSelected
-                                        ? Colors.blue
-                                        : Colors.grey[100],
-                                borderRadius: BorderRadius.circular(8),
-                                border: slot.isBooked
-                                    ? Border.all(color: Colors.grey)
-                                    : null,
-                              ),
-                              child: Center(
-                                child: Text(
-                                  slot.time,
-                                  style: TextStyle(
-                                    color: slot.isBooked
-                                        ? Colors.grey
-                                        : isSelected
-                                            ? Colors.white
-                                            : Colors.black,
+                            final bool isBooked = slot.isBooked;
+                            final bool isExpired =
+                                slot.isExpired; // <-- new field
+
+                            Color bgColor;
+                            Color textColor;
+                            String displayText;
+
+                            if (isExpired) {
+                              bgColor = Colors.grey[300]!;
+                              textColor = const Color.fromARGB(255, 0, 0, 0);
+                              displayText = "${slot.time}\nExpired";
+                            } else if (isBooked) {
+                              bgColor = Colors.grey[300]!;
+                              textColor = Colors.grey;
+                              displayText = slot.time;
+                            } else if (isSelected) {
+                              bgColor = Colors.blue;
+                              textColor = Colors.white;
+                              displayText = slot.time;
+                            } else {
+                              bgColor = Colors.grey[100]!;
+                              textColor = Colors.black;
+                              displayText = slot.time;
+                            }
+
+                            return GestureDetector(
+                              onTap: (isBooked || isExpired)
+                                  ? null
+                                  : () {
+                                      setState(() {
+                                        selectedTime = slot.time;
+                                      });
+                                    },
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color: bgColor,
+                                  borderRadius: BorderRadius.circular(8),
+                                  border: (isBooked || isExpired)
+                                      ? Border.all(color: const Color.fromARGB(255, 207, 207, 207))
+                                      : null,
+                                ),
+                                child: Center(
+                                  child: Text(
+                                    displayText,
+                                    style: TextStyle(color: textColor),
                                   ),
                                 ),
                               ),
-                            ),
-                          );
-                        },
-                      );
+                            );
+                          });
                     },
                   ),
 

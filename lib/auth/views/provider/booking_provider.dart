@@ -507,7 +507,8 @@ class BookingProvider extends ChangeNotifier {
     String? packageId,
     String? familyMemberId,
     String? serviceType,
-    String? transactionId
+    String? transactionId,
+    String? addressId
   }) async {
     try {
       _isCreatingBooking = true;
@@ -558,7 +559,8 @@ class BookingProvider extends ChangeNotifier {
         date: selectedDate,
         timeSlot: selectedTime,
         packageId: finalPackageId,
-        transactionId: transactionId
+        transactionId: transactionId,
+        addressId: addressId
       );
       
       _isCreatingBooking = false;
@@ -568,8 +570,11 @@ class BookingProvider extends ChangeNotifier {
         notifyListeners();
         return result;
       } else {
+                  print("kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkyyyyyyyyyyyyyyyyyyyyyyyyy${result['isSuccesfull']}");
+
         // Update provider state with payment info if available
         if (result['data'] != null && result['data']['isSuccessfull'] == false) {
+          print("kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk");
           _requiresPayment = true;
           _walletAvailable = (result['data']['walletAvailable'] ?? 0).toDouble();
           _requiredOnline = (result['data']['requiredOnline'] ?? 0).toDouble();

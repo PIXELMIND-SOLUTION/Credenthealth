@@ -193,6 +193,7 @@ class CreateBookingService {
     required String date,
     required String timeSlot,
     String? transactionId,
+    String? addressId
   }) async {
     try {
 
@@ -209,7 +210,8 @@ class CreateBookingService {
         'serviceType': serviceType,
         'date': date,
         'timeSlot': timeSlot,
-        'transactionId': transactionId
+        'transactionId': transactionId,
+        'addressId': addressId
       };
 
       // Add transaction ID if provided
@@ -283,6 +285,7 @@ class CreateBookingService {
     required String date,
     required String timeSlot,
     String? transactionId,
+    String? addressId
   }) async {
     try {
       final url = Uri.parse('${baseUrl}api/staff/package-bookings/$staffId');
@@ -298,7 +301,8 @@ class CreateBookingService {
         'serviceType': serviceType,
         'date': date,
         'timeSlot': timeSlot,
-        'transactionId': transactionId
+        'transactionId': transactionId,
+        'addressId':addressId
       };
 
           print("kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk   $bodyData");
@@ -322,10 +326,13 @@ class CreateBookingService {
       );
 
       print('📊 Response Status: ${response.statusCode}');
-      print('📊 Response Body: ${response.body}');
+      print('📊 Response Bodyyyyyyyyyyyy: ${response.body}');
+              final responseData = jsonDecode(response.body);
+
 
       if (response.statusCode == 200 || response.statusCode == 201) {
-        final responseData = jsonDecode(response.body);
+                  print("gggggggggggggggggggggggggggggggggggggggggggggg${responseData['isSuccessfull']}");
+
         
         // Check if the response indicates success or payment required
         if (responseData['isSuccessfull'] == true) {
@@ -335,6 +342,7 @@ class CreateBookingService {
             'message': responseData['message'] ?? 'Package booking created successfully',
           };
         } else {
+          print("hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh${responseData['isSuccessfull']}");
           // Payment required scenario
           return {
             'success': false,
@@ -343,12 +351,11 @@ class CreateBookingService {
           };
         }
       } else {
-        final errorData = jsonDecode(response.body);
-        return {
-          'success': false,
-          'error': errorData['message'] ?? 'Failed to create package booking',
-          'statusCode': response.statusCode,
-        };
+          return {
+            'success': false,
+            'data': responseData,
+            'error': responseData['message'] ?? 'Payment required',
+          };
       }
     } catch (e) {
       print('❌ Error creating package booking: $e');
@@ -368,7 +375,8 @@ class CreateBookingService {
     required String date,
     required String timeSlot,
     String? packageId, // Optional for package bookings
-    String? transactionId
+    String? transactionId,
+    String? addressId
   }) async {
     if (packageId != null && packageId.isNotEmpty) {
       // Create package booking
@@ -380,7 +388,8 @@ class CreateBookingService {
         serviceType: serviceType,
         date: date,
         timeSlot: timeSlot,
-        transactionId: transactionId
+        transactionId: transactionId,
+        addressId: addressId
       );
     } else {
       // Create diagnostic booking
@@ -391,7 +400,8 @@ class CreateBookingService {
         serviceType: serviceType,
         date: date,
         timeSlot: timeSlot,
-        transactionId: transactionId
+        transactionId: transactionId,
+        addressId: addressId
       );
     }
   }

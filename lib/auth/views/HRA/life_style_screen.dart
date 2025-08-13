@@ -62,56 +62,56 @@ class _LifeStyleScreenState extends State<LifeStyleScreen> {
           }
 
           // Error state
-          if (hraProvider.hasError) {
-            return Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(
-                    Icons.error_outline,
-                    size: 64,
-                    color: Colors.red[400],
-                  ),
-                  const SizedBox(height: 16),
-                  Text(
-                    'Error loading HRAs',
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.grey[700],
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    hraProvider.errorMessage,
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: Colors.grey[600],
-                    ),
-                  ),
-                  const SizedBox(height: 24),
-                  ElevatedButton(
-                    onPressed: () {
-                      hraProvider.fetchAllHras();
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.blue[500],
-                      foregroundColor: Colors.white,
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 24,
-                        vertical: 12,
-                      ),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                    ),
-                    child: const Text('Retry'),
-                  ),
-                ],
-              ),
-            );
-          }
+          // if (hraProvider.hasError) {
+          //   return Center(
+          //     child: Column(
+          //       mainAxisAlignment: MainAxisAlignment.center,
+          //       children: [
+          //         Icon(
+          //           Icons.error_outline,
+          //           size: 64,
+          //           color: Colors.red[400],
+          //         ),
+          //         const SizedBox(height: 16),
+          //         Text(
+          //           'Error loading HRAs',
+          //           style: TextStyle(
+          //             fontSize: 18,
+          //             fontWeight: FontWeight.w600,
+          //             color: Colors.grey[700],
+          //           ),
+          //         ),
+          //         const SizedBox(height: 8),
+          //         Text(
+          //           hraProvider.errorMessage,
+          //           textAlign: TextAlign.center,
+          //           style: TextStyle(
+          //             fontSize: 14,
+          //             color: Colors.grey[600],
+          //           ),
+          //         ),
+          //         const SizedBox(height: 24),
+          //         ElevatedButton(
+          //           onPressed: () {
+          //             hraProvider.fetchAllHras();
+          //           },
+          //           style: ElevatedButton.styleFrom(
+          //             backgroundColor: Colors.blue[500],
+          //             foregroundColor: Colors.white,
+          //             padding: const EdgeInsets.symmetric(
+          //               horizontal: 24,
+          //               vertical: 12,
+          //             ),
+          //             shape: RoundedRectangleBorder(
+          //               borderRadius: BorderRadius.circular(8),
+          //             ),
+          //           ),
+          //           child: const Text('Retry'),
+          //         ),
+          //       ],
+          //     ),
+          //   );
+          // }
 
           // No data state
           if (!hraProvider.hasData) {

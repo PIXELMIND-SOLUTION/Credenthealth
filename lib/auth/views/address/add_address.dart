@@ -1,3 +1,4 @@
+
 // import 'package:consultation_app/auth/views/provider/address_provider.dart';
 // import 'package:consultation_app/model/address_model.dart';
 // import 'package:flutter/material.dart';
@@ -25,7 +26,7 @@
 //   late TextEditingController _postalCodeController;
   
 //   String _selectedAddressType = 'Home';
-//   final List<String> _addressTypes = ['Home', 'Work', 'Hostel', 'Other'];
+//   final List<String> _addressTypes = ['Home', 'Work', 'Office', 'Other'];
   
 //   bool _isLoading = false;
   
@@ -336,18 +337,35 @@
 //         addressType: _selectedAddressType,
 //       );
       
+//       print('Saving address: ${address.toJson()}'); // Debug print
+      
+//       bool success;
 //       if (widget.address != null) {
 //         // Update existing address
-//         await addressProvider.updateAddress(widget.address!.id!, address);
+//         success = await addressProvider.updateAddress(widget.address!.id!, address);
 //       } else {
 //         // Add new address
-//         await addressProvider.addAddress(address);
+//         success = await addressProvider.addAddress(address);
 //       }
       
+//       print('Save operation success: $success'); // Debug print
+      
 //       if (mounted) {
-//         Navigator.pop(context, true); // Return true to indicate success
+//         if (success) {
+//           Navigator.pop(context, true); // Return true to indicate success
+//         } else {
+//           ScaffoldMessenger.of(context).showSnackBar(
+//             SnackBar(
+//               content: Text(addressProvider.errorMessage.isNotEmpty 
+//                   ? addressProvider.errorMessage 
+//                   : 'Failed to save address'),
+//               backgroundColor: Colors.red,
+//             ),
+//           );
+//         }
 //       }
 //     } catch (e) {
+//       print('Exception in _saveAddress: $e'); // Debug print
 //       if (mounted) {
 //         ScaffoldMessenger.of(context).showSnackBar(
 //           SnackBar(
@@ -376,13 +394,24 @@
 
 
 
+
+
+
+
+
+
+
+
+
+import 'package:consultation_app/Helper/address_utils.dart';
+import 'package:consultation_app/auth/views/address/location_picker.dart';
 import 'package:consultation_app/auth/views/provider/address_provider.dart';
 import 'package:consultation_app/model/address_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-// Import your Address model and AddressProvider
-// import 'address_model.dart';
-// import 'address_provider.dart';
+import 'package:latlong2/latlong.dart';
+// Import your LocationPickerScreen
+// import 'location_picker_screen.dart';
 
 class AddAddress extends StatefulWidget {
   final Address? address; // For editing existing address
@@ -406,6 +435,8 @@ class _AddAddressState extends State<AddAddress> {
   final List<String> _addressTypes = ['Home', 'Work', 'Office', 'Other'];
   
   bool _isLoading = false;
+  String _selectedLocation = 'Tap to choose location';
+  LatLng? _selectedLatLng;
   
   @override
   void initState() {
@@ -420,6 +451,11 @@ class _AddAddressState extends State<AddAddress> {
     
     if (widget.address != null) {
       _selectedAddressType = widget.address!.addressType;
+      // If editing and address has coordinates, set them
+      if (widget.address!.lat != null && widget.address!.lng != null) {
+        _selectedLatLng = LatLng(widget.address!.lat!, widget.address!.lng!);
+        _selectedLocation = widget.address!.fullAddress ?? 'Selected location';
+      }
     }
   }
   
@@ -431,6 +467,59 @@ class _AddAddressState extends State<AddAddress> {
     _countryController.dispose();
     _postalCodeController.dispose();
     super.dispose();
+  }
+
+  Future<void> _openLocationPicker() async {
+    // Navigate to location picker screen
+    final result = await Navigator.push<Map<String, dynamic>>(
+      context,
+      MaterialPageRoute(
+        builder: (context) => LocationPickerScreen(
+          isEditing: widget.address != null,
+          userId: 'current_user_id', // Replace with actual user ID
+        ),
+      ),
+    );
+
+    if (result != null) {
+      final LatLng location = result['location'];
+      final String fullAddress = result['address'];
+      
+      setState(() {
+        _selectedLatLng = location;
+        _selectedLocation = fullAddress;
+      });
+
+      // Parse and auto-fill address fields
+      _parseAndFillAddress(fullAddress);
+    }
+  }
+
+  void _parseAndFillAddress(String fullAddress) {
+    try {
+      // Use the AddressParser utility for better parsing
+      Map<String, String> addressComponents = AddressParser.parseFullAddress(fullAddress);
+      
+      setState(() {
+        _streetController.text = addressComponents['street'] ?? '';
+        _cityController.text = addressComponents['city'] ?? '';
+        _stateController.text = addressComponents['state'] ?? '';
+        _countryController.text = addressComponents['country'] ?? '';
+        _postalCodeController.text = addressComponents['postalCode'] ?? '';
+      });
+    } catch (e) {
+      print('Error parsing address: $e');
+      // Fallback to simple parsing
+      List<String> parts = fullAddress.split(', ');
+      if (parts.isNotEmpty) {
+        setState(() {
+          _streetController.text = parts.first.trim();
+          if (parts.length > 1) _cityController.text = parts[1].trim();
+          if (parts.length > 2) _stateController.text = parts[2].trim();
+          if (parts.length > 3) _countryController.text = parts.last.trim();
+        });
+      }
+    }
   }
   
   @override
@@ -463,6 +552,56 @@ class _AddAddressState extends State<AddAddress> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              // Choose Location Field
+              const Text(
+                'Choose Location',
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
+                  color: Colors.black87,
+                ),
+              ),
+              const SizedBox(height: 8),
+              GestureDetector(
+                onTap: _openLocationPicker,
+                child: Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.all(16),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(8),
+                    border: Border.all(color: Colors.grey.shade300),
+                  ),
+                  child: Row(
+                    children: [
+                      Icon(
+                        Icons.location_on,
+                        color: _selectedLatLng != null ? Colors.orange : Colors.grey,
+                      ),
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: Text(
+                          _selectedLocation,
+                          style: TextStyle(
+                            fontSize: 16,
+                            color: _selectedLatLng != null ? Colors.black87 : Colors.grey[600],
+                          ),
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                      Icon(
+                        Icons.arrow_forward_ios,
+                        size: 16,
+                        color: Colors.grey[400],
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              
+              const SizedBox(height: 20),
+
               // Address Type Dropdown
               const Text(
                 'Address Type',
@@ -712,6 +851,9 @@ class _AddAddressState extends State<AddAddress> {
         country: _countryController.text.trim(),
         postalCode: _postalCodeController.text.trim(),
         addressType: _selectedAddressType,
+        lat: _selectedLatLng?.latitude,
+        lng: _selectedLatLng?.longitude,
+        fullAddress: _selectedLatLng != null ? _selectedLocation : null,
       );
       
       print('Saving address: ${address.toJson()}'); // Debug print

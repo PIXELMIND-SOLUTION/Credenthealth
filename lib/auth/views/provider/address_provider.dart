@@ -107,7 +107,9 @@ class AddressProvider extends ChangeNotifier {
 
   // Remove address
   Future<bool> removeAddress(String addressId) async {
+    print("ggggggggggggggggggggggggggggggggggggggggggggggggggggggg");
     try {
+      print("Provider Address Idddddddddddddddddddddddddddddddddddddddddddddddddddddd: $addressId");
       setLoading(true);
       clearError();
 
