@@ -16,7 +16,7 @@ class HraScreen extends StatelessWidget {
           onPressed: () => Navigator.of(context).pop(),
         ),
         title: const Text(
-          'HRA',
+          'Health Risk Assessment',
           style: TextStyle(
             color: Colors.black,
             fontSize: 18,
@@ -36,7 +36,7 @@ class HraScreen extends StatelessWidget {
               text: const TextSpan(
                 children: [
                   TextSpan(
-                    text: 'Kick-Start Your\n',
+                    text: 'Know Your\n',
                     style: TextStyle(
                       color: Colors.black,
                       fontSize: 28,
@@ -52,7 +52,7 @@ class HraScreen extends StatelessWidget {
                     ),
                   ),
                   TextSpan(
-                    text: 'Snapshot',
+                    text: 'Risk',
                     style: TextStyle(
                       color: Colors.black,
                       fontSize: 28,
@@ -75,7 +75,8 @@ class HraScreen extends StatelessWidget {
             ),
             const SizedBox(height: 8),
             const Text(
-              'A quick, evidence-based questionnaire that spots potential health risks and gives you an instant overview of your current health status.',
+              textAlign: TextAlign.justify,
+              'A quick, evidence-based questionnaire that spots potential health risks and gives you an instant overview of your current health risk.\n\nThese questions guide you to wellness, not fear.',
               style: TextStyle(
                 fontSize: 14,
                 color: Colors.black,
@@ -96,7 +97,7 @@ class HraScreen extends StatelessWidget {
             const SizedBox(height: 12),
             
             // Bullet points
-            _buildBulletPoint('Insight in 5 minutes - snapshot of your current health status.',),
+            _buildBulletPoint('Insight in 5 minutes - snapshot of your current health risk.',),
             const SizedBox(height: 8),
             _buildBulletPoint('Preventive focus - catch early warning signs before they develop.'),
             const SizedBox(height: 8),
@@ -124,7 +125,7 @@ class HraScreen extends StatelessWidget {
                   ),
                   Expanded(
                     child: const Text(
-                      'This is not a medical diagnosis. Your answers stay private and encrypted.',
+                      'This is not a medical diagnosis and is for education purposes. Your answers stay private and will be used for analysis to get you a score.',
                       style: TextStyle(
                         fontSize: 12,
                         color: Colors.black,
@@ -163,6 +164,7 @@ class HraScreen extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w600,
+                    color: Colors.blue
                   ),
                 ),
               ),

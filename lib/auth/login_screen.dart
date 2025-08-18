@@ -403,7 +403,7 @@ class _LoginScreenState extends State<LoginScreen> {
               children: [
                 const Spacer(flex: 2),
                 const Text(
-                  'Welcome!',
+                  'Welcome Back!',
                   style: TextStyle(
                     fontSize: 32,
                     fontWeight: FontWeight.w600,
@@ -412,7 +412,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
                 const SizedBox(height: 8),
                 const Text(
-                  'Please Sign In to Continue',
+                  'Please login with your credentials',
                   style: TextStyle(
                     fontSize: 16,
                     color: Color(0xFF8E8E93),
@@ -619,7 +619,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                     const ForgotPasswordScreen()));
                       },
                       child: const Text(
-                        'Forgot Your Password?',
+                        'Forgot Password? Reset here',
                         style: TextStyle(
                           fontSize: 14,
                           color: Color.fromARGB(255, 34, 34, 34),

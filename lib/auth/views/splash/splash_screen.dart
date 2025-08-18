@@ -162,18 +162,10 @@ class _SplashScreenState extends State<SplashScreen> {
             // Medical Logo Animation
             Animate(
               effects: const [
-                ScaleEffect(duration: Duration(milliseconds: 800)),
-                FadeEffect(duration: Duration(milliseconds: 800)),
+                ScaleEffect(duration: Duration(milliseconds: 400)),
+                FadeEffect(duration: Duration(milliseconds: 400)),
               ],
-              child: CircleAvatar(
-                radius: 50,
-                backgroundColor: Colors.blue.shade100,
-                child: Icon(
-                  Icons.medical_services_outlined,
-                  color: Colors.blue.shade700,
-                  size: 50,
-                ),
-              ),
+              child: Image.asset("lib/assets/logo.png",width: 180, height: 180,),
             ),
 
             const SizedBox(height: 30),
@@ -213,7 +205,7 @@ class _SplashScreenState extends State<SplashScreen> {
                 ),
               ],
               child: const Text(
-                'Your Health, Our Priority',
+                'One platform, Total Wellness',
                 style: TextStyle(
                   fontSize: 16,
                   color: Colors.black54,

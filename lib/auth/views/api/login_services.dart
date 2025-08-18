@@ -105,6 +105,8 @@ class LoginService {
       // Parse the response
       final Map<String, dynamic> responseData = jsonDecode(response.body);
 
+      print("Response Body: ${response.body}");
+
       if (response.statusCode == 200) {
         // Success response - convert to our expected format
         try {

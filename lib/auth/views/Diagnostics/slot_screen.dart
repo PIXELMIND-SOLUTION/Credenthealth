@@ -246,7 +246,8 @@ class _SlotScreenState extends State<SlotScreen> {
     String formattedDate = '${selectedDate['day']}-${selectedDate['date']}';
 
     bookingProvider.setSelectedDate(formattedDate);
-    bookingProvider.setSelectedTime(timeSlots[selectedTimeIndex]);
+    print("Selected Time Index slot value: ${timeSlots[selectedTimeIndex]}");
+    // bookingProvider.setSelectedTime(timeSlots[selectedTimeIndex]);
 
     if (selectedFamilyMember != null) {
       bookingProvider.setSelectedFamilyMember(selectedFamilyMember!.id.toString());
@@ -262,6 +263,8 @@ class _SlotScreenState extends State<SlotScreen> {
   }
 
   void handlePaymentSuccessResponse(PaymentSuccessResponse responsee) async {
+          print("gggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggrrrrr${customSlot.toString()}");
+
     _updateBookingProviderData();
 
     final bookingProvider = Provider.of<BookingProvider>(context, listen: false);
@@ -277,6 +280,7 @@ class _SlotScreenState extends State<SlotScreen> {
 
     final selectedDate = dates[selectedDateIndex];
 
+
     final response = await bookingProvider.createBooking(
         selectedDay: selectedDate['day'],
         selectedDate: dateCustom.toString(),
@@ -288,6 +292,8 @@ class _SlotScreenState extends State<SlotScreen> {
         transactionId: responsee.paymentId.toString(),
         addressId: selectedAddress?.id,
         );
+              print("gggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggrrrrr${response['success']}");
+
 
     // Hide loading dialog
     if (mounted) {
@@ -495,6 +501,16 @@ class _SlotScreenState extends State<SlotScreen> {
 
         print("Time Slottttttttttttttttttttttttttttttttttt$selectedTimeIndex");
         print("Time Length${timeSlots.length}");
+
+          if (selectedTimeIndex < 0 || selectedTimeIndex >= timeSlots.length) {
+    _showValidationError('Please select a valid time slot for your appointment.');
+    return;
+  }
+
+            if (customSlot == null) {
+    _showValidationError('Please select a valid time slot for your appointment.');
+    return;
+  }
     // 1. Validate Amount
     if (widget.amount == null || widget.amount!.isEmpty) {
       _showValidationError('Amount is missing. Please go back and select a valid service.');
@@ -564,7 +580,7 @@ class _SlotScreenState extends State<SlotScreen> {
           print("Addressssssssssssssssssssssss: ${widget.bookingType}");
                     print("Addressssssssssssssssssssssss: ${selectedAddress?.id}");
 
-      if(selectedAddress?.id == ""){
+      if(selectedAddress?.id == "" || selectedAddress?.id == null){
         _showValidationError('Address is missing. Select a valid address.');
       return;
       }
@@ -1306,7 +1322,7 @@ class _SlotScreenState extends State<SlotScreen> {
                                                     ? Colors.green[50]
                                                     : Colors.grey[100],
                                             borderRadius: BorderRadius.circular(13),
-                                            border: isSelected && !isUnavailable
+                                            border: isSelected && !isUnavailable && customSlot != null
                                                 ? Border.all(color: Colors.green, width: 2)
                                                 : null,
                                           ),
@@ -1326,7 +1342,7 @@ class _SlotScreenState extends State<SlotScreen> {
                                                   ),
                                                 ),
                                               ),
-                                              if (isSelected && !isUnavailable)
+                                              if (isSelected && !isUnavailable && customSlot != null)
                                                 const Positioned(
                                                   top: 4,
                                                   right: 4,

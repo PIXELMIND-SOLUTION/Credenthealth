@@ -60,6 +60,7 @@ dependencies:
   latlong2: ^0.9.1
   flutter_map: ^8.2.1
   geolocator: ^14.0.2
+  lottie: ^3.3.1
 
 dev_dependencies:
   flutter_test:
@@ -110,6 +111,14 @@ flutter:
     - lib\assets\eye.png
     - lib\assets\medicines.png
     - lib\assets\dental.png
+    - lib\assets\walking.gif
+    - lib\assets\consultation.png
+    - lib\assets\eyecare.png
+    - lib\assets\dentalcare.png
+    - lib\assets\hra.png
+    - lib\assets\medicine.png
+    - lib\assets\labtest.png
+    - lib\assets\logo.png
 
 
 

@@ -281,111 +281,6 @@ DateTime _lastWalkingActivity = DateTime.now();
   print('✅ Motion tracking stopped');
 }
 
-  // Process accelerometer data to detect steps
-  // void _processAccelerometerData(AccelerometerEvent event) {
-  //   // Check if we need to reset for a new day
-  //   if (_isNewDay()) {
-  //     _performMidnightReset();
-  //   }
-
-  //   // Calculate magnitude of acceleration vector
-  //   double magnitude = math.sqrt(
-  //     event.x * event.x + event.y * event.y + event.z * event.z
-  //   );
-    
-  //   // Add to history buffer
-  //   _magnitudeHistory.add(magnitude);
-  //   if (_magnitudeHistory.length > _bufferSize) {
-  //     _magnitudeHistory.removeAt(0);
-  //   }
-    
-  //   // Only process if we have enough data points
-  //   if (_magnitudeHistory.length < 3) return;
-    
-  //   // Apply simple low-pass filter to smooth the data
-  //   double smoothedMagnitude = _magnitudeHistory.reduce((a, b) => a + b) / _magnitudeHistory.length;
-    
-  //   // Detect step using peak detection algorithm
-  //   if (_isStep(smoothedMagnitude)) {
-  //     DateTime now = DateTime.now();
-  //     int timeDiff = now.difference(_lastStepTime).inMilliseconds;
-      
-  //     // Check minimum time between steps to avoid false positives
-  //     if (timeDiff > _minTimeBetweenSteps) {
-  //       _stepBuffer++;
-  //       _lastStepTime = now;
-        
-  //       print('👟 Step detected! Buffer: $_stepBuffer');
-        
-  //       // Update steps every 5 detected steps to reduce API calls
-  //       if (_stepBuffer >= 5) {
-  //         _processStepBuffer();
-  //       }
-  //     }
-  //   }
-    
-  //   _lastMagnitude = smoothedMagnitude;
-  // }
-
-
-
-//   void _processAccelerometerData(AccelerometerEvent event) {
-//   // Check if we need to reset for a new day
-//   if (_isNewDay()) {
-//     _performMidnightReset();
-//   }
-
-//   // Calculate magnitude of acceleration vector
-//   double magnitude = math.sqrt(
-//     event.x * event.x + event.y * event.y + event.z * event.z
-//   );
-  
-//   // Add to history buffer
-//   _magnitudeHistory.add(magnitude);
-//   if (_magnitudeHistory.length > _bufferSize) {
-//     _magnitudeHistory.removeAt(0);
-//   }
-  
-//   // Only process if we have enough data points
-//   if (_magnitudeHistory.length < 3) return;
-  
-//   // Apply simple low-pass filter to smooth the data
-//   double smoothedMagnitude = _magnitudeHistory.reduce((a, b) => a + b) / _magnitudeHistory.length;
-  
-//   // Detect step using peak detection algorithm
-//   if (_isStep(smoothedMagnitude)) {
-//     DateTime now = DateTime.now();
-//     int timeDiff = now.difference(_lastStepTime).inMilliseconds;
-    
-//     // Check minimum time between steps to avoid false positives
-//     if (timeDiff > _minTimeBetweenSteps) {
-//       _stepBuffer++;
-//       _lastStepTime = now;
-//       _lastWalkingActivity = now; // Update last walking activity
-      
-//       // Set walking state to true when step is detected
-//       _setWalkingState(true);
-      
-//       // Reset walking timer - stop walking state after 3 seconds of no steps
-//       _walkingTimer?.cancel();
-//       _walkingTimer = Timer(const Duration(seconds: 3), () {
-//         _setWalkingState(false);
-//       });
-      
-//       print('👟 Step detected! Buffer: $_stepBuffer');
-      
-//       // Update steps every 5 detected steps to reduce API calls
-//       if (_stepBuffer >= 5) {
-//         _processStepBuffer();
-//       }
-//     }
-//   }
-  
-//   _lastMagnitude = smoothedMagnitude;
-// }
-
-
-
 void _processAccelerometerData(AccelerometerEvent event) {
   if (_isNewDay()) {
     _performMidnightReset();
@@ -449,64 +344,6 @@ void _processAccelerometerData(AccelerometerEvent event) {
     return isPeak;
   }
 
-  // Process accumulated steps in buffer
-  // Future<void> _processStepBuffer() async {
-  //   if (_stepBuffer <= 0) return;
-    
-  //   int stepsToAdd = _stepBuffer;
-  //   _stepBuffer = 0;
-    
-  //   // Send to API first
-  //   try {
-  //     final staffId = await _getStaffId();
-  //     if (staffId.isNotEmpty) {
-  //       final result = await TrackerServices.addSteps(
-  //         staffId: staffId,
-  //         steps: stepsToAdd,
-  //       );
-        
-  //       if (result['success']) {
-  //         print('✅ Steps synced to server: $stepsToAdd');
-          
-  //         // Update local data from server response
-  //         if (result['data'] != null) {
-  //           Map<String, dynamic> data = result['data'];
-            
-  //           // Update current steps from server response
-  //           int previousSteps = _currentSteps;
-  //           if (data['steps'] != null && data['steps'].isNotEmpty) {
-  //             _currentSteps = data['steps'][0]['stepsCount'] ?? _currentSteps;
-  //           }
-            
-  //           // Calculate coins for the new steps
-  //           int coinsEarned = _calculateCoinsForSteps(previousSteps, _currentSteps);
-  //           _totalCoins += coinsEarned;
-            
-  //           // Save to SharedPreferences
-  //           await _saveToPreferences();
-            
-  //           notifyListeners();
-            
-  //           print('✅ Steps updated: $_currentSteps, Local coins earned: $coinsEarned, Total local coins: $_totalCoins');
-  //         }
-  //       } else {
-  //         print('❌ Failed to sync steps: ${result['message']}');
-  //         // Even if API fails, we can still update local steps and coins
-  //         _updateLocalStepsAndCoins(stepsToAdd);
-  //       }
-  //     } else {
-  //       // If no staff ID, still update local data
-  //       _updateLocalStepsAndCoins(stepsToAdd);
-  //     }
-  //   } catch (e) {
-  //     print('❌ Error syncing steps: $e');
-  //     // If API fails, still update local data
-  //     _updateLocalStepsAndCoins(stepsToAdd);
-  //   }
-  // }
-
-
-
   Future<void> _processStepBuffer() async {
     if (_stepBuffer <= 0) return;
     
@@ -559,26 +396,6 @@ void _processAccelerometerData(AccelerometerEvent event) {
       _updateLocalStepsAndCoins(stepsToAdd);
     }
 }
-
-
-
-
-  // Update local steps and coins when API is not available
-  // void _updateLocalStepsAndCoins(int stepsToAdd) {
-  //   int previousSteps = _currentSteps;
-  //   _currentSteps += stepsToAdd;
-    
-  //   // Calculate coins for the new steps
-  //   int coinsEarned = _calculateCoinsForSteps(previousSteps, _currentSteps);
-  //   _totalCoins += coinsEarned;
-    
-  //   // Save to SharedPreferences
-  //   _saveToPreferences();
-    
-  //   notifyListeners();
-    
-  //   print('✅ Local steps updated: $_currentSteps, Coins earned: $coinsEarned');
-  // }
 
 
 void _updateLocalStepsAndCoins(int stepsToAdd) {

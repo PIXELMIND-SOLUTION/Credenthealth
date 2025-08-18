@@ -406,8 +406,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 Expanded(
                   child: Text(
                     getGreeting(),
-                    style: const TextStyle(
-                        fontWeight: FontWeight.w800, fontSize: 18),
+                    style: const TextStyle(fontSize: 16, color: Colors.black),
                   ),
                 ),
                 GestureDetector(
@@ -476,23 +475,6 @@ class _HomeScreenState extends State<HomeScreen> {
             );
           },
         ),
-        // actions: [
-        //   GestureDetector(
-        //     onTap: () {
-        //       Navigator.push(
-        //         context,
-        //         MaterialPageRoute(
-        //           builder: (context) => const NotificationScreen(),
-        //         ),
-        //       );
-        //     },
-        //     child: const Icon(Icons.notifications_none, color: Colors.black),
-        //   ),
-        //   SizedBox(
-        //       width: MediaQuery.of(context).size.width *
-        //           0.03), // Responsive spacing
-        // ],
-
         actions: [
           Stack(
             clipBehavior: Clip.none,
@@ -508,18 +490,6 @@ class _HomeScreenState extends State<HomeScreen> {
                 },
                 child: const Icon(Icons.shopping_cart, color: Colors.black),
               ),
-              // Positioned(
-              //   right: 0,
-              //   top: -2,
-              //   child: Container(
-              //     width: 10,
-              //     height: 10,
-              //     decoration: const BoxDecoration(
-              //       color: Colors.red,
-              //       shape: BoxShape.circle,
-              //     ),
-              //   ),
-              // ),
             ],
           ),
           SizedBox(
@@ -527,190 +497,12 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ],
       ),
-
-      // appBar: AppBar(
-      //   elevation: 0,
-      //   backgroundColor: Colors.white,
-      //   automaticallyImplyLeading: false,
-      //   title: Row(
-      //     children: [
-      //       Text(
-      //         getGreeting(),
-      //         style: const TextStyle(fontWeight: FontWeight.bold),
-      //       ),
-      //       const SizedBox(
-      //         width: 60,
-      //       ),
-      //       GestureDetector(
-      //           onTap: () {
-      //             Navigator.push(
-      //                 context,
-      //                 MaterialPageRoute(
-      //                     builder: (context) => const WalletScreen()));
-      //           },
-      //           child: const Icon(Icons.wallet_rounded)),
-      //       Consumer<WalletProvider>(
-      //         builder: (context, walletProvider, child) {
-      //           if (walletProvider.isLoading) {
-      //             return const SizedBox(
-      //               width: 60,
-      //               height: 17,
-      //               child: Center(
-      //                 child: SizedBox(
-      //                   width: 12,
-      //                   height: 12,
-      //                   child: CircularProgressIndicator(
-      //                     strokeWidth: 2,
-      //                     valueColor:
-      //                         AlwaysStoppedAnimation<Color>(Colors.blue),
-      //                   ),
-      //                 ),
-      //               ),
-      //             );
-      //           }
-
-      //           if (walletProvider.errorMessage != null) {
-      //             return GestureDetector(
-      //               onTap: () async {
-      //                 final staffId =
-      //                     await SharedPrefsHelper.getStaffIdWithFallback();
-      //                 final token = await SharedPrefsHelper.getUserToken();
-      //                 if (staffId.isNotEmpty) {
-      //                   walletProvider.fetchWalletData(staffId, token: token);
-      //                 }
-      //               },
-      //               child: const Row(
-      //                 children: [
-      //                   Icon(Icons.refresh, size: 16, color: Colors.red),
-      //                   SizedBox(width: 1),
-      //                   Text(
-      //                     'Retry',
-      //                     style: TextStyle(fontSize: 12, color: Colors.red),
-      //                   ),
-      //                 ],
-      //               ),
-      //             );
-      //           }
-
-      //           return Text(
-      //             walletProvider.formattedBalance,
-      //             style: const TextStyle(fontSize: 15),
-      //           );
-      //         },
-      //       ),
-      //     ],
-      //   ),
-      //   actions: [
-      //     GestureDetector(
-      //         onTap: () {
-      //           Navigator.push(
-      //               context,
-      //               MaterialPageRoute(
-      //                   builder: (context) => const NotificationScreen()));
-      //         },
-      //         child: const Icon(Icons.notifications_none, color: Colors.black)),
-      //     const SizedBox(width: 15),
-      //   ],
-      // ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const SizedBox(height: 16),
-            // Consumer<TrackerProvider>(
-            //     builder: (context, trackerProvider, child) {
-            //   return Card(
-            //     color: Colors.white,
-            //     elevation: 2,
-            //     shape: RoundedRectangleBorder(
-            //         borderRadius: BorderRadius.circular(12)),
-            //     child: Padding(
-            //       padding: const EdgeInsets.all(16.0),
-            //       child: Column(
-            //         children: [
-            //           Row(
-            //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            //             children: [
-            //               const Text(
-            //                 'Today',
-            //                 style: TextStyle(fontWeight: FontWeight.bold),
-            //               ),
-            //               GestureDetector(
-            //                 onTap: () {
-            //                   Navigator.push(
-            //                     context,
-            //                     MaterialPageRoute(
-            //                       builder: (context) =>
-            //                           const StepTrackerScreen(),
-            //                     ),
-            //                   );
-            //                 },
-            //                 child: const Row(
-            //                   children: [
-            //                     Text(
-            //                       'View Details',
-            //                       style: TextStyle(
-            //                         color: Colors.black,
-            //                         fontWeight: FontWeight.bold,
-            //                       ),
-            //                     ),
-            //                     SizedBox(width: 4),
-            //                     Icon(
-            //                       Icons.arrow_forward_ios,
-            //                       size: 17,
-            //                     ),
-            //                   ],
-            //                 ),
-            //               ),
-            //             ],
-            //           ),
-            //           const SizedBox(height: 16),
-            //           if (trackerProvider.isLoading) ...[
-            //             const SizedBox(
-            //               height: 100,
-            //               child: Center(
-            //                 child: CircularProgressIndicator(),
-            //               ),
-            //             ),
-            //           ] else
-            //             ...[],
-            //           Stack(
-            //             alignment: Alignment.center,
-            //             children: [
-            //               SizedBox(
-            //                 height: 100,
-            //                 width: 100,
-            //                 child: CircularProgressIndicator(
-            //                   value: trackerProvider.progressPercentage
-            //                       .clamp(0.0, 1.0),
-            //                   strokeWidth: 8,
-            //                   backgroundColor: Colors.grey.shade200,
-            //                   valueColor: const AlwaysStoppedAnimation<Color>(
-            //                       Color.fromARGB(255, 44, 33, 243)),
-            //                 ),
-            //               ),
-            //               Column(
-            //                 mainAxisAlignment: MainAxisAlignment.center,
-            //                 children: [
-            //                   const Icon(Icons.directions_walk, size: 24),
-            //                   const SizedBox(height: 4),
-            //                   Text(
-            //                     '${trackerProvider.currentSteps}',
-            //                     style: const TextStyle(
-            //                         fontWeight: FontWeight.bold),
-            //                   ),
-            //                   const Text('Steps'),
-            //                 ],
-            //               )
-            //             ],
-            //           ),
-            //         ],
-            //       ),
-            //     ),
-            //   );
-            // }
-            // ),
             Consumer<TrackerProvider>(
                 builder: (context, trackerProvider, child) {
               return Card(
@@ -726,7 +518,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           const Text(
-                            'Today',
+                            "Today's Steps",
                             style: TextStyle(fontWeight: FontWeight.bold),
                           ),
                           GestureDetector(
@@ -742,7 +534,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             child: const Row(
                               children: [
                                 Text(
-                                  'View Details',
+                                  'See More',
                                   style: TextStyle(
                                     color: Colors.black,
                                     fontWeight: FontWeight.bold,
@@ -786,13 +578,10 @@ class _HomeScreenState extends State<HomeScreen> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 // Use the animated walking widget when user is walking
-                                WalkingLegAnimation(
+                                GifWalkingShoesAnimation(
                                   isWalking: trackerProvider.isWalking,
-                                  activeColor: Colors.green,
-                                  size: 24,
-                                  walkingSpeed: Duration(
-                                      milliseconds:
-                                          400), // Optional: adjust speed
+                                  size: 40,// Optional: adjust speed
+                                  customGifAsset:"lib/assets/walking.gif"
                                 ),
                                 const SizedBox(height: 4),
                                 Text(
@@ -812,934 +601,126 @@ class _HomeScreenState extends State<HomeScreen> {
               );
             }),
             SizedBox(height: screenHeight * 0.02),
-            // Row(
-            //   mainAxisAlignment: MainAxisAlignment.spaceAround,
-            //   children: [
-            //     GestureDetector(
-            //       onTap: () {
-            //         _showConsultationOptions(context);
-            //       },
-            //       child: const _ImageWithLabel(
-            //         imageUrl:
-            //             'lib/assets/7cdd89d896030f8574013e72652cb5be844e4d73.png',
-            //         label: 'Consult a Doctor',
-            //         // screenWidth: screenWidth,
-            //       ),
-            //     ),
-            //     GestureDetector(
-            //       onTap: () {
-            //         Navigator.push(
-            //           context,
-            //           MaterialPageRoute(
-            //             builder: (context) => const LabtestPackagesScreen(),
-            //           ),
-            //         );
-            //         // _showLabTestOptions(context);
-            //       },
-            //       child: const _ImageWithLabel(
-            //         imageUrl:
-            //             'lib/assets/0ba3665652697af44e4a0e838b7ce086923e5177.png',
-            //         label: 'Lab test & Packages',
-            //       ),
-            //     ),
-            //     GestureDetector(
-            //       onTap: () {
-            //         Navigator.push(
-            //             context,
-            //             MaterialPageRoute(
-            //                 builder: (context) => const HraScreen()));
-            //       },
-            //       child: const _ImageWithLabel(
-            //         imageUrl:
-            //             'lib/assets/1e90069b10a439afd8c44bacc8a0207579683c9d.png',
-            //         label: 'HRA',
-            //       ),
-            //     )
-            //   ],
-            // ),
-            // // const SizedBox(
-            // //   height: 15,
-            // // ),
-            // SizedBox(height: screenHeight * 0.017),
-            // Row(
-            //                 // mainAxisAlignment: MainAxisAlignment.spaceAround,
-
-            //   children: [
-            //     const SizedBox(
-            //       width: 20,
-            //     ),
-            //     GestureDetector(
-            //       onTap: () {
-            //         // _showConsultationOptions(context);
-            //       },
-            //       child: const _ImageWithLabel(
-            //         imageUrl: 'lib/assets/eye.png',
-            //         label: 'Eye',
-            //       ),
-            //     ),
-            //     const SizedBox(
-            //       width: 40,
-            //     ),
-            //     GestureDetector(
-            //       onTap: () {
-            //         // _showConsultationOptions(context);
-            //       },
-            //       child: const _ImageWithLabel(
-            //         imageUrl: 'lib/assets/dental.png',
-            //         label: 'Dental',
-            //       ),
-            //     ),
-            //     const SizedBox(
-            //       width: 43,
-            //     ),
-            //     GestureDetector(
-            //       onTap: () {
-            //         // _showConsultationOptions(context);
-            //       },
-            //       child: const _ImageWithLabel(
-            //         imageUrl: 'lib/assets/medicines.png',
-            //         label: 'Medicines',
-            //       ),
-            //     ),
-            //   ],
-            // ),
             SizedBox(
               height: 15,
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                GestureDetector(
-                  onTap: () {
-                    _showConsultationOptions(context);
-                  },
-                  child: const _ImageWithLabel(
-                    imageUrl:
-                        'lib/assets/7cdd89d896030f8574013e72652cb5be844e4d73.png',
-                    label: 'Consult a Doctor',
+
+            Container(
+              padding: EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                border: Border.all(color: Colors.grey, width: 0),
+                borderRadius: BorderRadius.circular(20),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.2), // Shadow color
+                    blurRadius: 4, // Softness
+                    spreadRadius: 4, // Keep it tight
                   ),
-                ),
-                GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const LabtestPackagesScreen(),
+                ],
+              ),
+              child: Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          _showConsultationOptions(context);
+                        },
+                        child: const _ImageWithLabel(
+                          imageUrl:
+                              'lib/assets/consultation.png',
+                          label: 'Doctor Consultation',
+                        ),
                       ),
-                    );
-                  },
-                  child: const _ImageWithLabel(
-                    imageUrl:
-                        'lib/assets/0ba3665652697af44e4a0e838b7ce086923e5177.png',
-                    label: 'Lab test & Packages',
-                  ),
-                ),
-                GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const HraScreen(),
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  const LabtestPackagesScreen(),
+                            ),
+                          );
+                        },
+                        child: const _ImageWithLabel(
+                          imageUrl:
+                              'lib/assets/labtest.png',
+                          label: 'Lab Test & Packages',
+                        ),
                       ),
-                    );
-                  },
-                  child: const _ImageWithLabel(
-                    imageUrl:
-                        'lib/assets/1e90069b10a439afd8c44bacc8a0207579683c9d.png',
-                    label: 'HRA',
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const HraScreen(),
+                            ),
+                          );
+                        },
+                        child: const _ImageWithLabel(
+                          imageUrl:
+                              'lib/assets/hra.png',
+                          label: 'HRA',
+                        ),
+                      ),
+                    ],
                   ),
-                ),
-              ],
+                  SizedBox(
+                    height: 15,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          // _showConsultationOptions(context);
+                        },
+                        child: const _ImageWithLabel(
+                          imageUrl: 'lib/assets/eyecare.png',
+                          label: 'Eye Care',
+                        ),
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          // Navigator.push(
+                          //   context,
+                          //   MaterialPageRoute(
+                          //     builder: (context) => const LabtestPackagesScreen(),
+                          //   ),
+                          // );
+                        },
+                        child: const _ImageWithLabel(
+                          imageUrl: 'lib/assets/dentalcare.png',
+                          label: 'Dental Care',
+                        ),
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          // Navigator.push(
+                          //   context,
+                          //   MaterialPageRoute(
+                          //     builder: (context) => const HraScreen(),
+                          //   ),
+                          // );
+                        },
+                        child: const _ImageWithLabel(
+                          imageUrl: 'lib/assets/medicine.png',
+                          label: 'Medicines',
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
-            SizedBox(
-              height: 15,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                GestureDetector(
-                  onTap: () {
-                    // _showConsultationOptions(context);
-                  },
-                  child: const _ImageWithLabel(
-                    imageUrl: 'lib/assets/eye.png',
-                    label: 'Eye',
-                  ),
-                ),
-                GestureDetector(
-                  onTap: () {
-                    // Navigator.push(
-                    //   context,
-                    //   MaterialPageRoute(
-                    //     builder: (context) => const LabtestPackagesScreen(),
-                    //   ),
-                    // );
-                  },
-                  child: const _ImageWithLabel(
-                    imageUrl: 'lib/assets/dental.png',
-                    label: 'Dental',
-                  ),
-                ),
-                GestureDetector(
-                  onTap: () {
-                    // Navigator.push(
-                    //   context,
-                    //   MaterialPageRoute(
-                    //     builder: (context) => const HraScreen(),
-                    //   ),
-                    // );
-                  },
-                  child: const _ImageWithLabel(
-                    imageUrl: 'lib/assets/medicines.png',
-                    label: 'Medicines',
-                  ),
-                ),
-              ],
-            ),
-
-            // const SizedBox(
-            //   height: 15,
-            // ),
-            // const Padding(
-            //   padding: EdgeInsets.all(8.0),
-            //   child: Text("Recent Lookups",
-            //       style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-            // ),
-            // const SizedBox(height: 20),
-            // Consumer<RecentLookupProvider>(
-            //   builder: (context, recentLookupProvider, child) {
-            //     if (recentLookupProvider.isLoading) {
-            //       return const SizedBox(
-            //         height: 150,
-            //         child: Center(
-            //           child: CircularProgressIndicator(),
-            //         ),
-            //       );
-            //     }
-
-            //     if (recentLookupProvider.hasError) {
-            //       return SizedBox(
-            //         height: 150,
-            //         child: Center(
-            //           child: Column(
-            //             mainAxisAlignment: MainAxisAlignment.center,
-            //             children: [
-            //               const Icon(Icons.error_outline,
-            //                   size: 32, color: Colors.red),
-            //               const SizedBox(height: 8),
-            //               const Text(
-            //                 'Failed to load recent doctors',
-            //                 style: TextStyle(
-            //                     fontSize: 14, fontWeight: FontWeight.bold),
-            //               ),
-            //               const SizedBox(height: 4),
-            //               Text(
-            //                 recentLookupProvider.errorMessage
-            //                     .replaceFirst('Exception: ', ''),
-            //                 textAlign: TextAlign.center,
-            //                 style: const TextStyle(
-            //                     color: Colors.grey, fontSize: 12),
-            //               ),
-            //               const SizedBox(height: 8),
-            //               ElevatedButton(
-            //                 onPressed: () =>
-            //                     recentLookupProvider.fetchRecentDoctors(),
-            //                 child: const Text('Retry'),
-            //               ),
-            //             ],
-            //           ),
-            //         ),
-            //       );
-            //     }
-
-            //     if (recentLookupProvider.recentDoctors.isEmpty) {
-            //       return const SizedBox(
-            //         height: 150,
-            //         child: Center(
-            //           child: Column(
-            //             mainAxisAlignment: MainAxisAlignment.center,
-            //             children: [
-            //               Icon(Icons.person_search,
-            //                   size: 48, color: Colors.grey),
-            //               SizedBox(height: 8),
-            //               Text(
-            //                 'No recent doctors found',
-            //                 style: TextStyle(fontSize: 14, color: Colors.grey),
-            //               ),
-            //             ],
-            //           ),
-            //         ),
-            //       );
-            //     }
-
-            //     return Column(
-            //       children: recentLookupProvider.recentDoctors.map((doctor) {
-            //         return Card(
-            //           color: Colors.white,
-            //           margin: const EdgeInsets.only(bottom: 12),
-            //           child: Padding(
-            //             padding: const EdgeInsets.all(12.0),
-            //             child: Row(
-            //               crossAxisAlignment: CrossAxisAlignment.start,
-            //               children: [
-            //                 GestureDetector(
-            //                   onTap: () {
-            //                     Navigator.push(
-            //                         context,
-            //                         MaterialPageRoute(
-            //                             builder: (context) =>
-            //                                 ConsultationDetailsScreen(
-            //                                   doctorId: doctor.id,
-            //                                 )));
-            //                   },
-            //                   child: Container(
-            //                     width: 90,
-            //                     height: 90,
-            //                     decoration: BoxDecoration(
-            //                       borderRadius: BorderRadius.circular(10),
-            //                       color: Colors.grey.shade200,
-            //                     ),
-            //                     child: ClipRRect(
-            //                       borderRadius: BorderRadius.circular(10),
-            //                       child: doctor.image.isNotEmpty
-            //                           ? Image.network(
-            //                               doctor.image.startsWith('http')
-            //                                   ? doctor.image
-            //                                   : 'http://31.97.206.144:4051${doctor.image}',
-            //                               width: 90,
-            //                               height: 90,
-            //                               fit: BoxFit.cover,
-            //                               loadingBuilder: (context, child,
-            //                                   loadingProgress) {
-            //                                 if (loadingProgress == null)
-            //                                   return child;
-            //                                 return Center(
-            //                                   child: CircularProgressIndicator(
-            //                                     value: loadingProgress
-            //                                                 .expectedTotalBytes !=
-            //                                             null
-            //                                         ? loadingProgress
-            //                                                 .cumulativeBytesLoaded /
-            //                                             loadingProgress
-            //                                                 .expectedTotalBytes!
-            //                                         : null,
-            //                                   ),
-            //                                 );
-            //                               },
-            //                               errorBuilder:
-            //                                   (context, error, stackTrace) {
-            //                                 print(
-            //                                     'Image loading error: $error');
-            //                                 return Container(
-            //                                   width: 90,
-            //                                   height: 90,
-            //                                   color: Colors.grey.shade200,
-            //                                   child: const Icon(
-            //                                     Icons.person,
-            //                                     size: 40,
-            //                                     color: Colors.grey,
-            //                                   ),
-            //                                 );
-            //                               },
-            //                             )
-            //                           : Container(
-            //                               width: 90,
-            //                               height: 90,
-            //                               color: Colors.grey.shade200,
-            //                               child: const Icon(
-            //                                 Icons.person,
-            //                                 size: 40,
-            //                                 color: Colors.grey,
-            //                               ),
-            //                             ),
-            //                     ),
-            //                   ),
-            //                 ),
-            //                 const SizedBox(width: 12),
-
-            //                 // Doctor Details
-            //                 Expanded(
-            //                   child: Column(
-            //                     crossAxisAlignment: CrossAxisAlignment.start,
-            //                     children: [
-            //                       Text(
-            //                         doctor.name.isNotEmpty
-            //                             ? doctor.name
-            //                             : "Dr. Unknown",
-            //                         style: const TextStyle(
-            //                             fontWeight: FontWeight.bold,
-            //                             fontSize: 16),
-            //                       ),
-            //                       const SizedBox(height: 4),
-            //                       Row(
-            //                         mainAxisAlignment:
-            //                             MainAxisAlignment.spaceBetween,
-            //                         children: [
-            //                           Text(
-            //                             doctor.specialization.isNotEmpty
-            //                                 ? doctor.specialization
-            //                                 : "General",
-            //                             style: const TextStyle(fontSize: 14),
-            //                           ),
-            //                           GestureDetector(
-            //                             onTap: () {
-            //                               Navigator.push(
-            //                                   context,
-            //                                   MaterialPageRoute(
-            //                                       builder: (context) =>
-            //                                           ConsultationDetailsScreen(
-            //                                             doctorId: doctor.id,
-            //                                           )));
-            //                             },
-            //                             child: const Icon(
-            //                                 Icons.arrow_forward_ios,
-            //                                 size: 16),
-            //                           ),
-            //                         ],
-            //                       ),
-            //                       const SizedBox(height: 4),
-            //                       Row(
-            //                         children: [
-            //                           const Icon(Icons.star,
-            //                               color: Colors.orange, size: 16),
-            //                           const SizedBox(width: 4),
-            //                           Text.rich(
-            //                             TextSpan(
-            //                               children: [],
-            //                             ),
-            //                           )
-            //                         ],
-            //                       ),
-            //                       const SizedBox(height: 2),
-            //                     ],
-            //                   ),
-            //                 ),
-            //               ],
-            //             ),
-            //           ),
-            //         );
-            //       }).toList(),
-            //     );
-            //   },
-            // ),
-
-// ...
-            // SizedBox(
-            //   height: 10,
-            // ),
-            // const Padding(
-            //   padding: EdgeInsets.all(8.0),
-            //   child: Text("Recent Lookups",
-            //       style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-            // ),
-            // Consumer<RecentLookupProvider>(
-            //   builder: (context, recentLookupProvider, child) {
-            //     if (recentLookupProvider.isLoading) {
-            //       return const SizedBox(
-            //         height: 150,
-            //         child: Center(
-            //           child: CircularProgressIndicator(),
-            //         ),
-            //       );
-            //     }
-
-            //     if (recentLookupProvider.hasError) {
-            //       return SizedBox(
-            //         height: 150,
-            //         child: Center(
-            //           child: Column(
-            //             mainAxisAlignment: MainAxisAlignment.center,
-            //             children: [
-            //               const Icon(Icons.error_outline,
-            //                   size: 32, color: Colors.red),
-            //               const SizedBox(height: 8),
-            //               const Text(
-            //                 'Failed to load recent doctors',
-            //                 style: TextStyle(
-            //                     fontSize: 14, fontWeight: FontWeight.bold),
-            //               ),
-            //               const SizedBox(height: 4),
-            //               Text(
-            //                 recentLookupProvider.errorMessage
-            //                     .replaceFirst('Exception: ', ''),
-            //                 textAlign: TextAlign.center,
-            //                 style: const TextStyle(
-            //                     color: Colors.grey, fontSize: 12),
-            //               ),
-            //               const SizedBox(height: 8),
-            //               ElevatedButton(
-            //                 onPressed: () =>
-            //                     recentLookupProvider.fetchRecentDoctors(),
-            //                 child: const Text('Retry'),
-            //               ),
-            //             ],
-            //           ),
-            //         ),
-            //       );
-            //     }
-
-            //     if (recentLookupProvider.recentDoctors.isEmpty) {
-            //       return const SizedBox(
-            //         height: 150,
-            //         child: Center(
-            //           child: Column(
-            //             mainAxisAlignment: MainAxisAlignment.center,
-            //             children: [
-            //               Icon(Icons.person_search,
-            //                   size: 48, color: Colors.grey),
-            //               SizedBox(height: 8),
-            //               Text(
-            //                 'No recent doctors found',
-            //                 style: TextStyle(fontSize: 14, color: Colors.grey),
-            //               ),
-            //             ],
-            //           ),
-            //         ),
-            //       );
-            //     }
-
-            //     return Column(
-            //       children: recentLookupProvider.recentDoctors.map((doctor) {
-            //         return Card(
-            //           color: Colors.white,
-            //           margin: const EdgeInsets.only(bottom: 12),
-            //           child: Padding(
-            //             padding: const EdgeInsets.all(12.0),
-            //             child: Row(
-            //               crossAxisAlignment: CrossAxisAlignment.start,
-            //               children: [
-            //                 // Doctor Image
-            //                 GestureDetector(
-            //                   onTap: () {
-            //                     Navigator.push(
-            //                       context,
-            //                       MaterialPageRoute(
-            //                         builder: (context) =>
-            //                             ConsultationDetailsScreen(
-            //                           doctorId: doctor.id,
-            //                         ),
-            //                       ),
-            //                     );
-            //                   },
-            //                   child: Container(
-            //                     width: 90,
-            //                     height: 90,
-            //                     decoration: BoxDecoration(
-            //                       borderRadius: BorderRadius.circular(10),
-            //                       color: Colors.grey.shade200,
-            //                     ),
-            //                     child: ClipRRect(
-            //                       borderRadius: BorderRadius.circular(10),
-            //                       child: doctor.image.isNotEmpty
-            //                           ? Image.network(
-            //                               doctor.image.startsWith('http')
-            //                                   ? doctor.image
-            //                                   : 'http://31.97.206.144:4051${doctor.image}',
-            //                               width: 90,
-            //                               height: 90,
-            //                               fit: BoxFit.cover,
-            //                               loadingBuilder: (context, child,
-            //                                   loadingProgress) {
-            //                                 if (loadingProgress == null)
-            //                                   return child;
-            //                                 return Center(
-            //                                   child: CircularProgressIndicator(
-            //                                     value: loadingProgress
-            //                                                 .expectedTotalBytes !=
-            //                                             null
-            //                                         ? loadingProgress
-            //                                                 .cumulativeBytesLoaded /
-            //                                             loadingProgress
-            //                                                 .expectedTotalBytes!
-            //                                         : null,
-            //                                   ),
-            //                                 );
-            //                               },
-            //                               errorBuilder:
-            //                                   (context, error, stackTrace) {
-            //                                 print(
-            //                                     'Image loading error: $error');
-            //                                 return Container(
-            //                                   width: 90,
-            //                                   height: 90,
-            //                                   color: Colors.grey.shade200,
-            //                                   child: const Icon(
-            //                                     Icons.person,
-            //                                     size: 40,
-            //                                     color: Colors.grey,
-            //                                   ),
-            //                                 );
-            //                               },
-            //                             )
-            //                           : Container(
-            //                               width: 90,
-            //                               height: 90,
-            //                               color: Colors.grey.shade200,
-            //                               child: const Icon(
-            //                                 Icons.person,
-            //                                 size: 40,
-            //                                 color: Colors.grey,
-            //                               ),
-            //                             ),
-            //                     ),
-            //                   ),
-            //                 ),
-            //                 const SizedBox(width: 12),
-
-            //                 // Doctor Details
-            //                 Expanded(
-            //                   child: Column(
-            //                     crossAxisAlignment: CrossAxisAlignment.start,
-            //                     children: [
-            //                       Text(
-            //                         doctor.name.isNotEmpty
-            //                             ? doctor.name
-            //                             : "Dr. Unknown",
-            //                         style: const TextStyle(
-            //                           fontWeight: FontWeight.bold,
-            //                           fontSize: 16,
-            //                         ),
-            //                       ),
-            //                       const SizedBox(height: 4),
-            //                       Row(
-            //                         mainAxisAlignment:
-            //                             MainAxisAlignment.spaceBetween,
-            //                         children: [
-            //                           Text(
-            //                             doctor.specialization.isNotEmpty
-            //                                 ? doctor.specialization
-            //                                 : "General",
-            //                             style: const TextStyle(fontSize: 14),
-            //                           ),
-            //                           Row(
-            //                             children: [
-            //                               IconButton(
-            //                                 icon: const Icon(Icons.video_call,
-            //                                     color: Colors.blue),
-            //                                 tooltip: 'Join Google Meet',
-            //                                 onPressed: () async {
-            //                                   const meetUrl =
-            //                                       'https://meet.google.com/kas-xfzh-irp';
-            //                                   final Uri uri =
-            //                                       Uri.parse(meetUrl);
-            //                                   if (await canLaunchUrl(uri)) {
-            //                                     await launchUrl(uri,
-            //                                         mode: LaunchMode
-            //                                             .externalApplication);
-            //                                   } else {
-            //                                     ScaffoldMessenger.of(context)
-            //                                         .showSnackBar(
-            //                                       const SnackBar(
-            //                                         content: Text(
-            //                                             'Could not open Google Meet'),
-            //                                       ),
-            //                                     );
-            //                                   }
-            //                                 },
-            //                               ),
-            //                               GestureDetector(
-            //                                 onTap: () {
-            //                                   Navigator.push(
-            //                                     context,
-            //                                     MaterialPageRoute(
-            //                                       builder: (context) =>
-            //                                           ConsultationDetailsScreen(
-            //                                         doctorId: doctor.id,
-            //                                       ),
-            //                                     ),
-            //                                   );
-            //                                 },
-            //                                 child: const Icon(
-            //                                     Icons.arrow_forward_ios,
-            //                                     size: 16),
-            //                               ),
-            //                             ],
-            //                           ),
-            //                         ],
-            //                       ),
-            //                       const SizedBox(height: 4),
-            //                       Row(
-            //                         children: [
-            //                           const Icon(Icons.star,
-            //                               color: Colors.orange, size: 16),
-            //                           const SizedBox(width: 4),
-            //                           // Text(
-            //                           //   doctor.rating?.toStringAsFixed(1) ?? '4.0',
-            //                           //   style: const TextStyle(fontSize: 14),
-            //                           // ),
-            //                         ],
-            //                       ),
-            //                       const SizedBox(height: 2),
-            //                     ],
-            //                   ),
-            //                 ),
-            //               ],
-            //             ),
-            //           ),
-            //         );
-            //       }).toList(),
-            //     );
-            //   },
-            // ),
-
-            // SizedBox(
-            //   height: 10,
-            // ),
-            // const Padding(
-            //   padding: EdgeInsets.all(8.0),
-            //   child: Text("Recent Lookups",
-            //       style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-            // ),
-            // Consumer<RecentLookupProvider>(
-            //   builder: (context, recentLookupProvider, child) {
-            //     // Initialize provider if needed
-            //     if (recentLookupProvider.currentStaffId.isEmpty &&
-            //         !recentLookupProvider.isLoading) {
-            //       WidgetsBinding.instance.addPostFrameCallback((_) {
-            //         recentLookupProvider.initialize().then((_) {
-            //           recentLookupProvider.fetchRecentDoctors();
-            //         });
-            //       });
-            //     }
-
-            //     if (recentLookupProvider.isLoading) {
-            //       return const SizedBox(
-            //         height: 150,
-            //         child: Center(
-            //           child: CircularProgressIndicator(),
-            //         ),
-            //       );
-            //     }
-
-            //     if (recentLookupProvider.recentDoctors.isEmpty) {
-            //       return const SizedBox(
-            //         height: 150,
-            //         child: Center(
-            //           child: Column(
-            //             mainAxisAlignment: MainAxisAlignment.center,
-            //             children: [
-            //               Icon(Icons.person_search,
-            //                   size: 48, color: Colors.grey),
-            //               SizedBox(height: 8),
-            //               Text(
-            //                 'No recent doctors found',
-            //                 style: TextStyle(fontSize: 14, color: Colors.grey),
-            //               ),
-            //               Text(
-            //                 'Your recent consultations will appear here',
-            //                 style: TextStyle(fontSize: 12, color: Colors.grey),
-            //               ),
-            //             ],
-            //           ),
-            //         ),
-            //       );
-            //     }
-
-            //     return RefreshIndicator(
-            //       onRefresh: () async {
-            //         await recentLookupProvider.refreshRecentDoctors();
-            //       },
-            //       child: Column(
-            //         children: [
-            //           ...recentLookupProvider.recentDoctors.map((doctor) {
-            //             return Card(
-            //               color: Colors.white,
-            //               margin: const EdgeInsets.only(bottom: 12),
-            //               child: Padding(
-            //                 padding: const EdgeInsets.all(12.0),
-            //                 child: Row(
-            //                   crossAxisAlignment: CrossAxisAlignment.start,
-            //                   children: [
-            //                     // Doctor Image
-            //                     GestureDetector(
-            //                       onTap: () {
-            //                         // Navigator.push(
-            //                         //   context,
-            //                         //   MaterialPageRoute(
-            //                         //     builder: (context) => ConsultationDetailsScreen(
-            //                         //       doctorId: doctor.id,
-            //                         //     ),
-            //                         //   ),
-            //                         // );
-            //                       },
-            //                       child: Container(
-            //                         width: 90,
-            //                         height: 90,
-            //                         decoration: BoxDecoration(
-            //                           borderRadius: BorderRadius.circular(10),
-            //                           color: Colors.grey.shade200,
-            //                         ),
-            //                         child: ClipRRect(
-            //                           borderRadius: BorderRadius.circular(10),
-            //                           child: doctor.image.isNotEmpty
-            //                               ? Image.network(
-            //                                   doctor.image.startsWith('http')
-            //                                       ? doctor.image
-            //                                       : 'http://31.97.206.144:4051${doctor.image}',
-            //                                   width: 90,
-            //                                   height: 90,
-            //                                   fit: BoxFit.cover,
-            //                                   loadingBuilder: (context, child,
-            //                                       loadingProgress) {
-            //                                     if (loadingProgress == null)
-            //                                       return child;
-            //                                     return Center(
-            //                                       child:
-            //                                           CircularProgressIndicator(
-            //                                         value: loadingProgress
-            //                                                     .expectedTotalBytes !=
-            //                                                 null
-            //                                             ? loadingProgress
-            //                                                     .cumulativeBytesLoaded /
-            //                                                 loadingProgress
-            //                                                     .expectedTotalBytes!
-            //                                             : null,
-            //                                       ),
-            //                                     );
-            //                                   },
-            //                                   errorBuilder:
-            //                                       (context, error, stackTrace) {
-            //                                     return Container(
-            //                                       width: 90,
-            //                                       height: 90,
-            //                                       color: Colors.grey.shade200,
-            //                                       child: const Icon(
-            //                                         Icons.person,
-            //                                         size: 40,
-            //                                         color: Colors.grey,
-            //                                       ),
-            //                                     );
-            //                                   },
-            //                                 )
-            //                               : Container(
-            //                                   width: 90,
-            //                                   height: 90,
-            //                                   color: Colors.grey.shade200,
-            //                                   child: const Icon(
-            //                                     Icons.person,
-            //                                     size: 40,
-            //                                     color: Colors.grey,
-            //                                   ),
-            //                                 ),
-            //                         ),
-            //                       ),
-            //                     ),
-            //                     const SizedBox(width: 12),
-
-            //                     // Doctor Details
-            //                     Expanded(
-            //                       child: Column(
-            //                         crossAxisAlignment:
-            //                             CrossAxisAlignment.start,
-            //                         children: [
-            //                           Text(
-            //                             doctor.name.isNotEmpty
-            //                                 ? doctor.name
-            //                                 : "Dr. Melvin",
-            //                             style: const TextStyle(
-            //                                 fontWeight: FontWeight.bold,
-            //                                 fontSize: 16),
-            //                           ),
-            //                           const SizedBox(height: 4),
-            //                           Row(
-            //                             mainAxisAlignment:
-            //                                 MainAxisAlignment.spaceBetween,
-            //                             children: [
-            //                               Expanded(
-            //                                 child: Text(
-            //                                   doctor.specialization.isNotEmpty
-            //                                       ? doctor.specialization
-            //                                       : "General",
-            //                                   style:
-            //                                       const TextStyle(fontSize: 14),
-            //                                 ),
-            //                               ),
-            //                               Row(
-            //                                 children: [
-            //                                   IconButton(
-            //                                     icon: const Icon(
-            //                                         Icons.video_call,
-            //                                         color: Colors.blue),
-            //                                     tooltip: 'Join Meet',
-            //                                     onPressed: () async {
-            //                                       const meetUrl =
-            //                                           'https://meet.google.com/kas-xfzh-irp';
-            //                                       final uri =
-            //                                           Uri.parse(meetUrl);
-            //                                       if (await canLaunchUrl(uri)) {
-            //                                         await launchUrl(uri,
-            //                                             mode: LaunchMode
-            //                                                 .externalApplication);
-            //                                       } else {
-            //                                         ScaffoldMessenger.of(
-            //                                                 context)
-            //                                             .showSnackBar(
-            //                                           const SnackBar(
-            //                                               content: Text(
-            //                                                   'Could not launch Meet link')),
-            //                                         );
-            //                                       }
-            //                                     },
-            //                                   ),
-            //                                   GestureDetector(
-            //                                     onTap: () {
-            //                                       // Navigator.push(
-            //                                       //   context,
-            //                                       //   MaterialPageRoute(
-            //                                       //     builder: (context) =>
-            //                                       //         ConsultationDetailsScreen(
-            //                                       //       doctorId: doctor.id,
-            //                                       //     ),
-            //                                       //   ),
-            //                                       // );
-            //                                     },
-            //                                     child: const Icon(
-            //                                         Icons.arrow_forward_ios,
-            //                                         size: 16),
-            //                                   ),
-            //                                 ],
-            //                               )
-            //                             ],
-            //                           ),
-            //                           const SizedBox(height: 4),
-            //                           Row(
-            //                             children: [
-            //                               Text(doctor.qualification)
-            //                             ],
-            //                           ),
-            //                           // Row(
-            //                           //   children: [
-            //                           //     const Icon(Icons.star,
-            //                           //         color: Colors.orange, size: 16),
-            //                           //     const SizedBox(width: 4),
-            //                           //     // Add rating text if needed
-            //                           //     // Text(
-            //                           //     //   doctor.rating?.toStringAsFixed(1) ?? "4.0",
-            //                           //     //   style: const TextStyle(fontSize: 12),
-            //                           //     // ),
-            //                           //   ],
-            //                           // ),
-            //                           const SizedBox(height: 2),
-            //                         ],
-            //                       ),
-            //                     ),
-            //                   ],
-            //                 ),
-            //               ),
-            //             );
-            //           }).toList(),
-            //         ],
-            //       ),
-            //     );
-            //   },
-            // ),
-
             SizedBox(
               height: 10,
             ),
             const Padding(
               padding: EdgeInsets.all(8.0),
-              child: Text("Recent Lookups",
+              child: Text("Your Recent Activity",
                   style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
             ),
             Consumer<RecentLookupProvider>(
@@ -1775,7 +756,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           // Icon(Icons.error_outline, size: 48, color: Colors.red),
                           SizedBox(height: 8),
                           Text(
-                            'No Recently added doctors',
+                            "You haven't looked up any doctors yet",
                             style: TextStyle(fontSize: 14, color: Colors.black),
                           ),
                           SizedBox(height: 4),
@@ -2257,209 +1238,6 @@ class _HomeScreenState extends State<HomeScreen> {
               },
             ),
 
-// Helper method to determine status color - add this outside the Consumer widget
-
-            // Consumer<RecentPackageProvider>(
-            //   builder: (context, provider, child) {
-            //     if (provider.isLoading) {
-            //       return Card(
-            //         color: Colors.white,
-            //         shape: RoundedRectangleBorder(
-            //           borderRadius: BorderRadius.circular(12),
-            //         ),
-            //         elevation: 2,
-            //         child: const Padding(
-            //           padding: EdgeInsets.all(16.0),
-            //           child: Center(
-            //             child: CircularProgressIndicator(
-            //               valueColor: AlwaysStoppedAnimation<Color>(
-            //                 Color.fromARGB(255, 33, 58, 243),
-            //               ),
-            //             ),
-            //           ),
-            //         ),
-            //       );
-            //     }
-
-            //     if (provider.hasError) {
-            //       return Card(
-            //         color: Colors.white,
-            //         shape: RoundedRectangleBorder(
-            //           borderRadius: BorderRadius.circular(12),
-            //         ),
-            //         elevation: 2,
-            //         child: Padding(
-            //           padding: const EdgeInsets.all(16.0),
-            //           child: Column(
-            //             children: [
-            //               const Icon(Icons.error_outline,
-            //                   color: Colors.red, size: 48),
-            //               const SizedBox(height: 8),
-            //               const Text(
-            //                 'Error loading package',
-            //                 style: TextStyle(color: Colors.red, fontSize: 16),
-            //               ),
-            //               const SizedBox(height: 8),
-            //               ElevatedButton(
-            //                 onPressed: () => provider.fetchRecentPackage(),
-            //                 child: const Text('Retry'),
-            //               ),
-            //             ],
-            //           ),
-            //         ),
-            //       );
-            //     }
-
-            //     if (!provider.hasData) {
-            //       return Card(
-            //         color: Colors.white,
-            //         shape: RoundedRectangleBorder(
-            //           borderRadius: BorderRadius.circular(12),
-            //         ),
-            //         elevation: 2,
-            //         child: const Padding(
-            //           padding: EdgeInsets.all(16.0),
-            //           child: Center(
-            //             child: Text(
-            //               'No package data available',
-            //               style: TextStyle(color: Colors.grey, fontSize: 16),
-            //             ),
-            //           ),
-            //         ),
-            //       );
-            //     }
-
-            //     final package = provider.package!;
-
-            //     return Card(
-            //       color: Colors.white,
-            //       shape: RoundedRectangleBorder(
-            //         borderRadius: BorderRadius.circular(12),
-            //       ),
-            //       elevation: 2,
-            //       child: Padding(
-            //         padding: const EdgeInsets.all(16.0),
-            //         child: Row(
-            //           crossAxisAlignment: CrossAxisAlignment.start,
-            //           children: [
-            //             // Main content section
-            //             Expanded(
-            //               child: Column(
-            //                 crossAxisAlignment: CrossAxisAlignment.start,
-            //                 children: [
-            //                   Text(
-            //                     package.name ?? "Package Name",
-            //                     style: const TextStyle(
-            //                       fontWeight: FontWeight.bold,
-            //                       fontSize: 16,
-            //                       color: Colors.black87,
-            //                     ),
-            //                   ),
-            //                   const SizedBox(height: 4),
-            //                   Text(
-            //                     package.totalTestsIncluded != null
-            //                         ? "Includes ${package.totalTestsIncluded} Tests"
-            //                         : "Includes Tests",
-            //                     style: const TextStyle(
-            //                       color: Colors.grey,
-            //                       fontSize: 14,
-            //                     ),
-            //                   ),
-            //                   const SizedBox(height: 8),
-            //                   Text(
-            //                     package.price != null
-            //                         ? "₹ ${package.price}"
-            //                         : "Price not available",
-            //                     style: const TextStyle(
-            //                       fontWeight: FontWeight.bold,
-            //                       fontSize: 16,
-            //                       color: Colors.black87,
-            //                     ),
-            //                   ),
-            //                   const SizedBox(height: 8),
-            //                   Row(
-            //                     children: [
-            //                       Icon(
-            //                         package.precautions == true
-            //                             ? Icons.no_food
-            //                             : Icons.free_breakfast,
-            //                         size: 16,
-            //                         color: Colors.grey,
-            //                       ),
-            //                       const SizedBox(width: 4),
-            //                       Text(
-            //                         package.precautions == true
-            //                             ? "Fasting Required"
-            //                             : "No Fasting Required",
-            //                         style: const TextStyle(
-            //                           color: Colors.grey,
-            //                           fontSize: 12,
-            //                         ),
-            //                       ),
-            //                     ],
-            //                   ),
-            //                 ],
-            //               ),
-            //             ),
-
-            //             // Right side with arrow and button
-            //             Column(
-            //               crossAxisAlignment: CrossAxisAlignment.end,
-            //               children: [
-            //                 const SizedBox(
-            //                   height: 50,
-            //                 ),
-            //                 // Arrow icon
-            //                 GestureDetector(
-            //                   onTap: () {
-            //                     Navigator.push(
-            //                         context,
-            //                         MaterialPageRoute(
-            //                             builder: (context) => ConsultDoctor(
-            //                                   bookingId: package.id,
-            //                                 )));
-            //                   },
-            //                   child: const Icon(Icons.arrow_forward_ios,
-            //                       size: 16, color: Colors.black),
-            //                 ),
-
-            //                 const SizedBox(height: 50),
-
-            //                 // Book now button
-            //                 // ElevatedButton(
-            //                 //   onPressed: () {
-            //                 //     Navigator.push(context, MaterialPageRoute(builder: (context)=>PackagesScreen(packageId: package.id,)));
-            //                 //     // Add your booking logic here
-            //                 //     // You can access package data: package.id, package.name, etc.
-            //                 //   },
-            //                 //   style: ElevatedButton.styleFrom(
-            //                 //     backgroundColor:
-            //                 //         const Color.fromARGB(255, 33, 58, 243),
-            //                 //     foregroundColor: Colors.white,
-            //                 //     padding: const EdgeInsets.symmetric(
-            //                 //         horizontal: 20, vertical: 8),
-            //                 //     shape: RoundedRectangleBorder(
-            //                 //       borderRadius: BorderRadius.circular(8),
-            //                 //     ),
-            //                 //     elevation: 0,
-            //                 //   ),
-            //                 //   child: const Text(
-            //                 //     "Book now",
-            //                 //     style: TextStyle(
-            //                 //       fontSize: 14,
-            //                 //       fontWeight: FontWeight.w500,
-            //                 //     ),
-            //                 //   ),
-            //                 // ),
-            //               ],
-            //             ),
-            //           ],
-            //         ),
-            //       ),
-            //     );
-            //   },
-            // ),
-
             Consumer<NewRecentPackageProvider>(
               builder: (context, provider, child) {
                 if (provider.isLoading) {
@@ -2482,39 +1260,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   );
                 }
 
-                // if (provider.hasError) {
-                //   return Card(
-                //     color: Colors.white,
-                //     shape: RoundedRectangleBorder(
-                //       borderRadius: BorderRadius.circular(12),
-                //     ),
-                //     elevation: 2,
-                //     child: const Padding(
-                //       padding: EdgeInsets.all(16.0),
-                //       child: Column(
-                //         children: [
-                //           Icon(Icons.error_outline,
-                //               color: Colors.red, size: 48),
-                //           SizedBox(height: 8),
-                //           Text('No data found'),
-                //           // Text(
-                //           //   provider.errorMessage.isNotEmpty
-                //           //       ? provider.errorMessage
-                //           //       : 'Error loading package',
-                //           //   style: const TextStyle(
-                //           //       color: Colors.red, fontSize: 16),
-                //           //   textAlign: TextAlign.center,
-                //           // ),
-                //           const SizedBox(height: 8),
-                //           // ElevatedButton(
-                //           //   onPressed: () => provider.fetchRecentPackage(),
-                //           //   child: const Text('Retry'),
-                //           // ),
-                //         ],
-                //       ),
-                //     ),
-                //   );
-                // }
+          
 
                 if (!provider.hasData) {
                   return Text("");
@@ -2524,15 +1270,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
                 return GestureDetector(
                   onTap: () {
-                    //  Navigator.push(
-                    //     context,
-                    //     MaterialPageRoute(
-                    //         builder: (context) => ConsultDoctor(
-                    //           bookingId: package.id,
-                    //           serviceType: package.name,
-                    //           type: package.doctorInfo,
-                    //             // bookingId: package.id,
-                    //             )));
                     Navigator.push(
                         context,
                         MaterialPageRoute(
@@ -2581,14 +1318,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                     color: Colors.black87,
                                   ),
                                 ),
-                                //  Text(
-                                //   " ${package.doctorInfo}",
-                                //   style: const TextStyle(
-                                //     fontWeight: FontWeight.bold,
-                                //     fontSize: 16,
-                                //     color: Colors.black87,
-                                //   ),
-                                // ),
                                 const SizedBox(height: 8),
                                 Row(
                                   children: [
@@ -2634,28 +1363,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                     size: 16, color: Colors.black),
                               ),
                               const SizedBox(height: 50),
-                              // Uncomment if you want to add the book now button
-                              // ElevatedButton(
-                              //   onPressed: () {
-                              //     Navigator.push(context, MaterialPageRoute(builder: (context)=>PackagesScreen(packageId: package.id,)));
-                              //   },
-                              //   style: ElevatedButton.styleFrom(
-                              //     backgroundColor: const Color.fromARGB(255, 33, 58, 243),
-                              //     foregroundColor: Colors.white,
-                              //     padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
-                              //     shape: RoundedRectangleBorder(
-                              //       borderRadius: BorderRadius.circular(8),
-                              //     ),
-                              //     elevation: 0,
-                              //   ),
-                              //   child: const Text(
-                              //     "Book now",
-                              //     style: TextStyle(
-                              //       fontSize: 14,
-                              //       fontWeight: FontWeight.w500,
-                              //     ),
-                              //   ),
-                              // ),
                             ],
                           ),
                         ],
@@ -2702,7 +1409,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 }
 
                 if (blogProvider.hasError) {
-                  return SizedBox(
+                  return const SizedBox(
                     height: 280,
                     child: Center(
                       child: Column(
@@ -2710,24 +1417,15 @@ class _HomeScreenState extends State<HomeScreen> {
                         children: [
                           // const Icon(Icons.error_outline,
                           //     size: 48, color: Colors.red),
-                          const SizedBox(height: 16),
-                          const Text(
+                          SizedBox(height: 16),
+                          Text(
                             'No blogs available',
                             style: TextStyle(
                                 fontSize: 16, fontWeight: FontWeight.bold),
                           ),
-                          const SizedBox(height: 8),
-                          // Text(
-                          //   blogProvider.errorMessage
-                          //       .replaceFirst('Exception: ', ''),
-                          //   textAlign: TextAlign.center,
-                          //   style: const TextStyle(color: Colors.grey),
+                          SizedBox(height: 8),
                           // ),
-                          const SizedBox(height: 16),
-                          // ElevatedButton(
-                          //   onPressed: () => blogProvider.fetchAllBlogs(),
-                          //   child: const Text('Retry'),
-                          // ),
+                          SizedBox(height: 16),
                         ],
                       ),
                     ),
@@ -2931,44 +1629,6 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 }
 
-// class _ImageWithLabel extends StatelessWidget {
-//   final String imageUrl;
-//   final String label;
-
-//   const _ImageWithLabel({
-//     required this.imageUrl,
-//     required this.label,
-//     super.key,
-//   });
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Column(
-//       children: [
-//         CircleAvatar(
-//           radius: 30,
-//           backgroundColor: Colors.blue.shade50,
-//           child: Image.asset(
-//             imageUrl,
-//             fit: BoxFit.cover,
-//             width: 42,
-//             height: 40,
-//           ),
-//         ),
-//         const SizedBox(height: 8),
-//         SizedBox(
-//           width: 80,
-//           child: Text(
-//             label,
-//             textAlign: TextAlign.center,
-//             style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
-//           ),
-//         ),
-//       ],
-//     );
-//   }
-// }
-
 class _ImageWithLabel extends StatelessWidget {
   final String imageUrl;
   final String label;
@@ -2986,8 +1646,8 @@ class _ImageWithLabel extends StatelessWidget {
     return Column(
       children: [
         Container(
-          height: screenWidth * 0.15,
-          width: screenWidth * 0.15,
+          height: screenWidth * 0.1,
+          width: screenWidth * 0.1,
           decoration: BoxDecoration(
             image: DecorationImage(
               image: AssetImage(imageUrl),

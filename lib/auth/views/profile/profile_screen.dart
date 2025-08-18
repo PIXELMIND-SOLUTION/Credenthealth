@@ -13,6 +13,7 @@ import 'package:consultation_app/policies/privacy_policy.dart';
 import 'package:consultation_app/policies/terms_conditions.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -132,6 +133,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
       MaterialPageRoute(builder: (context) => const LoginScreen()),
       (Route<dynamic> route) => false,
     );
+  }
+
+  Future<void> _launchWebPage(String url) async {
+    final Uri uri = Uri.parse(url);
+    if (!await launchUrl(uri, mode: LaunchMode.externalApplication)) {
+      throw 'Could not launch $url';
+    }
   }
 
   @override
@@ -300,24 +308,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       iconColor: const Color.fromARGB(137, 252, 36, 36),
                       label: 'Privacy Policy',
                       onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const PrivacyPolicy()),
-                        );
+                        _launchWebPage('https://credenthealth-terms-policy.onrender.com/privacy-and-policy');
                       },
                     ),
+
                     _MenuItem(
                       icon: Icons.article,
                       iconBg: const Color.fromARGB(255, 61, 155, 244),
                       iconColor: const Color.fromARGB(136, 7, 5, 5),
                       label: 'Terms & Conditions',
                       onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const TermsandConditions()),
-                        );
+                        _launchWebPage('https://credenthealth-terms-policy.onrender.com/terms-and-conditions');
                       },
                     ),
 
@@ -408,4 +409,3 @@ class _MenuItem extends StatelessWidget {
     );
   }
 }
-

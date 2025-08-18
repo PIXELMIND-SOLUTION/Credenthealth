@@ -362,6 +362,9 @@ class BookingService {
       print('🔄 Fetching single booking: $bookingId for staff: $staffId');
       
       final url = Uri.parse('$baseUrl/api/staff/single-booking/$staffId/$bookingId');
+
+            print('🔄 Url: $url');
+
       
       final response = await http.get(
         url,
