@@ -781,6 +781,8 @@ class ChatProvider extends ChangeNotifier {
   String _error = '';
   Doctor? _selectedDoctor;
   String _staffId = '';
+    String _staffIdd= '';
+
   bool _isSocketConnected = false;
   bool _isTyping = false;
   
@@ -791,14 +793,16 @@ class ChatProvider extends ChangeNotifier {
   String get error => _error;
   Doctor? get selectedDoctor => _selectedDoctor;
   String get staffId => _staffId;
+  String get staffIdd => _staffIdd;
   bool get isSocketConnected => _isSocketConnected;
   bool get isTyping => _isTyping;
 
   // Initialize provider
-  Future<void> initialize() async {
+  Future<void> initialize(String staffIdd)async {
     await _getStaffId();
-    if (_staffId.isNotEmpty) {
-      await getOnlineBookingDoctors();
+    if (staffIdd.isNotEmpty) {
+      _staffIdd = staffIdd;
+      await getOnlineBookingDoctors(staffIdd.toString());
       await _socketService.initialize();
       _initializeSocket();
     }
@@ -903,8 +907,8 @@ class ChatProvider extends ChangeNotifier {
   }
 
   // Get online booking doctors
-  Future<void> getOnlineBookingDoctors() async {
-    if (_staffId.isEmpty) {
+  Future<void> getOnlineBookingDoctors(String staffIdd) async {
+    if (staffIdd.toString().isEmpty) {
       _setError('Staff ID not found');
       return;
     }
@@ -913,7 +917,7 @@ class ChatProvider extends ChangeNotifier {
     _clearError();
 
     try {
-      _doctors = await _chatService.getOnlineBookingDoctors(_staffId);
+      _doctors = await _chatService.getOnlineBookingDoctors(staffIdd.toString());
       print('Doctors loaded: ${_doctors.length}');
     } catch (e) {
       print('Error loading doctors: $e');
@@ -1130,7 +1134,7 @@ class ChatProvider extends ChangeNotifier {
 
   // Refresh doctors list
   Future<void> refreshDoctors() async {
-    await getOnlineBookingDoctors();
+    await getOnlineBookingDoctors(_staffIdd);
   }
 
   // Reconnect socket

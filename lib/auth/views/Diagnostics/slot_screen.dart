@@ -1685,6 +1685,7 @@ class _SlotScreenState extends State<SlotScreen> {
                             // Show message if no addresses
                             if (addressProvider.addresses.isEmpty)
                               Container(
+                                width: double.infinity,
                                 padding: const EdgeInsets.all(16),
                                 margin: const EdgeInsets.only(top: 16),
                                 decoration: BoxDecoration(

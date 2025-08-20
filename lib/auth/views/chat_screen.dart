@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:consultation_app/Helper/auth_preference.dart';
 import 'package:consultation_app/auth/views/provider/chat_provider.dart';
 import 'package:consultation_app/auth/views/provider/profile_provider.dart';
 import 'package:flutter/material.dart';
@@ -47,6 +48,12 @@ class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver {
     }
 
     super.initState();
+
+        Future.microtask(() async {
+      final profileProvider =
+          Provider.of<ProfileUpdateProvider>(context, listen: false);
+      await profileProvider.loadProfile();
+    });
 
     print("DoctorId: ${widget.selectedDoctor?.id}");
     WidgetsBinding.instance.addObserver(this);

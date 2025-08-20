@@ -905,6 +905,7 @@
 
 
 
+import 'package:consultation_app/Helper/auth_preference.dart';
 import 'package:consultation_app/auth/views/provider/chat_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -929,6 +930,7 @@ class _DoctorsListScreenState extends State<DoctorsListScreen>
   late Animation<double> _fadeAnimation;
   late Animation<Offset> _slideAnimation;
   bool _isSearchFocused = false;
+  String? staffIdd;
 
   @override
   void initState() {
@@ -965,9 +967,14 @@ class _DoctorsListScreenState extends State<DoctorsListScreen>
     _fadeController.forward();
     _slideController.forward();
 
+        Future.microtask(() async {
+      final id = await SharedPrefsHelper.getStaffIdWithFallback();
+      setState(() => staffIdd = id);
+    });
+
     // Initialize provider when screen loads
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      Provider.of<ChatProvider>(context, listen: false).initialize();
+      Provider.of<ChatProvider>(context, listen: false).initialize( staffIdd.toString());
     });
   }
 
