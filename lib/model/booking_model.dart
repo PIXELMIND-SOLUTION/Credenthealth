@@ -2111,7 +2111,7 @@ class DoctorInfo {
 
   factory DoctorInfo.fromJson(Map<String, dynamic> json) {
     return DoctorInfo(
-      id: json['_id'] ?? '',
+      id: json['doctorId'] ?? '',
       name: json['name'] ?? '',
       specialization: json['specialization'] ?? '',
       qualification: json['qualification'] ?? '',
@@ -2123,7 +2123,7 @@ class DoctorInfo {
 
   Map<String, dynamic> toJson() {
     return {
-      '_id': id,
+      'doctorId': id,
       'name': name,
       'specialization': specialization,
       'qualification': qualification,
@@ -2133,6 +2133,86 @@ class DoctorInfo {
     };
   }
 }
+
+// class DiagnosticInfo {
+//   final String id;
+//   final String name;
+//   final String distance;
+//   final String image;
+//   final String address;
+
+//   DiagnosticInfo({
+//     required this.id,
+//     required this.name,
+//     required this.distance,
+//     required this.image,
+//     required this.address
+//   });
+
+// factory DiagnosticInfo.fromJson(Map<String, dynamic> json) {
+//   return DiagnosticInfo(
+//     id: json['_id'] ?? json['diagnosticId'] ?? '',
+//     name: json['name'] ?? '',
+//     distance: json['distance']?.toString() ?? '', // just in case it's numeric
+//     image: json['image'] ?? '',
+//     address: json['address'] ?? '',
+//   );
+// }
+
+
+//   Map<String, dynamic> toJson() {
+//     return {
+//       '_id': id,
+//       'name': name,
+//       'distance': distance,
+//       'image': image,
+//       'address': address
+//     };
+//   }
+// }
+
+// class CartInfo {
+//   final String id;
+//   final String userId;
+//   final List<CartItem> items;
+//   final String createdAt;
+//   final String updatedAt;
+//   final int version;
+
+//   CartInfo({
+//     required this.id,
+//     required this.userId,
+//     required this.items,
+//     required this.createdAt,
+//     required this.updatedAt,
+//     required this.version,
+//   });
+
+//   factory CartInfo.fromJson(Map<String, dynamic> json) {
+//     return CartInfo(
+//       id: json['_id'] ?? '',
+//       userId: json['userId'] ?? '',
+//       items: (json['items'] as List<dynamic>? ?? [])
+//           .map((item) => CartItem.fromJson(item))
+//           .toList(),
+//       createdAt: json['createdAt'] ?? '',
+//       updatedAt: json['updatedAt'] ?? '',
+//       version: json['__v'] ?? 0,
+//     );
+//   }
+
+//   Map<String, dynamic> toJson() {
+//     return {
+//       '_id': id,
+//       'userId': userId,
+//       'items': items.map((item) => item.toJson()).toList(),
+//       'createdAt': createdAt,
+//       'updatedAt': updatedAt,
+//       '__v': version,
+//     };
+//   }
+// }
+
 
 class DiagnosticInfo {
   final String id;
@@ -2146,26 +2226,28 @@ class DiagnosticInfo {
     required this.name,
     required this.distance,
     required this.image,
-    required this.address
+    required this.address,
   });
 
   factory DiagnosticInfo.fromJson(Map<String, dynamic> json) {
     return DiagnosticInfo(
-      id: json['_id'] ?? '',
+      id: json['_id'] ?? json['diagnosticId'] ?? '',
       name: json['name'] ?? '',
-      distance: json['distance'] ?? '',
+      distance: json['distance']?.toString() ?? '',
       image: json['image'] ?? '',
       address: json['address'] ?? '',
     );
   }
 
+  /// Sends both keys to be maximally compatible with different endpoints.
   Map<String, dynamic> toJson() {
     return {
       '_id': id,
+      'diagnosticId': id,
       'name': name,
       'distance': distance,
       'image': image,
-      'address': address
+      'address': address,
     };
   }
 }
@@ -2188,15 +2270,16 @@ class CartInfo {
   });
 
   factory CartInfo.fromJson(Map<String, dynamic> json) {
+    final itemsList = (json['items'] as List<dynamic>?) ?? [];
     return CartInfo(
-      id: json['_id'] ?? '',
-      userId: json['userId'] ?? '',
-      items: (json['items'] as List<dynamic>? ?? [])
-          .map((item) => CartItem.fromJson(item))
-          .toList(),
-      createdAt: json['createdAt'] ?? '',
-      updatedAt: json['updatedAt'] ?? '',
-      version: json['__v'] ?? 0,
+      id: json['_id'] ?? json['cartId'] ?? '',
+      userId: json['userId']?.toString() ?? '',
+      items: itemsList.map((item) => CartItem.fromJson(item as Map<String, dynamic>)).toList(),
+      createdAt: json['createdAt']?.toString() ?? '',
+      updatedAt: json['updatedAt']?.toString() ?? '',
+      version: (json['__v'] is int)
+          ? json['__v'] as int
+          : int.tryParse((json['__v'] ?? '0').toString()) ?? 0,
     );
   }
 
@@ -2211,6 +2294,7 @@ class CartInfo {
     };
   }
 }
+
 
 class CartItem {
   final String itemId;

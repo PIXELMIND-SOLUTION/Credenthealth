@@ -5,9 +5,7 @@ import 'package:consultation_app/auth/views/provider/address_provider.dart';
 import 'package:consultation_app/model/address_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-// Import your AddressProvider and AddAddress screen
-// import 'address_provider.dart';
-// import 'add_address.dart';
+
 
 class AddressList extends StatefulWidget {
   const AddressList({super.key});
@@ -77,7 +75,7 @@ class _AddressListState extends State<AddressList> {
                   }
                 },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color.fromARGB(255, 33, 65, 243),
+                  backgroundColor:Colors.blue,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8),
                   ),

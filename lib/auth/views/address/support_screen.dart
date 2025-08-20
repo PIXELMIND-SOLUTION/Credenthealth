@@ -1441,7 +1441,7 @@ class _SupportScreenState extends State<SupportScreen> {
           }
         },
         style: ElevatedButton.styleFrom(
-          backgroundColor: const Color.fromARGB(255, 33, 51, 243),
+          backgroundColor: Colors.blue,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(8),
           ),

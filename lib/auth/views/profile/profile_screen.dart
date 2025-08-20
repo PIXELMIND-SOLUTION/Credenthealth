@@ -5,6 +5,7 @@ import 'package:consultation_app/auth/views/address/support_screen.dart';
 import 'package:consultation_app/auth/views/family/list_family_members.dart';
 import 'package:consultation_app/auth/views/modes/dark_mode.dart';
 import 'package:consultation_app/auth/views/notification/notification_screen..dart';
+import 'package:consultation_app/auth/views/profile/delete_account_screen.dart';
 import 'package:consultation_app/auth/views/profile/edit_profile.dart';
 import 'package:consultation_app/auth/views/provider/profile_provider.dart';
 import 'package:consultation_app/auth/views/steptracker/step_tracker_screen.dart';
@@ -312,9 +313,21 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       },
                     ),
 
+                     _MenuItem(
+                      icon: Icons.delete,
+                      iconBg: const Color.fromARGB(255, 255, 30, 30),
+                      iconColor: Colors.white,
+                      label: 'Delete Account',
+                      onTap: () {
+
+                        Navigator.push(context, MaterialPageRoute(builder: (context)=>DeleteAccountScreen()));
+                        
+                      },
+                    ),
+
                     _MenuItem(
                       icon: Icons.article,
-                      iconBg: const Color.fromARGB(255, 61, 155, 244),
+                      iconBg: Colors.blue,
                       iconColor: const Color.fromARGB(136, 7, 5, 5),
                       label: 'Terms & Conditions',
                       onTap: () {

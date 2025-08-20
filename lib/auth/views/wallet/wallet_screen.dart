@@ -66,9 +66,9 @@
 //                 ],
 //               ),
 //             ),
-            
+
 //             const SizedBox(height: 32),
-            
+
 //             // Latest Transactions Header
 //             Row(
 //               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -94,9 +94,9 @@
 //                 ),
 //               ],
 //             ),
-            
+
 //             const SizedBox(height: 16),
-            
+
 //             // Transaction List
 //             Expanded(
 //               child: ListView(
@@ -220,17 +220,10 @@
 //   }
 // }
 
-
-
-
-
-
-
 // import 'package:consultation_app/auth/views/provider/wallet_provider.dart';
 // import 'package:consultation_app/model/wallet_model.dart';
 // import 'package:flutter/material.dart';
 // import 'package:provider/provider.dart';
-
 
 // class WalletScreen extends StatefulWidget {
 //   final String? staffId; // Pass the staff ID
@@ -255,9 +248,9 @@
 
 //   Future<void> _loadWalletData() async {
 //     final walletProvider = Provider.of<WalletProvider>(context, listen: false);
-   
+
 //     if (widget.staffId != null) {
-    
+
 //       await walletProvider.fetchWalletData(
 //         widget.staffId!,
 //         token: widget.token,
@@ -267,7 +260,7 @@
 
 //   Future<void> _refreshWalletData() async {
 //     final walletProvider = Provider.of<WalletProvider>(context, listen: false);
-    
+
 //     if (widget.staffId != null) {
 //       await walletProvider.refreshWalletData(
 //         widget.staffId!,
@@ -640,7 +633,7 @@
 //               ],
 //             ),
 //           ),
-          
+
 //           // Transactions List
 //           Expanded(
 //             child: _filteredTransactions.isEmpty
@@ -674,12 +667,12 @@
 //       child: Container(
 //         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
 //         decoration: BoxDecoration(
-//           color: isSelected 
+//           color: isSelected
 //               ? const Color.fromARGB(255, 48, 42, 236)
 //               : Colors.white,
 //           borderRadius: BorderRadius.circular(20),
 //           border: Border.all(
-//             color: isSelected 
+//             color: isSelected
 //                 ? const Color.fromARGB(255, 48, 42, 236)
 //                 : Colors.grey.shade300,
 //           ),
@@ -796,17 +789,6 @@
 //   }
 // }
 
-
-
-
-
-
-
-
-
-
-
-
 import 'package:consultation_app/auth/views/provider/wallet_provider.dart';
 import 'package:consultation_app/model/wallet_model.dart';
 import 'package:flutter/material.dart';
@@ -814,7 +796,7 @@ import 'package:provider/provider.dart';
 
 class WalletScreen extends StatefulWidget {
   final String? staffId; // Pass the staff ID
-  final String? token;   // Pass the auth token
+  final String? token; // Pass the auth token
 
   const WalletScreen({
     super.key,
@@ -835,7 +817,7 @@ class _WalletScreenState extends State<WalletScreen> {
 
   Future<void> _loadWalletData() async {
     final walletProvider = Provider.of<WalletProvider>(context, listen: false);
-   
+
     if (widget.staffId != null) {
       await walletProvider.fetchWalletData(
         widget.staffId!,
@@ -846,7 +828,7 @@ class _WalletScreenState extends State<WalletScreen> {
 
   Future<void> _refreshWalletData() async {
     final walletProvider = Provider.of<WalletProvider>(context, listen: false);
-    
+
     if (widget.staffId != null) {
       await walletProvider.refreshWalletData(
         widget.staffId!,
@@ -861,7 +843,7 @@ class _WalletScreenState extends State<WalletScreen> {
       backgroundColor: Colors.grey[50],
       appBar: AppBar(
         backgroundColor: Colors.white,
-         surfaceTintColor: Colors.white,
+        surfaceTintColor: Colors.white,
         elevation: 0,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.black),
@@ -937,10 +919,7 @@ class _WalletScreenState extends State<WalletScreen> {
                     padding: const EdgeInsets.all(24),
                     decoration: BoxDecoration(
                       gradient: const LinearGradient(
-                        colors: [
-                          Color.fromARGB(255, 48, 42, 236),
-                          Color.fromARGB(255, 54, 47, 240)
-                        ],
+                        colors: [Colors.blue, Colors.blue],
                         begin: Alignment.topLeft,
                         end: Alignment.bottomRight,
                       ),
@@ -968,7 +947,6 @@ class _WalletScreenState extends State<WalletScreen> {
                         ),
                         const SizedBox(height: 20),
                         // Balance breakdown
-                       
                       ],
                     ),
                   ),
@@ -976,7 +954,6 @@ class _WalletScreenState extends State<WalletScreen> {
                   const SizedBox(height: 24),
 
                   // Statistics Cards
-                 
 
                   const SizedBox(height: 32),
 
@@ -1040,7 +1017,8 @@ class _WalletScreenState extends State<WalletScreen> {
                           physics: const NeverScrollableScrollPhysics(),
                           itemCount: walletProvider.recentTransactions.length,
                           itemBuilder: (context, index) {
-                            final transaction = walletProvider.recentTransactions[index];
+                            final transaction =
+                                walletProvider.recentTransactions[index];
                             return _buildTransactionItem(transaction);
                           },
                         ),
@@ -1090,7 +1068,8 @@ class _WalletScreenState extends State<WalletScreen> {
     );
   }
 
-  Widget _buildStatCard(String title, String value, IconData icon, Color color) {
+  Widget _buildStatCard(
+      String title, String value, IconData icon, Color color) {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
@@ -1218,7 +1197,6 @@ class _WalletScreenState extends State<WalletScreen> {
               decoration: BoxDecoration(
                 color: Colors.grey[50],
                 borderRadius: BorderRadius.circular(8),
-
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -1248,7 +1226,8 @@ class _WalletScreenState extends State<WalletScreen> {
     );
   }
 
-  void _showAllTransactions(BuildContext context, WalletProvider walletProvider) {
+  void _showAllTransactions(
+      BuildContext context, WalletProvider walletProvider) {
     Navigator.of(context).push(
       MaterialPageRoute(
         builder: (context) => AllTransactionsScreen(
@@ -1287,14 +1266,12 @@ class _AllTransactionsScreenState extends State<AllTransactionsScreen> {
       _selectedFilter = filter;
       switch (filter) {
         case 'Credit':
-          _filteredTransactions = widget.transactions
-              .where((t) => t.isCredit)
-              .toList();
+          _filteredTransactions =
+              widget.transactions.where((t) => t.isCredit).toList();
           break;
         case 'Debit':
-          _filteredTransactions = widget.transactions
-              .where((t) => t.isDebit)
-              .toList();
+          _filteredTransactions =
+              widget.transactions.where((t) => t.isDebit).toList();
           break;
         default:
           _filteredTransactions = widget.transactions;
@@ -1339,7 +1316,7 @@ class _AllTransactionsScreenState extends State<AllTransactionsScreen> {
               ],
             ),
           ),
-          
+
           // Transactions List
           Expanded(
             child: _filteredTransactions.isEmpty
@@ -1373,12 +1350,12 @@ class _AllTransactionsScreenState extends State<AllTransactionsScreen> {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         decoration: BoxDecoration(
-          color: isSelected 
+          color: isSelected
               ? const Color.fromARGB(255, 48, 42, 236)
               : Colors.white,
           borderRadius: BorderRadius.circular(20),
           border: Border.all(
-            color: isSelected 
+            color: isSelected
                 ? const Color.fromARGB(255, 48, 42, 236)
                 : Colors.grey.shade300,
           ),
@@ -1453,7 +1430,9 @@ class _AllTransactionsScreenState extends State<AllTransactionsScreen> {
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      transaction.date.toString().split(' ')[0], // Show only date
+                      transaction.date
+                          .toString()
+                          .split(' ')[0], // Show only date
                       style: TextStyle(
                         fontSize: 12,
                         color: Colors.grey[500],
@@ -1475,7 +1454,8 @@ class _AllTransactionsScreenState extends State<AllTransactionsScreen> {
                   ),
                   const SizedBox(height: 4),
                   Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                     child: Text(
                       transaction.description,
                       style: TextStyle(

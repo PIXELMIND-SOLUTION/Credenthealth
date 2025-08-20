@@ -2354,7 +2354,7 @@ class _XrayScreenState extends State<XrayScreen> {
                             //   ),
                             // ),
                             Text(
-                              'Report time:${xray.reportTime}',
+                              'Report in:${xray.reportTime}',
                               style: TextStyle(
                                 fontSize: 14,
                                 color: Colors.grey[600],

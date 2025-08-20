@@ -434,16 +434,16 @@ class _BookingScreenState extends State<BookingScreen> {
         surfaceTintColor: Colors.white,
         elevation: 0,
         automaticallyImplyLeading: false,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.black),
-          onPressed: () {
-            Navigator.pushAndRemoveUntil(
-              context,
-              MaterialPageRoute(builder: (context) => const NavbarScreen()),
-              (Route<dynamic> route) => false, // removes all previous routes
-            );
-          },
-        ),
+        // leading: IconButton(
+        //   icon: const Icon(Icons.arrow_back, color: Colors.black),
+        //   onPressed: () {
+        //     Navigator.pushAndRemoveUntil(
+        //       context,
+        //       MaterialPageRoute(builder: (context) => const NavbarScreen()),
+        //       (Route<dynamic> route) => false, // removes all previous routes
+        //     );
+        //   },
+        // ),
         title: const Text(
           'My bookings',
           style: TextStyle(
@@ -1043,7 +1043,7 @@ Widget _buildBookingsList(GetAllBookingProvider provider) {
                           name: booking.primaryServiceName,
                           type: booking.type,
                           serviceType: booking.serviceType,
-                          // address: booking.diagnosticId?.address,
+                          address: booking.diagnosticId?.address,
                           // address: booking.diagnostic?.address
                         )));
                 },

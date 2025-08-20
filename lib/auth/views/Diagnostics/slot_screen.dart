@@ -1,4 +1,3 @@
-
 import 'package:consultation_app/auth/views/Diagnostics/confirm_booking_screen.dart';
 import 'package:consultation_app/auth/views/address/add_address.dart';
 import 'package:consultation_app/auth/views/family/list_family_members.dart';
@@ -96,19 +95,18 @@ class _SlotScreenState extends State<SlotScreen> {
     _initializeBookingData();
     _loadProfileData();
 
-  WidgetsBinding.instance.addPostFrameCallback((_) {
-    if (dates.isNotEmpty) {
-      final initialDate = dates[0]['date'];
-      Provider.of<BookingSlotProvider>(context, listen: false).fetchSlots(
-        widget.diagnosticId.toString(),
-        initialDate,
-        widget.bookingType.toString(),
-      );
-    }
-    _initializeWalletData();
-    context.read<AddressProvider>().loadAddresses();
-  });
-
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (dates.isNotEmpty) {
+        final initialDate = dates[0]['date'];
+        Provider.of<BookingSlotProvider>(context, listen: false).fetchSlots(
+          widget.diagnosticId.toString(),
+          initialDate,
+          widget.bookingType.toString(),
+        );
+      }
+      _initializeWalletData();
+      context.read<AddressProvider>().loadAddresses();
+    });
   }
 
   @override
@@ -119,14 +117,18 @@ class _SlotScreenState extends State<SlotScreen> {
 
   Future<void> _initializeWalletData() async {
     try {
-      print("ooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo${widget.bookingType}");
-      print('hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh${widget.amount}');
+      print(
+          "ooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo${widget.bookingType}");
+      print(
+          'hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh${widget.amount}');
       final staffId = await SharedPrefsHelper.getStaffIdWithFallback();
       final token = await SharedPrefsHelper.getUserToken();
 
       if (staffId.isNotEmpty && mounted) {
-        final walletProvider = Provider.of<WalletProvider>(context, listen: false);
-        final success = await walletProvider.fetchWalletData(staffId, token: token);
+        final walletProvider =
+            Provider.of<WalletProvider>(context, listen: false);
+        final success =
+            await walletProvider.fetchWalletData(staffId, token: token);
 
         if (success && mounted) {
           setState(() {
@@ -171,7 +173,8 @@ class _SlotScreenState extends State<SlotScreen> {
 
   void _initializeBookingData() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      final bookingProvider = Provider.of<BookingProvider>(context, listen: false);
+      final bookingProvider =
+          Provider.of<BookingProvider>(context, listen: false);
 
       if (widget.diagnosticId != null) {
         bookingProvider.setSelectedDiagnostic(widget.diagnosticId!);
@@ -239,7 +242,8 @@ class _SlotScreenState extends State<SlotScreen> {
   }
 
   void _updateBookingProviderData() {
-    final bookingProvider = Provider.of<BookingProvider>(context, listen: false);
+    final bookingProvider =
+        Provider.of<BookingProvider>(context, listen: false);
     final selectedDate = dates[selectedDateIndex];
     final DateTime fullDate = selectedDate['fullDate'];
 
@@ -250,7 +254,8 @@ class _SlotScreenState extends State<SlotScreen> {
     // bookingProvider.setSelectedTime(timeSlots[selectedTimeIndex]);
 
     if (selectedFamilyMember != null) {
-      bookingProvider.setSelectedFamilyMember(selectedFamilyMember!.id.toString());
+      bookingProvider
+          .setSelectedFamilyMember(selectedFamilyMember!.id.toString());
     } else if (_useProfileData && _currentStaffId != null) {
       bookingProvider.setSelectedFamilyMember(_currentStaffId!);
     }
@@ -263,11 +268,13 @@ class _SlotScreenState extends State<SlotScreen> {
   }
 
   void handlePaymentSuccessResponse(PaymentSuccessResponse responsee) async {
-          print("gggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggrrrrr${customSlot.toString()}");
+    print(
+        "gggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggrrrrr${customSlot.toString()}");
 
     _updateBookingProviderData();
 
-    final bookingProvider = Provider.of<BookingProvider>(context, listen: false);
+    final bookingProvider =
+        Provider.of<BookingProvider>(context, listen: false);
 
     // Show loading dialog
     showDialog(
@@ -280,20 +287,19 @@ class _SlotScreenState extends State<SlotScreen> {
 
     final selectedDate = dates[selectedDateIndex];
 
-
     final response = await bookingProvider.createBooking(
-        selectedDay: selectedDate['day'],
-        selectedDate: dateCustom.toString(),
-        selectedTime: customSlot.toString(),
-        diagnosticId: widget.diagnosticId,
-        packageId: widget.packageId,
-        familyMemberId: selectedFamilyMember?.id.toString(),
-        serviceType: widget.bookingType,
-        transactionId: responsee.paymentId.toString(),
-        addressId: selectedAddress?.id,
-        );
-              print("gggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggrrrrr${response['success']}");
-
+      selectedDay: selectedDate['day'],
+      selectedDate: dateCustom.toString(),
+      selectedTime: customSlot.toString(),
+      diagnosticId: widget.diagnosticId,
+      packageId: widget.packageId,
+      familyMemberId: selectedFamilyMember?.id.toString(),
+      serviceType: widget.bookingType,
+      transactionId: responsee.paymentId.toString(),
+      addressId: selectedAddress?.id,
+    );
+    print(
+        "gggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggrrrrr${response['success']}");
 
     // Hide loading dialog
     if (mounted) {
@@ -301,7 +307,8 @@ class _SlotScreenState extends State<SlotScreen> {
     }
 
     if (response['success']) {
-      print("gggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggrrrrr");
+      print(
+          "gggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggrrrrr");
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('Consultation booked successfully!'),
@@ -330,7 +337,8 @@ class _SlotScreenState extends State<SlotScreen> {
   }
 
   void handleExternalWalletSelected(ExternalWalletResponse response) {
-    showAlertDialog(context, "External Wallet Selected", "${response.walletName}");
+    showAlertDialog(
+        context, "External Wallet Selected", "${response.walletName}");
   }
 
   void showAlertDialog(BuildContext context, String title, String message) {
@@ -340,27 +348,33 @@ class _SlotScreenState extends State<SlotScreen> {
   Future<void> _completeBookingAfterPayment() async {
     showLoading();
     try {
-      print('✅ hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh created successfully$dateCustom');
+      print(
+          '✅ hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh created successfully$dateCustom');
       print('✅ Booking created successfully$customSlot');
-      final bookingProvider = Provider.of<BookingProvider>(context, listen: false);
+      final bookingProvider =
+          Provider.of<BookingProvider>(context, listen: false);
 
       // Determine family member ID to use (optional)
       String? familyMemberIdToUse;
       if (selectedFamilyMember != null) {
         familyMemberIdToUse = selectedFamilyMember!.id.toString();
-        print('✅ Using selected family member: ${selectedFamilyMember!.fullName} (ID: $familyMemberIdToUse)');
+        print(
+            '✅ Using selected family member: ${selectedFamilyMember!.fullName} (ID: $familyMemberIdToUse)');
       } else if (_useProfileData && _currentStaffId != null) {
         familyMemberIdToUse = _currentStaffId!;
-        print('✅ Using profile data for current user (ID: $familyMemberIdToUse)');
+        print(
+            '✅ Using profile data for current user (ID: $familyMemberIdToUse)');
       } else {
         // No family member selected - use current user as default
         familyMemberIdToUse = _currentStaffId;
-        print('✅ No family member selected, using current user as default (ID: $familyMemberIdToUse)');
+        print(
+            '✅ No family member selected, using current user as default (ID: $familyMemberIdToUse)');
       }
 
       // Create booking with dynamic date
       final selectedDate = dates[selectedDateIndex];
-      print('📅 Creating booking with date: ${selectedDate['day']}, ${selectedDate['date']}');
+      print(
+          '📅 Creating booking with date: ${selectedDate['day']}, ${selectedDate['date']}');
 
       final response = await bookingProvider.createBooking(
         selectedDay: selectedDate['day'],
@@ -392,9 +406,12 @@ class _SlotScreenState extends State<SlotScreen> {
       }
       // Then check if we have a payment requirement in the data
       else if (response['data']['isSuccessfull'] == false) {
-        final requiredOnlineAmount = response['data']['requiredOnline']?.toDouble() ?? 0.0;
-        final walletAvailable = response['data']['walletAvailable']?.toDouble() ?? 0.0;
-        final message = response['data']['message'] ?? 'Insufficient wallet balance';
+        final requiredOnlineAmount =
+            response['data']['requiredOnline']?.toDouble() ?? 0.0;
+        final walletAvailable =
+            response['data']['walletAvailable']?.toDouble() ?? 0.0;
+        final message =
+            response['data']['message'] ?? 'Insufficient wallet balance';
 
         print('💰 Payment required: $message');
         print('💵 Wallet available: $walletAvailable');
@@ -413,7 +430,9 @@ class _SlotScreenState extends State<SlotScreen> {
       }
       // Handle other error cases
       else {
-        final errorMessage = response['error'] ?? response['message'] ?? 'Failed to create booking';
+        final errorMessage = response['error'] ??
+            response['message'] ??
+            'Failed to create booking';
         print('❌ Booking creation failed: $errorMessage');
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -498,28 +517,31 @@ class _SlotScreenState extends State<SlotScreen> {
   }
 
   Future<void> _proceedToPayment() async {
+    print("Time Slottttttttttttttttttttttttttttttttttt$selectedTimeIndex");
+    print("Time Length${timeSlots.length}");
 
-        print("Time Slottttttttttttttttttttttttttttttttttt$selectedTimeIndex");
-        print("Time Length${timeSlots.length}");
+    if (selectedTimeIndex < 0 || selectedTimeIndex >= timeSlots.length) {
+      _showValidationError(
+          'Please select a valid time slot for your appointment.');
+      return;
+    }
 
-          if (selectedTimeIndex < 0 || selectedTimeIndex >= timeSlots.length) {
-    _showValidationError('Please select a valid time slot for your appointment.');
-    return;
-  }
-
-            if (customSlot == null) {
-    _showValidationError('Please select a valid time slot for your appointment.');
-    return;
-  }
+    if (customSlot == null) {
+      _showValidationError(
+          'Please select a valid time slot for your appointment.');
+      return;
+    }
     // 1. Validate Amount
     if (widget.amount == null || widget.amount!.isEmpty) {
-      _showValidationError('Amount is missing. Please go back and select a valid service.');
+      _showValidationError(
+          'Amount is missing. Please go back and select a valid service.');
       return;
     }
     // 2. Validate Diagnostic/Service Selection
     if (widget.diagnosticId == null || widget.diagnosticId!.isEmpty) {
       if (widget.packageId == null || widget.packageId!.isEmpty) {
-        _showValidationError('No diagnostic test or package selected. Please go back and select a service.');
+        _showValidationError(
+            'No diagnostic test or package selected. Please go back and select a service.');
         return;
       }
     }
@@ -530,10 +552,11 @@ class _SlotScreenState extends State<SlotScreen> {
     }
     // 4. Validate Time Selection
     print("Time Slottttttttttttttttttttttttttttttttttt$selectedTimeIndex");
-        print("Time Slottttttttttttttttttttttttttttttttttt${timeSlots.length}");
+    print("Time Slottttttttttttttttttttttttttttttttttt${timeSlots.length}");
 
     if (selectedTimeIndex < 0 || selectedTimeIndex >= timeSlots.length) {
-      _showValidationError('Please select a valid time slot for your appointment.');
+      _showValidationError(
+          'Please select a valid time slot for your appointment.');
       return;
     }
     // 5. Handle Family Member Selection (Optional)
@@ -544,13 +567,17 @@ class _SlotScreenState extends State<SlotScreen> {
       familyMemberIdToUse = selectedFamilyMember!.id.toString();
       selectedMemberName = selectedFamilyMember!.fullName;
       if (familyMemberIdToUse.isEmpty) {
-        _showValidationError('Selected family member has invalid ID. Please select another member.');
+        _showValidationError(
+            'Selected family member has invalid ID. Please select another member.');
         return;
       }
-    } else if (_useProfileData && _currentStaffId != null && _currentStaffId!.isNotEmpty) {
+    } else if (_useProfileData &&
+        _currentStaffId != null &&
+        _currentStaffId!.isNotEmpty) {
       // Profile data selected
       familyMemberIdToUse = _currentStaffId!;
-      selectedMemberName = _profileData?['name'] ?? _profileData?['fullName'] ?? 'Your Profile';
+      selectedMemberName =
+          _profileData?['name'] ?? _profileData?['fullName'] ?? 'Your Profile';
     } else {
       // No family member selected - this is optional, will use current user
       familyMemberIdToUse = _currentStaffId;
@@ -564,25 +591,27 @@ class _SlotScreenState extends State<SlotScreen> {
     }
     // 7. Validate Booking Type
     if (widget.bookingType == null || widget.bookingType!.isEmpty) {
-      print('Warning: Booking type not specified, defaulting to Home Collection');
+      print(
+          'Warning: Booking type not specified, defaulting to Home Collection');
     }
     // 8. Validate Profile Data if specifically using profile
     if (_useProfileData && _profileData == null) {
-      _showValidationError('Profile data not available. Please try selecting a family member or refresh the page.');
+      _showValidationError(
+          'Profile data not available. Please try selecting a family member or refresh the page.');
       return;
     }
 
-        // 9. Validate Address Data 
-                  print("Addressssssssssssssssssssssss: ${widget.bookingType}");
-                    print("Addressssssssssssssssssssssss: ${selectedAddress?.id}");
+    // 9. Validate Address Data
+    print("Addressssssssssssssssssssssss: ${widget.bookingType}");
+    print("Addressssssssssssssssssssssss: ${selectedAddress?.id}");
 
-        if (widget.bookingType == "Home Collection") {
-          print("Addressssssssssssssssssssssss: ${widget.bookingType}");
-                    print("Addressssssssssssssssssssssss: ${selectedAddress?.id}");
+    if (widget.bookingType == "Home Collection") {
+      print("Addressssssssssssssssssssssss: ${widget.bookingType}");
+      print("Addressssssssssssssssssssssss: ${selectedAddress?.id}");
 
-      if(selectedAddress?.id == "" || selectedAddress?.id == null){
+      if (selectedAddress?.id == "" || selectedAddress?.id == null) {
         _showValidationError('Address is missing. Select a valid address.');
-      return;
+        return;
       }
     }
     // 10. All validations passed - Show confirmation
@@ -649,8 +678,10 @@ class _SlotScreenState extends State<SlotScreen> {
               mainAxisSize: MainAxisSize.min,
               children: [
                 _buildConfirmationRow('Service', serviceName),
-                _buildConfirmationRow('Amount', '₹${amount.toStringAsFixed(2)}'),
-                _buildConfirmationRow('Date', '${selectedDate['day']}, ${selectedDate['date']}/${selectedDate['month']}/${selectedDate['year']}'),
+                _buildConfirmationRow(
+                    'Amount', '₹${amount.toStringAsFixed(2)}'),
+                _buildConfirmationRow('Date',
+                    '${selectedDate['day']}, ${selectedDate['date']}/${selectedDate['month']}/${selectedDate['year']}'),
                 _buildConfirmationRow('Time', selectedTime),
                 _buildConfirmationRow('Patient', selectedMemberName),
                 _buildConfirmationRow('Service Type', serviceType),
@@ -664,7 +695,8 @@ class _SlotScreenState extends State<SlotScreen> {
                   ),
                   child: Row(
                     children: [
-                      Icon(Icons.account_balance_wallet, color: Colors.blue[700], size: 20),
+                      Icon(Icons.account_balance_wallet,
+                          color: Colors.blue[700], size: 20),
                       const SizedBox(width: 8),
                       Text(
                         'Payment Method: ${(wallet ?? 0) >= amount ? 'Wallet Balance' : 'Razorpay Payment'}',
@@ -701,7 +733,8 @@ class _SlotScreenState extends State<SlotScreen> {
               style: ElevatedButton.styleFrom(
                 backgroundColor: const Color.fromARGB(255, 33, 82, 243),
               ),
-              child: const Text('Confirm & Pay', style: TextStyle(color: Colors.white)),
+              child: const Text('Confirm & Pay',
+                  style: TextStyle(color: Colors.white)),
             ),
           ],
         );
@@ -746,7 +779,8 @@ class _SlotScreenState extends State<SlotScreen> {
     required String familyMemberId,
     required String serviceType,
   }) {
-    final bookingProvider = Provider.of<BookingProvider>(context, listen: false);
+    final bookingProvider =
+        Provider.of<BookingProvider>(context, listen: false);
 
     // Format date as required
     String formattedDate = '${selectedDate['day']}-${selectedDate['date']}';
@@ -773,7 +807,8 @@ class _SlotScreenState extends State<SlotScreen> {
   Widget _buildProfileDataItem() {
     if (_profileData == null) return const SizedBox.shrink();
 
-    final name = _profileData!['name'] ?? _profileData!['fullName'] ?? 'Your Profile';
+    final name =
+        _profileData!['name'] ?? _profileData!['fullName'] ?? 'Your Profile';
     final email = _profileData!['email'] ?? '';
     final isSelected = _useProfileData && selectedFamilyMember == null;
 
@@ -798,7 +833,8 @@ class _SlotScreenState extends State<SlotScreen> {
                 radius: 20,
                 backgroundImage: profile?.profileImage != null
                     ? NetworkImage(_sanitizeImageUrl(profile!.profileImage))
-                    : const AssetImage('lib/assets/chatscreenimage.png') as ImageProvider,
+                    : const AssetImage('lib/assets/chatscreenimage.png')
+                        as ImageProvider,
               );
             },
           ),
@@ -1013,7 +1049,8 @@ class _SlotScreenState extends State<SlotScreen> {
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                 ),
-                if (address.fullAddress != null && address.fullAddress!.trim().isNotEmpty)
+                if (address.fullAddress != null &&
+                    address.fullAddress!.trim().isNotEmpty)
                   Text(
                     address.fullAddress!,
                     style: TextStyle(
@@ -1059,7 +1096,8 @@ class _SlotScreenState extends State<SlotScreen> {
 
   String _sanitizeImageUrl(String url) {
     // Fix double slashes in URL path
-    print("Urlllllllllllllllllllllllllllllllllllllllllllllllllllllllllll: $url");
+    print(
+        "Urlllllllllllllllllllllllllllllllllllllllllllllllllllllllllll: $url");
     final sanitizedUrl = url.replaceAll(RegExp(r'(?<!:)//'), '/');
     return ("http://31.97.206.144:4051$sanitizedUrl");
   }
@@ -1143,245 +1181,282 @@ class _SlotScreenState extends State<SlotScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Consumer<BookingSlotProvider>(
-                          builder: (context, slotProvider, child) {
-                            if (slotProvider.slots.isNotEmpty) {
-                              final slots = slotProvider.slots ?? [];
-                                timeSlots = slots;
-                            }
-                            return Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                const Text(
-                                  'Choose Date',
-                                  style: TextStyle(
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.black,
-                                  ),
+                            builder: (context, slotProvider, child) {
+                          if (slotProvider.slots.isNotEmpty) {
+                            final slots = slotProvider.slots ?? [];
+                            timeSlots = slots;
+                          }
+                          return Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Text(
+                                'Choose Date',
+                                style: TextStyle(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black,
                                 ),
-                                const SizedBox(height: 16),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                  children: dates.asMap().entries.map((entry) {
-                                    int index = entry.key;
-                                    Map<String, dynamic> date = entry.value;
-                                    bool isSelected = selectedDateIndex == index;
+                              ),
+                              const SizedBox(height: 16),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: dates.asMap().entries.map((entry) {
+                                  int index = entry.key;
+                                  Map<String, dynamic> date = entry.value;
+                                  bool isSelected = selectedDateIndex == index;
 
-                                    return GestureDetector(
-                                      onTap: () async {
-                                        if (index == dates.length - 1) {
-                                          // Last date: open date picker
-                                          DateTime? pickedDate = await showDatePicker(
-                                            context: context,
-                                            initialDate: DateTime.now(),
-                                            firstDate: DateTime.now(),
-                                            lastDate: DateTime.now().add(const Duration(days: 365)),
-                                          );
+                                  return GestureDetector(
+                                    onTap: () async {
+                                      if (index == dates.length - 1) {
+                                        // Last date: open date picker
+                                        DateTime? pickedDate =
+                                            await showDatePicker(
+                                          context: context,
+                                          initialDate: DateTime.now(),
+                                          firstDate: DateTime.now(),
+                                          lastDate: DateTime.now()
+                                              .add(const Duration(days: 365)),
+                                        );
 
-                                          if (pickedDate != null) {
-                                            print("hhhhhhhhhhhhhhhhhhhhhhhhhh$pickedDate");
-                                            final customDate = {
-                                              'day': DateFormat('EEE').format(pickedDate),
-                                              'dayNumber': pickedDate.day.toString(),
-                                              'date': DateFormat('dd/MM/yyyy').format(pickedDate),
-                                              'fullDate': pickedDate,
-                                            };
+                                        if (pickedDate != null) {
+                                          print(
+                                              "hhhhhhhhhhhhhhhhhhhhhhhhhh$pickedDate");
+                                          final customDate = {
+                                            'day': DateFormat('EEE')
+                                                .format(pickedDate),
+                                            'dayNumber':
+                                                pickedDate.day.toString(),
+                                            'date': DateFormat('dd/MM/yyyy')
+                                                .format(pickedDate),
+                                            'fullDate': pickedDate,
+                                          };
 
-                                            setState(() {
-                                              dates[dates.length - 1] = customDate;
-                                              selectedDateIndex = index;
-                                              selectedTimeIndex = -1;
-                                              dateCustom = DateFormat('yyyy/MM/dd').format(pickedDate);
-                                            });
-
-                                            print("oooooooooooooooooooooooooo$dateCustom");
-
-                                            context.read<BookingSlotProvider>().fetchSlots(
-                                              widget.diagnosticId.toString(),
-                                              dateCustom.toString(),
-                                              widget.bookingType.toString(),
-                                            );
-                                          }
-                                        } else {
-                                          DateTime? pickedDate = await showDatePicker(
-                                            context: context,
-                                            initialDate: DateTime.now(),
-                                            firstDate: DateTime.now(),
-                                            lastDate: DateTime.now().add(const Duration(days: 365)),
-                                          );
                                           setState(() {
+                                            dates[dates.length - 1] =
+                                                customDate;
                                             selectedDateIndex = index;
                                             selectedTimeIndex = -1;
-                                            dateCustom = DateFormat('yyyy/MM/dd').format(pickedDate!);
-                                            print("hhhhttttttttttttttttttttttt$dateCustom");
+                                            dateCustom =
+                                                DateFormat('yyyy-MM-dd')
+                                                    .format(pickedDate);
                                           });
 
-                                          context.read<BookingSlotProvider>().fetchSlots(
-                                            widget.diagnosticId.toString(),
-                                            date['date'],
-                                            widget.bookingType.toString(),
-                                          );
+                                          print(
+                                              "oooooooooooooooooooooooooo$dateCustom");
+
+                                          context
+                                              .read<BookingSlotProvider>()
+                                              .fetchSlots(
+                                                widget.diagnosticId.toString(),
+                                                dateCustom.toString(),
+                                                widget.bookingType.toString(),
+                                              );
                                         }
-                                      },
-                                      child: Column(
-                                        children: [
-                                          if (isSelected)
-                                            Container(
-                                              width: 20,
-                                              height: 20,
-                                              decoration: const BoxDecoration(
-                                                color: Colors.green,
-                                                shape: BoxShape.circle,
-                                              ),
-                                              child: const Icon(Icons.check, color: Colors.white, size: 14),
-                                            )
-                                          else
-                                            const SizedBox(height: 20),
-                                          const SizedBox(height: 8),
-                                          Text(
-                                            date['day'],
-                                            style: TextStyle(
-                                              fontSize: 14,
-                                              color: isSelected ? Colors.black : Colors.grey,
-                                              fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
+                                      } else {
+                                        DateTime? pickedDate =
+                                            await showDatePicker(
+                                          context: context,
+                                          initialDate: DateTime.now(),
+                                          firstDate: DateTime.now(),
+                                          lastDate: DateTime.now()
+                                              .add(const Duration(days: 365)),
+                                        );
+                                        setState(() {
+                                          selectedDateIndex = index;
+                                          selectedTimeIndex = -1;
+                                          dateCustom = DateFormat('yyyy-MM-dd')
+                                              .format(pickedDate!);
+                                          print(
+                                              "hhhhttttttttttttttttttttttt$dateCustom");
+                                        });
+
+                                        context
+                                            .read<BookingSlotProvider>()
+                                            .fetchSlots(
+                                              widget.diagnosticId.toString(),
+                                              date['date'],
+                                              widget.bookingType.toString(),
+                                            );
+                                      }
+                                    },
+                                    child: Column(
+                                      children: [
+                                        if (isSelected)
+                                          Container(
+                                            width: 20,
+                                            height: 20,
+                                            decoration: const BoxDecoration(
+                                              color: Colors.green,
+                                              shape: BoxShape.circle,
                                             ),
-                                          ),
-                                          const SizedBox(height: 4),
-                                          Text(
-                                            date['dayNumber'],
-                                            style: TextStyle(
-                                              fontSize: 16,
-                                              color: isSelected ? Colors.black : Colors.grey,
-                                              fontWeight: FontWeight.w600,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    );
-                                  }).toList(),
-                                ),
-                                const SizedBox(height: 24),
-                                const Text(
-                                  'Choose Time',
-                                  style: TextStyle(
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.black,
-                                  ),
-                                ),
-                                const SizedBox(height: 16),
-
-                                // Time Slot Loader or Display
-                                if (slotProvider.isLoading)
-                                  const Center(child: CircularProgressIndicator())
-                                else if (slotProvider.error != null)
-                                  Text('Error: ${slotProvider.error}')
-                                else if (slotProvider.slots.isEmpty)
-                                  const Text('No time slots available')
-                                else
-                                  GridView.builder(
-                                    shrinkWrap: true,
-                                    physics: const NeverScrollableScrollPhysics(),
-                                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                                      crossAxisCount: 2,
-                                      childAspectRatio: 3,
-                                      crossAxisSpacing: 12,
-                                      mainAxisSpacing: 12,
-                                    ),
-                                    itemCount: slotProvider.slots.length,
-                                    itemBuilder: (context, index) {
-                                      bool isSelected = selectedTimeIndex == index;
-                                      final slot = slotProvider.slots[index];
-
-                                      final isBooked = slot.isBooked;
-                                      final isExpired = slot.isExpired;
-                                      final isUnavailable = isBooked || isExpired;
-
-                                      return GestureDetector(
-                                        onTap: () {
-                                          if (isUnavailable) return;
-
-                                          if (customSlot != slot.timeSlot) {
-                                            print("customSlot updated from $customSlot to ${slot.timeSlot}");
-                                          }
-
-                                          setState(() {
-                                            selectedTimeIndex = index;
-                                            customSlot = slot.timeSlot;
-                                          });
-
-                                          Future.delayed(Duration.zero, () {
-                                            print("Updated customSlot: $customSlot");
-                                          });
-                                        },
-                                        child: Container(
-                                          decoration: BoxDecoration(
-                                            color: isUnavailable
-                                                ? Colors.grey[300]
-                                                : isSelected
-                                                    ? Colors.green[50]
-                                                    : Colors.grey[100],
-                                            borderRadius: BorderRadius.circular(13),
-                                            border: isSelected && !isUnavailable && customSlot != null
-                                                ? Border.all(color: Colors.green, width: 2)
-                                                : null,
-                                          ),
-                                          child: Stack(
-                                            children: [
-                                              Center(
-                                                child: Text(
-                                                  isBooked
-                                                      ? 'Booked'
-                                                      : isExpired
-                                                          ? 'Expired'
-                                                          : slot.timeSlot,
-                                                  style: TextStyle(
-                                                    fontSize: 14,
-                                                    fontWeight: FontWeight.w500,
-                                                    color: isUnavailable ? Colors.grey : Colors.black,
-                                                  ),
-                                                ),
-                                              ),
-                                              if (isSelected && !isUnavailable && customSlot != null)
-                                                const Positioned(
-                                                  top: 4,
-                                                  right: 4,
-                                                  child: Icon(
-                                                    Icons.check_circle,
-                                                    color: Colors.green,
-                                                    size: 20,
-                                                  ),
-                                                ),
-                                              if (isBooked)
-                                                const Positioned(
-                                                  top: 4,
-                                                  right: 4,
-                                                  child: Icon(
-                                                    Icons.block,
-                                                    color: Colors.red,
-                                                    size: 16,
-                                                  ),
-                                                ),
-                                              if (isExpired && !isBooked)
-                                                const Positioned(
-                                                  top: 4,
-                                                  right: 4,
-                                                  child: Icon(
-                                                    Icons.access_time,
-                                                    color: Colors.orange,
-                                                    size: 16,
-                                                  ),
-                                                ),
-                                            ],
+                                            child: const Icon(Icons.check,
+                                                color: Colors.white, size: 14),
+                                          )
+                                        else
+                                          const SizedBox(height: 20),
+                                        const SizedBox(height: 8),
+                                        Text(
+                                          date['day'],
+                                          style: TextStyle(
+                                            fontSize: 14,
+                                            color: isSelected
+                                                ? Colors.black
+                                                : Colors.grey,
+                                            fontWeight: isSelected
+                                                ? FontWeight.w600
+                                                : FontWeight.normal,
                                           ),
                                         ),
-                                      );
-                                    },
+                                        const SizedBox(height: 4),
+                                        Text(
+                                          date['dayNumber'],
+                                          style: TextStyle(
+                                            fontSize: 16,
+                                            color: isSelected
+                                                ? Colors.black
+                                                : Colors.grey,
+                                            fontWeight: FontWeight.w600,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  );
+                                }).toList(),
+                              ),
+                              const SizedBox(height: 24),
+                              const Text(
+                                'Choose Time',
+                                style: TextStyle(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black,
+                                ),
+                              ),
+                              const SizedBox(height: 16),
+
+                              // Time Slot Loader or Display
+                              if (slotProvider.isLoading)
+                                const Center(child: CircularProgressIndicator())
+                              else if (slotProvider.error != null)
+                                Text('No slots Available')
+                              else if (slotProvider.slots.isEmpty)
+                                const Text('No time slots available')
+                              else
+                                GridView.builder(
+                                  shrinkWrap: true,
+                                  physics: const NeverScrollableScrollPhysics(),
+                                  gridDelegate:
+                                      const SliverGridDelegateWithFixedCrossAxisCount(
+                                    crossAxisCount: 2,
+                                    childAspectRatio: 3,
+                                    crossAxisSpacing: 12,
+                                    mainAxisSpacing: 12,
                                   ),
-                              ],
-                            );
-                          }
-                        )
+                                  itemCount: slotProvider.slots.length,
+                                  itemBuilder: (context, index) {
+                                    bool isSelected =
+                                        selectedTimeIndex == index;
+                                    final slot = slotProvider.slots[index];
+
+                                    final isBooked = slot.isBooked;
+                                    final isExpired = slot.isExpired;
+                                    final isUnavailable = isBooked || isExpired;
+
+                                    return GestureDetector(
+                                      onTap: () {
+                                        if (isUnavailable) return;
+
+                                        if (customSlot != slot.timeSlot) {
+                                          print(
+                                              "customSlot updated from $customSlot to ${slot.timeSlot}");
+                                        }
+
+                                        setState(() {
+                                          selectedTimeIndex = index;
+                                          customSlot = slot.timeSlot;
+                                        });
+
+                                        Future.delayed(Duration.zero, () {
+                                          print(
+                                              "Updated customSlot: $customSlot");
+                                        });
+                                      },
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                          color: isUnavailable
+                                              ? Colors.grey[300]
+                                              : isSelected
+                                                  ? Colors.green[50]
+                                                  : Colors.grey[100],
+                                          borderRadius:
+                                              BorderRadius.circular(13),
+                                          border: isSelected &&
+                                                  !isUnavailable &&
+                                                  customSlot != null
+                                              ? Border.all(
+                                                  color: Colors.green, width: 2)
+                                              : null,
+                                        ),
+                                        child: Stack(
+                                          children: [
+                                            Center(
+                                              child: Text(
+                                                isBooked
+                                                    ? 'Booked'
+                                                    : isExpired
+                                                        ? 'Expired'
+                                                        : slot.timeSlot,
+                                                style: TextStyle(
+                                                  fontSize: 14,
+                                                  fontWeight: FontWeight.w500,
+                                                  color: isUnavailable
+                                                      ? Colors.grey
+                                                      : Colors.black,
+                                                ),
+                                              ),
+                                            ),
+                                            if (isSelected &&
+                                                !isUnavailable &&
+                                                customSlot != null)
+                                              const Positioned(
+                                                top: 4,
+                                                right: 4,
+                                                child: Icon(
+                                                  Icons.check_circle,
+                                                  color: Colors.green,
+                                                  size: 20,
+                                                ),
+                                              ),
+                                            if (isBooked)
+                                              const Positioned(
+                                                top: 4,
+                                                right: 4,
+                                                child: Icon(
+                                                  Icons.block,
+                                                  color: Colors.red,
+                                                  size: 16,
+                                                ),
+                                              ),
+                                            if (isExpired && !isBooked)
+                                              const Positioned(
+                                                top: 4,
+                                                right: 4,
+                                                child: Icon(
+                                                  Icons.access_time,
+                                                  color: Colors.orange,
+                                                  size: 16,
+                                                ),
+                                              ),
+                                          ],
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                ),
+                            ],
+                          );
+                        })
                       ],
                     ),
                   ),
@@ -1465,11 +1540,13 @@ class _SlotScreenState extends State<SlotScreen> {
 
                           // Family Members
                           ...familyProvider.familyMembers.map((member) {
-                            final isSelected = selectedFamilyMember?.id == member.id;
+                            final isSelected =
+                                selectedFamilyMember?.id == member.id;
                             return GestureDetector(
                               onTap: () {
                                 setState(() {
-                                  selectedFamilyMember = isSelected ? null : member;
+                                  selectedFamilyMember =
+                                      isSelected ? null : member;
                                   _useProfileData = false;
                                 });
                               },
@@ -1522,126 +1599,130 @@ class _SlotScreenState extends State<SlotScreen> {
                   const SizedBox(height: 24),
 
                   // Address Section Header
-                  if(widget.bookingType == "Home Collection")
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const Text(
-                        'Choose Address',
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black,
-                        ),
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => AddAddress()),
-                          );
-                        },
-                        child: const Text(
-                          'Add Address',
+                  if (widget.bookingType == "Home Collection")
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text(
+                          'Choose Address',
                           style: TextStyle(
-                            fontSize: 10,
+                            fontSize: 20,
                             fontWeight: FontWeight.bold,
-                            color: Color.fromARGB(255, 8, 142, 200),
+                            color: Colors.black,
                           ),
                         ),
-                      ),
-                    ],
-                  ),
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => AddAddress()),
+                            );
+                          },
+                          child: const Text(
+                            'Add Address',
+                            style: TextStyle(
+                              fontSize: 10,
+                              fontWeight: FontWeight.bold,
+                              color: Color.fromARGB(255, 8, 142, 200),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
 
                   const SizedBox(height: 16),
 
                   // Address List
-                  if(widget.bookingType == "Home Collection")
-                  Consumer<AddressProvider>(
-                    builder: (context, addressProvider, child) {
-                      if (addressProvider.isLoading) {
-                        return const Center(child: CircularProgressIndicator());
-                      }
+                  if (widget.bookingType == "Home Collection")
+                    Consumer<AddressProvider>(
+                      builder: (context, addressProvider, child) {
+                        if (addressProvider.isLoading) {
+                          return const Center(
+                              child: CircularProgressIndicator());
+                        }
 
-                      if (addressProvider.errorMessage != "") {
-                        return Center(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(
-                                Icons.error_outline,
-                                size: 48,
-                                color: Colors.grey[400],
-                              ),
-                              const SizedBox(height: 16),
-                              Text(
-                                'Error loading addresses',
-                                style: TextStyle(
-                                  color: Colors.grey[600],
-                                  fontSize: 16,
+                        if (addressProvider.errorMessage != "") {
+                          return Center(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(
+                                  Icons.error_outline,
+                                  size: 48,
+                                  color: Colors.grey[400],
+                                ),
+                                const SizedBox(height: 16),
+                                Text(
+                                  'Error loading addresses',
+                                  style: TextStyle(
+                                    color: Colors.grey[600],
+                                    fontSize: 16,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          );
+                        }
+
+                        return Column(
+                          children: [
+                            // Address Items
+                            ...addressProvider.addresses.map((address) {
+                              final isSelected =
+                                  selectedAddress?.id == address.id;
+                              return GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    selectedAddress =
+                                        isSelected ? null : address;
+                                  });
+                                },
+                                child: _buildAddressItem(address, isSelected),
+                              );
+                            }).toList(),
+
+                            // Show message if no addresses
+                            if (addressProvider.addresses.isEmpty)
+                              Container(
+                                padding: const EdgeInsets.all(16),
+                                margin: const EdgeInsets.only(top: 16),
+                                decoration: BoxDecoration(
+                                  color: Colors.grey[50],
+                                  borderRadius: BorderRadius.circular(8),
+                                  border: Border.all(color: Colors.grey[300]!),
+                                ),
+                                child: Column(
+                                  children: [
+                                    Icon(
+                                      Icons.location_off,
+                                      size: 48,
+                                      color: Colors.grey[400],
+                                    ),
+                                    const SizedBox(height: 16),
+                                    Text(
+                                      'No addresses added yet',
+                                      style: TextStyle(
+                                        color: Colors.grey[600],
+                                        fontSize: 16,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 8),
+                                    Text(
+                                      'Tap "Add Address" to add your first address',
+                                      style: TextStyle(
+                                        color: Colors.grey[500],
+                                        fontSize: 14,
+                                      ),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ],
                                 ),
                               ),
-                            ],
-                          ),
+                          ],
                         );
-                      }
-
-                      return Column(
-                        children: [
-                          // Address Items
-                          ...addressProvider.addresses.map((address) {
-                            final isSelected = selectedAddress?.id == address.id;
-                            return GestureDetector(
-                              onTap: () {
-                                setState(() {
-                                  selectedAddress = isSelected ? null : address;
-                                });
-                              },
-                              child: _buildAddressItem(address, isSelected),
-                            );
-                          }).toList(),
-
-                          // Show message if no addresses
-                          if (addressProvider.addresses.isEmpty)
-                            Container(
-                              padding: const EdgeInsets.all(16),
-                              margin: const EdgeInsets.only(top: 16),
-                              decoration: BoxDecoration(
-                                color: Colors.grey[50],
-                                borderRadius: BorderRadius.circular(8),
-                                border: Border.all(color: Colors.grey[300]!),
-                              ),
-                              child: Column(
-                                children: [
-                                  Icon(
-                                    Icons.location_off,
-                                    size: 48,
-                                    color: Colors.grey[400],
-                                  ),
-                                  const SizedBox(height: 16),
-                                  Text(
-                                    'No addresses added yet',
-                                    style: TextStyle(
-                                      color: Colors.grey[600],
-                                      fontSize: 16,
-                                    ),
-                                  ),
-                                  const SizedBox(height: 8),
-                                  Text(
-                                    'Tap "Add Address" to add your first address',
-                                    style: TextStyle(
-                                      color: Colors.grey[500],
-                                      fontSize: 14,
-                                    ),
-                                    textAlign: TextAlign.center,
-                                  ),
-                                ],
-                              ),
-                            ),
-                        ],
-                      );
-                    },
-                  ),
+                      },
+                    ),
 
                   const SizedBox(height: 24),
 
@@ -1649,7 +1730,9 @@ class _SlotScreenState extends State<SlotScreen> {
                   Container(
                     width: double.infinity,
                     child: ElevatedButton(
-                      onPressed: bookingProvider.isCreatingBooking ? null : _proceedToPayment,
+                      onPressed: bookingProvider.isCreatingBooking
+                          ? null
+                          : _proceedToPayment,
                       style: ElevatedButton.styleFrom(
                         backgroundColor: const Color.fromARGB(255, 33, 82, 243),
                         padding: const EdgeInsets.symmetric(vertical: 16),
@@ -1663,7 +1746,8 @@ class _SlotScreenState extends State<SlotScreen> {
                               height: 20,
                               child: CircularProgressIndicator(
                                 strokeWidth: 2,
-                                valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                                valueColor:
+                                    AlwaysStoppedAnimation<Color>(Colors.white),
                               ),
                             )
                           : const Text(
