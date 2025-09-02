@@ -117,21 +117,22 @@ class _StepTrackerScreenState extends State<StepTrackerScreen>
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Icon(Icons.error_outline, size: 64, color: Colors.red[300]),
+                  // Icon(Icons.error_outline, size: 64, color: Colors.red[300]),
                   const SizedBox(height: 16),
                   Text(
-                    trackerProvider.errorMessage,
-                    style: const TextStyle(fontSize: 16, color: Colors.red),
+                    'No coins Available',
+                    // trackerProvider.errorMessage,
+                    style: const TextStyle(fontSize: 16, color: Colors.black),
                     textAlign: TextAlign.center,
                   ),
                   const SizedBox(height: 16),
-                  ElevatedButton(
-                    onPressed: () {
-                      trackerProvider.clearError();
-                      trackerProvider.refreshData();
-                    },
-                    child: const Text('Retry'),
-                  ),
+                  // ElevatedButton(
+                  //   onPressed: () {
+                  //     trackerProvider.clearError();
+                  //     trackerProvider.refreshData();
+                  //   },
+                  //   child: const Text('Retry'),
+                  // ),
                 ],
               ),
             );

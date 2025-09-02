@@ -82,7 +82,7 @@ class LabtestPackagesScreen extends StatelessWidget {
                 icon: Icons.upload,
                 iconColor: Colors.red,
                 backgroundColor: Colors.pink[100]!,
-                title: 'UploadPrescription',
+                title: 'Upload\nPrescription',
                 onTap: () {
                   // Replace this with your real Health Checkup screen
                   Navigator.push(context, MaterialPageRoute(builder: (context) => const PrescriptionScreen()));

@@ -255,7 +255,7 @@ class _LifeStyleScreenState extends State<LifeStyleScreen> {
                                       fontWeight: FontWeight.bold,
                                       fontSize: 18,
                                       color: isSelected
-                                          ? Colors.blue[700]
+                                          ? Colors.blue
                                           : Colors.black,
                                     ),
                                   ),
@@ -263,7 +263,7 @@ class _LifeStyleScreenState extends State<LifeStyleScreen> {
                                 if (isSelected)
                                   Icon(
                                     Icons.check_circle,
-                                    color: Colors.blue[700],
+                                    color: Colors.blue,
                                   ),
                               ],
                             ),

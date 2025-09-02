@@ -590,7 +590,7 @@ Future<void> _submitAllAnswersAndNavigate() async {
                                   : null,
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: selectedAnswer != null
-                                    ? const Color.fromARGB(255, 33, 33, 243)
+                                    ? Colors.blue
                                     : Colors.grey[300],
                                 foregroundColor: selectedAnswer != null
                                     ? Colors.white
@@ -719,7 +719,7 @@ Future<void> _submitAllAnswersAndNavigate() async {
                                       ? FontWeight.w600
                                       : FontWeight.normal,
                                   color: selectedHraName == hraName
-                                      ? Colors.blue[700]
+                                      ? Colors.blue
                                       : (isCompleted
                                           ? Colors.green[700]
                                           : Colors.black),
@@ -728,7 +728,7 @@ Future<void> _submitAllAnswersAndNavigate() async {
                               trailing: selectedHraName == hraName
                                   ? Icon(
                                       Icons.check_circle,
-                                      color: Colors.blue[700],
+                                      color: Colors.blue,
                                       size: 20,
                                     )
                                   : (isCompleted

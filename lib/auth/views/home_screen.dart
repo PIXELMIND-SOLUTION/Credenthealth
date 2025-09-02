@@ -602,193 +602,194 @@ class _HomeScreenState extends State<HomeScreen> {
             //   );
             // }),
 
-
             Consumer<TrackerProvider>(
-  builder: (context, trackerProvider, child) {
-    return GestureDetector(
-      onHorizontalDragEnd: (DragEndDetails details) {
-        // Check the velocity of the swipe
-        if (details.primaryVelocity! > 0) {
-          // Swipe right - Start tracking
-          if (!trackerProvider.isTrackingMotion) {
-            trackerProvider.startMotionTracking();
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text('Step tracking started!'),
-                backgroundColor: Colors.green,
-                duration: Duration(seconds: 2),
-              ),
-            );
-          }
-        } else if (details.primaryVelocity! < 0) {
-          // Swipe left - Stop tracking
-          if (trackerProvider.isTrackingMotion) {
-            trackerProvider.stopMotionTracking();
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text('Step tracking stopped!'),
-                backgroundColor: Colors.red,
-                duration: Duration(seconds: 2),
-              ),
-            );
-          }
-        }
-      },
-      child: Card(
-        color: Colors.white,
-        elevation: 2,
-        shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12)),
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Text(
-                    "Today's Steps",
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) =>
-                              const StepTrackerScreen(),
-                        ),
-                      );
-                    },
-                    child: const Row(
-                      children: [
-                        Text(
-                          'See More',
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontWeight: FontWeight.bold,
+              builder: (context, trackerProvider, child) {
+                return GestureDetector(
+                  onHorizontalDragEnd: (DragEndDetails details) {
+                    // Check the velocity of the swipe
+                    if (details.primaryVelocity! > 0) {
+                      // Swipe right - Start tracking
+                      if (!trackerProvider.isTrackingMotion) {
+                        trackerProvider.startMotionTracking();
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text('Step tracking started!'),
+                            backgroundColor: Colors.green,
+                            duration: Duration(seconds: 2),
                           ),
-                        ),
-                        SizedBox(width: 4),
-                        Icon(
-                          Icons.arrow_forward_ios,
-                          size: 17,
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 8),
-              // Tracking status indicator
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-                decoration: BoxDecoration(
-                  color: trackerProvider.isTrackingMotion 
-                      ? Colors.green.withOpacity(0.1)
-                      : Colors.red.withOpacity(0.1),
-                  borderRadius: BorderRadius.circular(20),
-                  border: Border.all(
-                    color: trackerProvider.isTrackingMotion 
-                        ? Colors.green 
-                        : Colors.red,
-                    width: 1,
-                  ),
-                ),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Icon(
-                      trackerProvider.isTrackingMotion 
-                          ? Icons.play_circle_filled 
-                          : Icons.pause_circle_filled,
-                      color: trackerProvider.isTrackingMotion 
-                          ? Colors.green 
-                          : Colors.red,
-                      size: 16,
-                    ),
-                    const SizedBox(width: 4),
-                    Text(
-                      trackerProvider.isTrackingMotion 
-                          ? 'Tracking ON' 
-                          : 'Tracking OFF',
-                      style: TextStyle(
-                        color: trackerProvider.isTrackingMotion 
-                            ? Colors.green 
-                            : Colors.red,
-                        fontSize: 12,
-                        fontWeight: FontWeight.bold,
+                        );
+                      }
+                    } else if (details.primaryVelocity! < 0) {
+                      // Swipe left - Stop tracking
+                      if (trackerProvider.isTrackingMotion) {
+                        trackerProvider.stopMotionTracking();
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text('Step tracking stopped!'),
+                            backgroundColor: Colors.red,
+                            duration: Duration(seconds: 2),
+                          ),
+                        );
+                      }
+                    }
+                  },
+                  child: Card(
+                    color: Colors.white,
+                    elevation: 2,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12)),
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Column(
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              const Text(
+                                "Today's Steps",
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              ),
+                              GestureDetector(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          const StepTrackerScreen(),
+                                    ),
+                                  );
+                                },
+                                child: const Row(
+                                  children: [
+                                    Text(
+                                      'See More',
+                                      style: TextStyle(
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                    SizedBox(width: 4),
+                                    Icon(
+                                      Icons.arrow_forward_ios,
+                                      size: 17,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 8),
+                          // Tracking status indicator
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 12, vertical: 4),
+                            decoration: BoxDecoration(
+                              color: trackerProvider.isTrackingMotion
+                                  ? Colors.green.withOpacity(0.1)
+                                  : Colors.red.withOpacity(0.1),
+                              borderRadius: BorderRadius.circular(20),
+                              border: Border.all(
+                                color: trackerProvider.isTrackingMotion
+                                    ? Colors.green
+                                    : Colors.red,
+                                width: 1,
+                              ),
+                            ),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Icon(
+                                  trackerProvider.isTrackingMotion
+                                      ? Icons.play_circle_filled
+                                      : Icons.pause_circle_filled,
+                                  color: trackerProvider.isTrackingMotion
+                                      ? Colors.green
+                                      : Colors.red,
+                                  size: 16,
+                                ),
+                                const SizedBox(width: 4),
+                                Text(
+                                  trackerProvider.isTrackingMotion
+                                      ? 'Tracking ON'
+                                      : 'Tracking OFF',
+                                  style: TextStyle(
+                                    color: trackerProvider.isTrackingMotion
+                                        ? Colors.green
+                                        : Colors.red,
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          const SizedBox(height: 4),
+                          // Swipe instruction text
+                          Text(
+                            '← Swipe left to stop • Swipe right to start →',
+                            style: TextStyle(
+                              fontSize: 10,
+                              color: Colors.grey.shade600,
+                              fontStyle: FontStyle.italic,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                          const SizedBox(height: 12),
+                          if (trackerProvider.isLoading) ...[
+                            const SizedBox(
+                              height: 100,
+                              child: Center(
+                                child: CircularProgressIndicator(),
+                              ),
+                            ),
+                          ] else ...[
+                            Stack(
+                              alignment: Alignment.center,
+                              children: [
+                                SizedBox(
+                                  height: 100,
+                                  width: 100,
+                                  child: CircularProgressIndicator(
+                                    value: trackerProvider.progressPercentage
+                                        .clamp(0.0, 1.0),
+                                    strokeWidth: 8,
+                                    backgroundColor: Colors.grey.shade200,
+                                    valueColor: AlwaysStoppedAnimation<Color>(
+                                      trackerProvider.isTrackingMotion
+                                          ? const Color.fromARGB(
+                                              255, 44, 33, 243)
+                                          : Colors.grey.shade400,
+                                    ),
+                                  ),
+                                ),
+                                Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    // Use the animated walking widget when user is walking
+                                    GifWalkingShoesAnimation(
+                                        isWalking: trackerProvider.isWalking,
+                                        size: 40,
+                                        customGifAsset:
+                                            "lib/assets/walking.gif"),
+                                    const SizedBox(height: 4),
+                                    Text(
+                                      '${trackerProvider.currentSteps}',
+                                      style: const TextStyle(
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    const Text('Steps'),
+                                  ],
+                                )
+                              ],
+                            ),
+                          ],
+                        ],
                       ),
                     ),
-                  ],
-                ),
-              ),
-              const SizedBox(height: 4),
-              // Swipe instruction text
-              Text(
-                '← Swipe left to stop • Swipe right to start →',
-                style: TextStyle(
-                  fontSize: 10,
-                  color: Colors.grey.shade600,
-                  fontStyle: FontStyle.italic,
-                ),
-                textAlign: TextAlign.center,
-              ),
-              const SizedBox(height: 12),
-              if (trackerProvider.isLoading) ...[
-                const SizedBox(
-                  height: 100,
-                  child: Center(
-                    child: CircularProgressIndicator(),
                   ),
-                ),
-              ] else ...[
-                Stack(
-                  alignment: Alignment.center,
-                  children: [
-                    SizedBox(
-                      height: 100,
-                      width: 100,
-                      child: CircularProgressIndicator(
-                        value: trackerProvider.progressPercentage
-                            .clamp(0.0, 1.0),
-                        strokeWidth: 8,
-                        backgroundColor: Colors.grey.shade200,
-                        valueColor: AlwaysStoppedAnimation<Color>(
-                          trackerProvider.isTrackingMotion
-                              ? const Color.fromARGB(255, 44, 33, 243)
-                              : Colors.grey.shade400,
-                        ),
-                      ),
-                    ),
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        // Use the animated walking widget when user is walking
-                        GifWalkingShoesAnimation(
-                          isWalking: trackerProvider.isWalking,
-                          size: 40,
-                          customGifAsset: "lib/assets/walking.gif"
-                        ),
-                        const SizedBox(height: 4),
-                        Text(
-                          '${trackerProvider.currentSteps}',
-                          style: const TextStyle(
-                              fontWeight: FontWeight.bold),
-                        ),
-                        const Text('Steps'),
-                      ],
-                    )
-                  ],
-                ),
-              ],
-            ],
-          ),
-        ),
-      ),
-    );
-  },
-),
+                );
+              },
+            ),
             SizedBox(height: screenHeight * 0.02),
             SizedBox(
               height: 15,
@@ -818,8 +819,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           _showConsultationOptions(context);
                         },
                         child: const _ImageWithLabel(
-                          imageUrl:
-                              'lib/assets/consultation.png',
+                          imageUrl: 'lib/assets/consultation.png',
                           label: 'Doctor Consultation',
                         ),
                       ),
@@ -828,14 +828,12 @@ class _HomeScreenState extends State<HomeScreen> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) =>
-                                   LabtestPackagesScreen(),
+                              builder: (context) => LabtestPackagesScreen(),
                             ),
                           );
                         },
                         child: const _ImageWithLabel(
-                          imageUrl:
-                              'lib/assets/labtest.png',
+                          imageUrl: 'lib/assets/labtest.png',
                           label: 'Lab Test & Packages',
                         ),
                       ),
@@ -849,8 +847,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           );
                         },
                         child: const _ImageWithLabel(
-                          imageUrl:
-                              'lib/assets/hra.png',
+                          imageUrl: 'lib/assets/hra.png',
                           label: 'HRA',
                         ),
                       ),
@@ -864,7 +861,10 @@ class _HomeScreenState extends State<HomeScreen> {
                     children: [
                       GestureDetector(
                         onTap: () {
-                          Navigator.push(context, MaterialPageRoute(builder: (context)=>ComingSoonScreen()));
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => ComingSoonScreen()));
                         },
                         child: const _ImageWithLabel(
                           imageUrl: 'lib/assets/eyecare.png',
@@ -873,7 +873,10 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                       GestureDetector(
                         onTap: () {
-                               Navigator.push(context, MaterialPageRoute(builder: (context)=>ComingSoonScreen()));
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => ComingSoonScreen()));
                         },
                         child: const _ImageWithLabel(
                           imageUrl: 'lib/assets/dentalcare.png',
@@ -882,7 +885,10 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                       GestureDetector(
                         onTap: () {
-                               Navigator.push(context, MaterialPageRoute(builder: (context)=>ComingSoonScreen()));
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => ComingSoonScreen()));
                         },
                         child: const _ImageWithLabel(
                           imageUrl: 'lib/assets/medicine.png',
@@ -1438,8 +1444,6 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   );
                 }
-
-          
 
                 if (!provider.hasData) {
                   return Text("");
