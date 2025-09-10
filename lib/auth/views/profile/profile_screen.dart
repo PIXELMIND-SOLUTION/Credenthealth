@@ -186,20 +186,21 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         padding: const EdgeInsets.all(12.0),
                         child: Row(
                           children: [
-                            GestureDetector(
-                              onTap: () {
-                                // Navigator.push(context, MaterialPageRoute(builder: (context)=>EditProfile()));
-                              },
-                              child: CircleAvatar(
-                                radius: 35,
-                                backgroundImage: profile?.profileImage != null
-                                    ? NetworkImage(_sanitizeImageUrl(
-                                        profile!.profileImage))
-                                    : const AssetImage(
-                                            'lib/assets/chatscreenimage.png')
-                                        as ImageProvider,
-                              ),
-                            ),
+                            // GestureDetector(
+                            //   onTap: () {
+                            //     // Navigator.push(context, MaterialPageRoute(builder: (context)=>EditProfile()));
+                            //   },
+                            //   child: CircleAvatar(
+                            //     radius: 35,
+                            //     backgroundImage: profile?.profileImage != null
+                            //         ? NetworkImage(_sanitizeImageUrl(
+                            //             profile!.profileImage))
+                            //         : const AssetImage(
+                            //                 'lib/assets/chatscreenimage.png')
+                            //             as ImageProvider,
+                            //   ),
+                            // ),
+                            
                             const SizedBox(width: 10),
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -265,19 +266,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         );
                       },
                     ),
-                    _MenuItem(
-                      icon: Icons.directions_walk,
-                      iconBg: Colors.orange.shade50,
-                      iconColor: Colors.orange,
-                      label: 'Step Tracker',
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const StepTrackerScreen()),
-                        );
-                      },
-                    ),
+                    // _MenuItem(
+                    //   icon: Icons.directions_walk,
+                    //   iconBg: Colors.orange.shade50,
+                    //   iconColor: Colors.orange,
+                    //   label: 'Step Tracker',
+                    //   onTap: () {
+                    //     Navigator.push(
+                    //       context,
+                    //       MaterialPageRoute(
+                    //           builder: (context) => const StepTrackerScreen()),
+                    //     );
+                    //   },
+                    // ),
                     _MenuItem(
                       icon: Icons.settings,
                       iconBg: Colors.grey.shade200,

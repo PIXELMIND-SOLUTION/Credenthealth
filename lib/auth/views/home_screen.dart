@@ -643,7 +643,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       child: Column(
                         children: [
                           Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               const Text(
                                 "Today's Steps",
@@ -661,24 +661,24 @@ class _HomeScreenState extends State<HomeScreen> {
                                 },
                                 child: const Row(
                                   children: [
-                                    Text(
-                                      'See More',
-                                      style: TextStyle(
-                                        color: Colors.black,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                    SizedBox(width: 4),
-                                    Icon(
-                                      Icons.arrow_forward_ios,
-                                      size: 17,
-                                    ),
+                                    // Text(
+                                    //   'See More',
+                                    //   style: TextStyle(
+                                    //     color: Colors.black,
+                                    //     fontWeight: FontWeight.bold,
+                                    //   ),
+                                    // ),
+                                    // SizedBox(width: 4),
+                                    // Icon(
+                                    //   Icons.arrow_forward_ios,
+                                    //   size: 17,
+                                    // ),
                                   ],
                                 ),
                               ),
                             ],
                           ),
-                          const SizedBox(height: 8),
+                          const SizedBox(height: 12),
                           // Tracking status indicator
                           Container(
                             padding: const EdgeInsets.symmetric(
@@ -856,47 +856,47 @@ class _HomeScreenState extends State<HomeScreen> {
                   SizedBox(
                     height: 15,
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => ComingSoonScreen()));
-                        },
-                        child: const _ImageWithLabel(
-                          imageUrl: 'lib/assets/eyecare.png',
-                          label: 'Eye Care',
-                        ),
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => ComingSoonScreen()));
-                        },
-                        child: const _ImageWithLabel(
-                          imageUrl: 'lib/assets/dentalcare.png',
-                          label: 'Dental Care',
-                        ),
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => ComingSoonScreen()));
-                        },
-                        child: const _ImageWithLabel(
-                          imageUrl: 'lib/assets/medicine.png',
-                          label: 'Medicines',
-                        ),
-                      ),
-                    ],
-                  ),
+                  // Row(
+                  //   mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  //   children: [
+                  //     GestureDetector(
+                  //       onTap: () {
+                  //         Navigator.push(
+                  //             context,
+                  //             MaterialPageRoute(
+                  //                 builder: (context) => ComingSoonScreen()));
+                  //       },
+                  //       child: const _ImageWithLabel(
+                  //         imageUrl: 'lib/assets/eyecare.png',
+                  //         label: 'Eye Care',
+                  //       ),
+                  //     ),
+                  //     GestureDetector(
+                  //       onTap: () {
+                  //         Navigator.push(
+                  //             context,
+                  //             MaterialPageRoute(
+                  //                 builder: (context) => ComingSoonScreen()));
+                  //       },
+                  //       child: const _ImageWithLabel(
+                  //         imageUrl: 'lib/assets/dentalcare.png',
+                  //         label: 'Dental Care',
+                  //       ),
+                  //     ),
+                  //     GestureDetector(
+                  //       onTap: () {
+                  //         Navigator.push(
+                  //             context,
+                  //             MaterialPageRoute(
+                  //                 builder: (context) => ComingSoonScreen()));
+                  //       },
+                  //       child: const _ImageWithLabel(
+                  //         imageUrl: 'lib/assets/medicine.png',
+                  //         label: 'Medicines',
+                  //       ),
+                  //     ),
+                  //   ],
+                  // ),
                 ],
               ),
             ),
